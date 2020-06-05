@@ -23,18 +23,26 @@ jobs:
       vmImage: Windows-2019
     steps:
       - task: UseDotNet@2
-        displayName: Setup
+        displayName: Setup Dotnet 3.1 SDK
         inputs:
           packageType: sdk
           version: $(DotNet3Version)
       - task: DotNetCoreCLI@2
-        displayName: Build
+        displayName: Dotnet Restore
         inputs:
-          command: pack
-          packagesToPack: Steeltoe.Initializr.WebApi.sln
-          arguments: "--configuration $(buildConfiguration) /p:TreatWarningsAsErrors=True"
+          command: restore
       - task: DotNetCoreCLI@2
-        displayName: Test
+        displayName: Dotnet Build
+        inputs:
+          command: build
+          arguments: --no-restore /p:TreatWarningsAsErrors=True
+      - task: DotNetCoreCLI@2
+        displayName: Dotnet Test
         inputs:
           command: test
-          projects: Steeltoe.Initializr.WebApi.sln
+          arguments: --no-build
+      - task: DotNetCoreCLI@2
+        displayName: Dotnet Pack
+        inputs:
+          command: pack
+          arguments: --no-build

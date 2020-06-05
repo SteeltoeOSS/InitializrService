@@ -1,2 +1,5 @@
-# Ignore JetBrains Rider state
+# User-specific state
+*.sln.DotSettings.user
+
+# JetBrains Rider state
 /.idea/

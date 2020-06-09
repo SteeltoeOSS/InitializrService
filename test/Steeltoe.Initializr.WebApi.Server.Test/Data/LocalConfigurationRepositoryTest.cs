@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using FluentAssertions;
+using Microsoft.Extensions.Logging.Abstractions;
 using Steeltoe.Initializr.WebApi.Server.Data;
 using Xunit;
 
@@ -10,7 +11,7 @@ namespace Steeltoe.Initializr.WebApi.Server.Test.Data
 		[Fact]
 		public async Task LocalGetConfiguration()
 		{
-			var configRepo = new LocalConfigurationRepository(null);
+			var configRepo = new LocalConfigurationRepository(new NullLoggerFactory());
 			var config = await configRepo.GetConfiguration();
 			config.Should().NotBeNull();
 		}

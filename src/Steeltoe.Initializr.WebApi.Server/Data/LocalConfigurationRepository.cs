@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -31,7 +30,7 @@ namespace Steeltoe.Initializr.WebApi.Server.Data
 		/// </summary>
 		public LocalConfigurationRepository(ILoggerFactory loggerFactory)
 		{
-			_logger = loggerFactory?.CreateLogger<LocalConfigurationRepository>();
+			_logger = loggerFactory.CreateLogger<LocalConfigurationRepository>();
 		}
 
 		/// <summary>
@@ -46,7 +45,7 @@ namespace Steeltoe.Initializr.WebApi.Server.Data
 				{
 					if (_configuration == null)
 					{
-						_logger?.LogInformation($"loading configuration: {ConfigurationPath}");
+						_logger.LogInformation($"loading configuration: {ConfigurationPath}");
 						_configuration =
 							JsonConvert.DeserializeObject<Configuration>(File.ReadAllText(ConfigurationPath));
 					}

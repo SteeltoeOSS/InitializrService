@@ -1,8 +1,9 @@
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Steeltoe.Initializr.WebApi.Server.Data;
 
-namespace Steeltoe.Initializr.WebApi.Server
+namespace Steeltoe.Initializr.WebApi.Server.Controllers
 {
 	/// <summary>
 	/// Project generation configuration metadata endpoint.
@@ -30,9 +31,10 @@ namespace Steeltoe.Initializr.WebApi.Server
 		/// </summary>
 		/// <returns>Project generation configuration metadata</returns>
 		[HttpGet]
-		public ActionResult Get()
+		public async Task<ActionResult> Get()
 		{
-			return Ok(_configurationRepository.GetConfiguration());
+			var config = await _configurationRepository.GetConfiguration();
+			return Ok(config);
 		}
 	}
 }

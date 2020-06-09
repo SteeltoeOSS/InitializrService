@@ -9,5 +9,17 @@
 		<Folder Include="Controllers" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Content Update="initializr-configuration.json">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	  </Content>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+	</ItemGroup>
+
 
 </Project>

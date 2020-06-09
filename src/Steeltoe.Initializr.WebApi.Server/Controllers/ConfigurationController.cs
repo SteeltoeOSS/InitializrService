@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Steeltoe.Initializr.WebApi.Server.Data;
 
 namespace Steeltoe.Initializr.WebApi.Server
 {
@@ -9,6 +10,17 @@ namespace Steeltoe.Initializr.WebApi.Server
 	[Route("api/[controller]")]
 	public class ConfigurationController : ControllerBase
 	{
+		private readonly IConfigurationRepository _configurationRepository;
+
+		/// <summary>
+		/// Create a new ConfigurationController.
+		/// </summary>
+		/// <param name="configurationRepository">configuration repository</param>
+		public ConfigurationController(IConfigurationRepository configurationRepository)
+		{
+			_configurationRepository = configurationRepository;
+		}
+
 		/// <summary>
 		/// Implements <code>GET</code>..
 		/// </summary>
@@ -16,7 +28,7 @@ namespace Steeltoe.Initializr.WebApi.Server
 		[HttpGet]
 		public ActionResult Get()
 		{
-			return Ok("");
+			return Ok(_configurationRepository.GetConfiguration());
 		}
 	}
 }

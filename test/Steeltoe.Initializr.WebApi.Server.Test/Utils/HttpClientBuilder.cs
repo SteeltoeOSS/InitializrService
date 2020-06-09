@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Hosting;
 
-namespace Steeltoe.Initializr.WebApi.Server.Test
+namespace Steeltoe.Initializr.WebApi.Server.Test.Utils
 {
 	public class HttpClientBuilder
 	{

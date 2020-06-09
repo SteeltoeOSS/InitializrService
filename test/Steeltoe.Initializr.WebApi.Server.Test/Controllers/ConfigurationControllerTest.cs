@@ -1,11 +1,12 @@
 using System.Net;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Steeltoe.Initializr.WebApi.Server.Test.Utils;
 using Xunit;
 
-namespace Steeltoe.Initializr.WebApi.Server.Test
+namespace Steeltoe.Initializr.WebApi.Server.Test.Controller
 {
-	public class ProjectGenerationControllerTest
+	public class ConfigurationControllerTest
 	{
 		[Fact]
 		public async Task EndpointExistsTest()

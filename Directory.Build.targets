@@ -1,0 +1,14 @@
+<Project>
+
+	<!--
+		Deterministic build workaround
+		Remove once we're on 3.1.300
+		https://github.com/dotnet/sourcelink/issues/572
+	-->
+	<Import Project="$(MSBuildThisFileDirectory)DeterministicBuild.targets" />
+
+</Project>
+
+<!--
+	vim: ft=xml
+-->

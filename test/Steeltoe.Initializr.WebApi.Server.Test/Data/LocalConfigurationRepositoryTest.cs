@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Steeltoe.Initializr.WebApi.Server.Data;
@@ -9,9 +8,9 @@ namespace Steeltoe.Initializr.WebApi.Server.Test.Data
 	public class LocalConfigurationRepositoryTest
 	{
 		[Fact]
-		public async Task EndpointExistsTest()
+		public async Task LocalGetConfiguration()
 		{
-			var configRepo = new LocalConfigurationRepository();
+			var configRepo = new LocalConfigurationRepository(null);
 			var config = await configRepo.GetConfiguration();
 			config.Should().NotBeNull();
 		}

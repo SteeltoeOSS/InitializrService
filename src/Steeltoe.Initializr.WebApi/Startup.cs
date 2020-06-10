@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Steeltoe.Initializr.WebApi.Server.Services;
+using Steeltoe.Initializr.WebApi.Services;
 
-namespace Steeltoe.Initializr.WebApi.Server
+namespace Steeltoe.Initializr.WebApi
 {
 	public class Startup
 	{

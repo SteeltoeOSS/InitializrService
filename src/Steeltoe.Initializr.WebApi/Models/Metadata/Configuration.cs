@@ -1,4 +1,4 @@
-namespace Steeltoe.Initializr.WebApi.Server.Models.Metadata
+namespace Steeltoe.Initializr.WebApi.Models.Metadata
 {
 	/// <summary>
 	/// A model of configuration metadata used by Initializr UIs and clients.

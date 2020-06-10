@@ -1,17 +1,16 @@
 using System.IO;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using Steeltoe.Initializr.WebApi.Server.Controllers;
-using Steeltoe.Initializr.WebApi.Server.Models;
-using Steeltoe.Initializr.WebApi.Server.Services;
-using Steeltoe.Initializr.WebApi.Server.Test.Utils;
+using Steeltoe.Initializr.WebApi.Controllers;
+using Steeltoe.Initializr.WebApi.Models;
+using Steeltoe.Initializr.WebApi.Services;
+using Steeltoe.Initializr.WebApi.Test.Utils;
 using Xunit;
 
-namespace Steeltoe.Initializr.WebApi.Server.Test.Controllers
+namespace Steeltoe.Initializr.WebApi.Test.Controllers
 {
 	public class ProjectControllerTest
 	{

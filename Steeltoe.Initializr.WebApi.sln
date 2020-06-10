@@ -1,11 +1,11 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Steeltoe.Initializr.WebApi.Server", "src\Steeltoe.Initializr.WebApi.Server\Steeltoe.Initializr.WebApi.Server.csproj", "{7597F74D-528E-448B-BBE8-994092F04CA4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Steeltoe.Initializr.WebApi", "src\Steeltoe.Initializr.WebApi\Steeltoe.Initializr.WebApi.csproj", "{7597F74D-528E-448B-BBE8-994092F04CA4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Steeltoe.Initializr.WebApi.Server.Test", "test\Steeltoe.Initializr.WebApi.Server.Test\Steeltoe.Initializr.WebApi.Server.Test.csproj", "{EA849C8F-7118-45DB-BBF2-D36CE1FD43B4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Steeltoe.Initializr.WebApi.Test", "test\Steeltoe.Initializr.WebApi.Test\Steeltoe.Initializr.WebApi.Test.csproj", "{EA849C8F-7118-45DB-BBF2-D36CE1FD43B4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

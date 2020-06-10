@@ -1,8 +1,8 @@
 using System.IO;
 using System.Threading.Tasks;
-using Steeltoe.Initializr.WebApi.Server.Models;
+using Steeltoe.Initializr.WebApi.Models;
 
-namespace Steeltoe.Initializr.WebApi.Server.Services
+namespace Steeltoe.Initializr.WebApi.Services
 {
 	/// <summary>
 	/// Contract for project generator implementations.

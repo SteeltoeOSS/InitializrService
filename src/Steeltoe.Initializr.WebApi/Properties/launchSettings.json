@@ -17,7 +17,7 @@
 				"ASPNETCORE_ENVIRONMENT": "Development"
 			}
 		},
-		"Steeltoe.Initializr.WebApi.Server": {
+		"Steeltoe.Initializr.WebApi": {
 			"commandName": "Project",
 			"launchBrowser": true,
 			"launchUrl": "",

@@ -1,9 +1,9 @@
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
-using Steeltoe.Initializr.WebApi.Server.Models;
+using Steeltoe.Initializr.WebApi.Models;
 
-namespace Steeltoe.Initializr.WebApi.Server.Services
+namespace Steeltoe.Initializr.WebApi.Services
 {
 	/// <summary>
 	/// A project generator that uses the Mustache templating framework.

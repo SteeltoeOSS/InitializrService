@@ -1,10 +1,10 @@
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Steeltoe.Initializr.WebApi.Server.Models;
-using Steeltoe.Initializr.WebApi.Server.Services;
+using Steeltoe.Initializr.WebApi.Models;
+using Steeltoe.Initializr.WebApi.Services;
 
-namespace Steeltoe.Initializr.WebApi.Server.Controllers
+namespace Steeltoe.Initializr.WebApi.Controllers
 {
 	/// <summary>
 	/// Project generation endpoint.

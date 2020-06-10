@@ -3,13 +3,13 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using Steeltoe.Initializr.WebApi.Server.Controllers;
-using Steeltoe.Initializr.WebApi.Server.Models.Metadata;
-using Steeltoe.Initializr.WebApi.Server.Services;
-using Steeltoe.Initializr.WebApi.Server.Test.Utils;
+using Steeltoe.Initializr.WebApi.Controllers;
+using Steeltoe.Initializr.WebApi.Models.Metadata;
+using Steeltoe.Initializr.WebApi.Services;
+using Steeltoe.Initializr.WebApi.Test.Utils;
 using Xunit;
 
-namespace Steeltoe.Initializr.WebApi.Server.Test.Controllers
+namespace Steeltoe.Initializr.WebApi.Test.Controllers
 {
 	public class ConfigurationControllerTest
 	{

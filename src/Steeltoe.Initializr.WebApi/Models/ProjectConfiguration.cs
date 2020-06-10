@@ -1,4 +1,4 @@
-namespace Steeltoe.Initializr.WebApi.Server.Models
+namespace Steeltoe.Initializr.WebApi.Models
 {
 	/// <summary>
 	/// A model ofi the configuration used to generate a project.

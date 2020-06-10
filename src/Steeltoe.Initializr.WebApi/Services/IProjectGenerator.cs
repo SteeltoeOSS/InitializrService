@@ -12,8 +12,8 @@ namespace Steeltoe.Initializr.WebApi.Services
 		/// <summary>
 		/// Generates a project as a byte stream.
 		/// </summary>
-		/// <param name="configuration">Project configuration</param>
+		/// <param name="specification">Project configuration</param>
 		/// <returns>project bundle  byte stream</returns>
-		public Task<Stream> GenerateProject(Configuration configuration);
+		public Task<Stream> GenerateProject(Specification specification);
 	}
 }

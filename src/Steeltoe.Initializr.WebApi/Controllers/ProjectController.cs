@@ -32,8 +32,8 @@ namespace Steeltoe.Initializr.WebApi.Controllers
 		[HttpGet]
 		public async Task<ActionResult> Get()
 		{
-			var config = new Configuration();
-			var stream = await _projectGenerator.GenerateProject(config);
+			var spec = new Specification();
+			var stream = await _projectGenerator.GenerateProject(spec);
 			var buf = new MemoryStream();
 			await stream.CopyToAsync(buf);
 			var bytes = buf.ToArray();

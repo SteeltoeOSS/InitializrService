@@ -7,7 +7,7 @@ namespace Steeltoe.Initializr.WebApi.Test.Utils
 {
 	public class HttpClientBuilder
 	{
-		private static readonly IHost _Host;
+		private static readonly IHost Host;
 
 		static HttpClientBuilder()
 		{
@@ -16,12 +16,12 @@ namespace Steeltoe.Initializr.WebApi.Test.Utils
 				webHost.UseTestServer();
 				webHost.UseStartup<Startup>();
 			});
-			_Host = hostBuilder.Start();
+			Host = hostBuilder.Start();
 		}
 
 		public HttpClient Build()
 		{
-			return _Host.GetTestClient();
+			return Host.GetTestClient();
 		}
 	}
 }

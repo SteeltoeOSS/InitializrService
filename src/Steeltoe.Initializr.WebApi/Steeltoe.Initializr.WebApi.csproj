@@ -9,7 +9,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Content Update="initializr-configuration.json">
+	  <Content Update="initializr-metadata.json">
 	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>

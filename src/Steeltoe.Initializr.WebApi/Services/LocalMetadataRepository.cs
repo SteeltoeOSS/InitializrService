@@ -46,8 +46,8 @@ namespace Steeltoe.Initializr.WebApi.Services
 					if (_configuration == null)
 					{
 						_logger.LogInformation($"loading configuration: {ConfigurationPath}");
-						_configuration =
-							JsonConvert.DeserializeObject<Configuration>(File.ReadAllText(ConfigurationPath));
+						SetConfiguration(
+							JsonConvert.DeserializeObject<Configuration>(File.ReadAllText(ConfigurationPath)));
 					}
 				}
 			}
@@ -55,6 +55,11 @@ namespace Steeltoe.Initializr.WebApi.Services
 			var result = new TaskCompletionSource<Configuration>();
 			result.SetResult(_configuration);
 			return result.Task;
+		}
+
+		private static void SetConfiguration(Configuration configuration)
+		{
+			_configuration = configuration;
 		}
 	}
 }

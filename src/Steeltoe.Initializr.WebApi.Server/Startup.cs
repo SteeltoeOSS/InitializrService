@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Steeltoe.Initializr.WebApi.Server.Data;
+using Steeltoe.Initializr.WebApi.Server.Services;
 
 namespace Steeltoe.Initializr.WebApi.Server
 {
@@ -20,6 +20,7 @@ namespace Steeltoe.Initializr.WebApi.Server
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddScoped<IConfigurationRepository, LocalConfigurationRepository>();
+			services.AddScoped<IProjectGenerator, DummyProjectGenerator>();
 			services.AddControllers();
 		}
 

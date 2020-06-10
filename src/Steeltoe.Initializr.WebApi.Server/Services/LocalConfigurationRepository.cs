@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Steeltoe.Initializr.WebApi.Server.Models.Metadata;
 
-namespace Steeltoe.Initializr.WebApi.Server.Data
+namespace Steeltoe.Initializr.WebApi.Server.Services
 {
 	/// <summary>
 	/// A configuration repository that loads configuration from a local JSON file.

@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Steeltoe.Initializr.WebApi.Server.Models.Metadata;
 
-namespace Steeltoe.Initializr.WebApi.Server.Data
+namespace Steeltoe.Initializr.WebApi.Server.Services
 {
 	/// <summary>
 	/// Contract for configuration repository implementations.

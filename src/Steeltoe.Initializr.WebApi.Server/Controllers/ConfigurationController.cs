@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Steeltoe.Initializr.WebApi.Server.Data;
+using Steeltoe.Initializr.WebApi.Server.Services;
 
 namespace Steeltoe.Initializr.WebApi.Server.Controllers
 {
@@ -27,7 +27,7 @@ namespace Steeltoe.Initializr.WebApi.Server.Controllers
 		/// </summary>
 		/// <returns>Project generation configuration metadata</returns>
 		[HttpGet]
-		public async Task<IActionResult> Index()
+		public async Task<IActionResult> Get()
 		{
 			var config = await _configurationRepository.GetConfiguration();
 			return Ok(config);

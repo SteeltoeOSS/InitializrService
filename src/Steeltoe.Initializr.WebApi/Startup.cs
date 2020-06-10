@@ -19,8 +19,10 @@ namespace Steeltoe.Initializr.WebApi
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddScoped<IMetadataRepository, LocalMetadataRepository>();
-			services.AddScoped<IProjectGenerator, DummyProjectGenerator>();
+			var options = new InitializrOptions();
+			Configuration.GetSection(InitializrOptions.Initializr).Bind(options);
+			services.AddSingleton<IMetadataRepository, LocalMetadataRepository>();
+			services.AddSingleton<IProjectGenerator, DummyProjectGenerator>();
 			services.AddControllers();
 		}
 

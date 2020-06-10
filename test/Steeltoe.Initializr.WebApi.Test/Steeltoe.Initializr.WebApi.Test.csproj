@@ -18,4 +18,8 @@
 		<ProjectReference Include="..\..\src\Steeltoe.Initializr.WebApi\Steeltoe.Initializr.WebApi.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Models" />
+	</ItemGroup>
+
 </Project>

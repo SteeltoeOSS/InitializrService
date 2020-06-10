@@ -6,7 +6,7 @@ namespace Steeltoe.Initializr.WebApi.Services
 	/// <summary>
 	/// Contract for configuration repository implementations.
 	/// </summary>
-	public interface IConfigurationRepository
+	public interface IMetadataRepository
 	{
 		/// <summary>
 		/// Gets the project generation configuration.

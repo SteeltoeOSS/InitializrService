@@ -11,13 +11,13 @@ using Xunit;
 
 namespace Steeltoe.Initializr.WebApi.Test.Controllers
 {
-	public class ConfigurationControllerTest
+	public class MetadataControllerTest
 	{
 		[Fact]
 		public async Task EndpointExists()
 		{
 			var client = new HttpClientBuilder().Build();
-			var response = await client.GetAsync("/api/configuration");
+			var response = await client.GetAsync("/api/metadata");
 			response.StatusCode.Should().Be(HttpStatusCode.OK);
 		}
 
@@ -25,9 +25,9 @@ namespace Steeltoe.Initializr.WebApi.Test.Controllers
 		public async Task EndpointReturnsAConfiguration()
 		{
 			// Arrange
-			var mockRepo = new Mock<IConfigurationRepository>();
+			var mockRepo = new Mock<IMetadataRepository>();
 			mockRepo.Setup(repo => repo.GetConfiguration()).ReturnsAsync(new Configuration());
-			var controller = new ConfigurationController(mockRepo.Object);
+			var controller = new MetadataController(mockRepo.Object);
 
 			// Act
 			var result = await controller.Get();

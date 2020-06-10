@@ -9,17 +9,17 @@ namespace Steeltoe.Initializr.WebApi.Controllers
 	/// </summary>
 	[ApiController]
 	[Route("api/[controller]")]
-	public class ConfigurationController : ControllerBase
+	public class MetadataController : ControllerBase
 	{
-		private readonly IConfigurationRepository _configurationRepository;
+		private readonly IMetadataRepository _metadataRepository;
 
 		/// <summary>
 		/// Create a new ConfigurationController.
 		/// </summary>
-		/// <param name="configurationRepository">configuration repository</param>
-		public ConfigurationController(IConfigurationRepository configurationRepository)
+		/// <param name="metadataRepository">configuration repository</param>
+		public MetadataController(IMetadataRepository metadataRepository)
 		{
-			_configurationRepository = configurationRepository;
+			_metadataRepository = metadataRepository;
 		}
 
 		/// <summary>
@@ -29,7 +29,7 @@ namespace Steeltoe.Initializr.WebApi.Controllers
 		[HttpGet]
 		public async Task<IActionResult> Get()
 		{
-			var config = await _configurationRepository.GetConfiguration();
+			var config = await _metadataRepository.GetConfiguration();
 			return Ok(config);
 		}
 	}

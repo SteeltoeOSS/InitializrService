@@ -1,9 +1,9 @@
-namespace Steeltoe.Initializr.WebApi.Models
+namespace Steeltoe.Initializr.WebApi.Models.Project
 {
 	/// <summary>
 	/// A model ofi the configuration used to generate a project.
 	/// </summary>
-	public class ProjectConfiguration
+	public class Configuration
 	{
 		/// <summary>
 		/// Compares the specified object to this object.

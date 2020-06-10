@@ -6,12 +6,12 @@ using Xunit;
 
 namespace Steeltoe.Initializr.WebApi.Test.Services
 {
-	public class LocalConfigurationRepositoryTest
+	public class LocalMetadataRepositoryTest
 	{
 		[Fact]
 		public async Task ConfigurationShouldNotBeNull()
 		{
-			var configRepo = new LocalConfigurationRepository(new NullLoggerFactory());
+			var configRepo = new LocalMetadataRepository(new NullLoggerFactory());
 			var config = await configRepo.GetConfiguration();
 			config.Should().NotBeNull();
 		}

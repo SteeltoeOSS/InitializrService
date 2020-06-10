@@ -10,7 +10,7 @@ namespace Steeltoe.Initializr.WebApi.Services
 	/// <summary>
 	/// A configuration repository that loads configuration from a local JSON file.
 	/// </summary>
-	public class LocalConfigurationRepository : IConfigurationRepository
+	public class LocalMetadataRepository : IMetadataRepository
 	{
 		private const string ConfigurationFile = "initializr-configuration.json";
 
@@ -28,9 +28,9 @@ namespace Steeltoe.Initializr.WebApi.Services
 		/// <summary>
 		/// Create a new LocalConfigurationRepository.
 		/// </summary>
-		public LocalConfigurationRepository(ILoggerFactory loggerFactory)
+		public LocalMetadataRepository(ILoggerFactory loggerFactory)
 		{
-			_logger = loggerFactory.CreateLogger<LocalConfigurationRepository>();
+			_logger = loggerFactory.CreateLogger<LocalMetadataRepository>();
 		}
 
 		/// <summary>

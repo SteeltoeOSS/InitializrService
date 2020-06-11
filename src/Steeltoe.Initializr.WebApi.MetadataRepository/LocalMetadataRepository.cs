@@ -16,8 +16,6 @@ namespace Steeltoe.Initializr.WebApi.MetadataRepository
 	{
 		private readonly ILogger<LocalMetadataRepository> _logger;
 
-		private readonly MetadataRepositoryOptions _options;
-
 		private readonly Configuration _configuration;
 
 		/// <summary>
@@ -27,8 +25,7 @@ namespace Steeltoe.Initializr.WebApi.MetadataRepository
 		public LocalMetadataRepository(ILoggerFactory loggerFactory, IOptions<MetadataRepositoryOptions> options)
 		{
 			_logger = loggerFactory.CreateLogger<LocalMetadataRepository>();
-			_options = options.Value;
-			var file = new Regex("^file://").Replace(_options.Uri, string.Empty);
+			var file = new Regex("^file://").Replace(options.Value.Uri, string.Empty);
 			_logger.LogInformation($"loading metadata configuration from file: {file}");
 			_configuration =
 				JsonConvert.DeserializeObject<Configuration>(File.ReadAllText(file));
@@ -37,6 +34,7 @@ namespace Steeltoe.Initializr.WebApi.MetadataRepository
 		/// <returns>project generation configuration</returns>
 		public Task<Configuration> GetConfiguration()
 		{
+			_logger.LogInformation("getting configuration");
 			var result = new TaskCompletionSource<Configuration>();
 			result.SetResult(_configuration);
 			return result.Task;

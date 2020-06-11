@@ -2,7 +2,7 @@ using FluentAssertions;
 using Steeltoe.Initializr.WebApi.Models.Metadata;
 using Xunit;
 
-namespace Steeltoe.Initializr.WebApi.Models.Test.Metadata
+namespace Steeltoe.Initializr.WebApi.Test.Models.Metadata
 {
 	public class ConfigurationTest
 	{

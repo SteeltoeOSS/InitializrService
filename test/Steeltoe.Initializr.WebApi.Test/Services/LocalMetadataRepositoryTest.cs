@@ -1,7 +1,8 @@
 using System.Threading.Tasks;
 using FluentAssertions;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Extensions.Options;
+using Steeltoe.Initializr.WebApi.MetadataRepository;
 using Steeltoe.Initializr.WebApi.Services;
 using Xunit;
 
@@ -12,8 +13,9 @@ namespace Steeltoe.Initializr.WebApi.Test.Services
 		[Fact]
 		public async Task ConfigurationShouldNotBeNull()
 		{
-			var settings = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
-			var configRepo = new LocalMetadataRepository(new NullLoggerFactory(), settings);
+			var options = Options.Create(new MetadataRepositoryOptions());
+			options.Value.Uri = "initializr-metadata.json";
+			var configRepo = new LocalMetadataRepository(new NullLoggerFactory(), options);
 			var config = await configRepo.GetConfiguration();
 			config.Should().NotBeNull();
 		}

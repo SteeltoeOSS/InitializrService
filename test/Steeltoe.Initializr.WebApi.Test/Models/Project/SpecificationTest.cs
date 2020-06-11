@@ -2,7 +2,7 @@ using FluentAssertions;
 using Steeltoe.Initializr.WebApi.Models.Project;
 using Xunit;
 
-namespace Steeltoe.Initializr.WebApi.Models.Test.Project
+namespace Steeltoe.Initializr.WebApi.Test.Models.Project
 {
 	public class SpecificationTest
 	{

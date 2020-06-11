@@ -9,20 +9,21 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Content Update="initializr-metadata.json">
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-	  </Content>
+		<Content Update="initializr-metadata.json">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+		<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Steeltoe.Initializr.WebApi.Models\Steeltoe.Initializr.WebApi.Models.csproj" />
-	  <ProjectReference Include="..\Steeltoe.Initializr.WebApi.Services\Steeltoe.Initializr.WebApi.Services.csproj" />
+		<ProjectReference Include="..\Steeltoe.Initializr.WebApi.MetadataRepository\Steeltoe.Initializr.WebApi.MetadataRepository.csproj" />
+		<ProjectReference Include="..\Steeltoe.Initializr.WebApi.Models\Steeltoe.Initializr.WebApi.Models.csproj" />
+		<ProjectReference Include="..\Steeltoe.Initializr.WebApi.Services\Steeltoe.Initializr.WebApi.Services.csproj" />
 	</ItemGroup>
 
 

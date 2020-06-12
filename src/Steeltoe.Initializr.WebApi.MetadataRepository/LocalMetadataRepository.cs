@@ -34,7 +34,7 @@ namespace Steeltoe.Initializr.WebApi.MetadataRepository
 		/// <returns>project generation configuration</returns>
 		public Task<Configuration> GetConfiguration()
 		{
-			_logger.LogInformation("getting configuration");
+			_logger.LogDebug("getting configuration");
 			var result = new TaskCompletionSource<Configuration>();
 			result.SetResult(_configuration);
 			return result.Task;

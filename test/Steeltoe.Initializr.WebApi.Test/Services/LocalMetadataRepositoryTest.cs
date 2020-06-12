@@ -14,7 +14,7 @@ namespace Steeltoe.Initializr.WebApi.Test.Services
 		public async Task ConfigurationShouldNotBeNull()
 		{
 			var options = Options.Create(new MetadataRepositoryOptions());
-			options.Value.Uri = "initializr-metadata.json";
+			options.Value.Uri = "sample-metadata.json";
 			var configRepo = new LocalMetadataRepository(new NullLoggerFactory(), options);
 			var config = await configRepo.GetConfiguration();
 			config.Should().NotBeNull();

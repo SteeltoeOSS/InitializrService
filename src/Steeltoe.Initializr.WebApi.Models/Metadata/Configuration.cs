@@ -28,7 +28,7 @@ namespace Steeltoe.Initializr.WebApi.Models.Metadata
 		/// <summary>
 		/// Project dependencies
 		/// </summary>
-		public GroupedItemList Dependencies { get; set; }
+		public GroupItemList Dependencies { get; set; }
 
 		/// <summary>
 		/// Compares the specified Configuration to this object..
@@ -62,12 +62,61 @@ namespace Steeltoe.Initializr.WebApi.Models.Metadata
 				return false;
 			}
 
-			if (!GroupedItemList.Equal(Dependencies, that.Dependencies))
+			if (!GroupItemList.Equal(Dependencies, that.Dependencies))
 			{
 				return false;
 			}
 
 			return true;
+		}
+
+		public class Item
+		{
+			public string Id { get; set; }
+
+			private string _name;
+
+			public string Name
+			{
+				get => _name ?? Id;
+				set => _name = value;
+			}
+
+			public bool Equals(Item that)
+			{
+				if (that == null)
+				{
+					return false;
+				}
+
+				if (Id != null || that.Id != null)
+				{
+					if (Id == null)
+					{
+						return false;
+					}
+
+					if (!Id.Equals(that.Id))
+					{
+						return false;
+					}
+				}
+
+				if (Name != null || that.Name != null)
+				{
+					if (Name == null)
+					{
+						return false;
+					}
+
+					if (!Name.Equals(that.Name))
+					{
+						return false;
+					}
+				}
+
+				return true;
+			}
 		}
 
 		public class ItemList
@@ -160,64 +209,104 @@ namespace Steeltoe.Initializr.WebApi.Models.Metadata
 
 				return true;
 			}
+		}
 
-			public class Item
+		public class GroupItem : Item
+		{
+			public string Description { get; set; }
+
+			public bool Equals(GroupItem that)
 			{
-				public string Id { get; set; }
-
-				private string _name;
-
-				public string Name
+				if (!base.Equals(that))
 				{
-					get => _name ?? Id;
-					set => _name = value;
+					return false;
 				}
 
-				public bool Equals(Item that)
+				if (Description != null || that.Description != null)
 				{
-					if (that == null)
+					if (Description == null)
 					{
 						return false;
 					}
 
-					if (Id != null || that.Id != null)
+					if (!Description.Equals(that.Description))
 					{
-						if (Id == null)
-						{
-							return false;
-						}
-
-						if (!Id.Equals(that.Id))
-						{
-							return false;
-						}
+						return false;
 					}
-
-					if (Name != null || that.Name != null)
-					{
-						if (Name == null)
-						{
-							return false;
-						}
-
-						if (!Name.Equals(that.Name))
-						{
-							return false;
-						}
-					}
-
-					return true;
 				}
+
+				return true;
 			}
 		}
 
-		public class GroupedItemList
+		public class Group
+		{
+			public string Name { get; set; }
+
+			public GroupItem[] Values { get; set; }
+
+			public bool Equals(Group that)
+			{
+				if (that == null)
+				{
+					return false;
+				}
+
+				if (Name != null || that.Name != null)
+				{
+					if (Name == null)
+					{
+						return false;
+					}
+
+					if (!Name.Equals(that.Name))
+					{
+						return false;
+					}
+				}
+
+				if (Values != null || that.Values != null)
+				{
+					if (Values == null || that.Values == null)
+					{
+						return false;
+					}
+
+					if (Values.Length != that.Values.Length)
+					{
+						return false;
+					}
+
+					for (int i = 0; i < Values.Length; ++i)
+					{
+						var thisValue = Values[i];
+						var thatValue = that.Values[i];
+						if (thisValue != null || thatValue != null)
+						{
+							if (thisValue == null)
+							{
+								return false;
+							}
+
+							if (!thisValue.Equals(thatValue))
+							{
+								return false;
+							}
+						}
+					}
+				}
+
+				return true;
+			}
+		}
+
+		public class GroupItemList
 		{
 			public string Type { get; set; }
 
 			public Group[] Values { get; set; }
 
-			public static bool Equal(GroupedItemList a, GroupedItemList b)
+			public static bool Equal(GroupItemList a, GroupItemList b)
 			{
 				if (a != null || b != null)
 				{
@@ -235,7 +324,7 @@ namespace Steeltoe.Initializr.WebApi.Models.Metadata
 				return true;
 			}
 
-			public bool Equals(GroupedItemList that)
+			public bool Equals(GroupItemList that)
 			{
 				if (that == null)
 				{
@@ -287,131 +376,6 @@ namespace Steeltoe.Initializr.WebApi.Models.Metadata
 				}
 
 				return true;
-			}
-
-			public class Group
-			{
-				public string Name { get; set; }
-
-				public Item[] Values { get; set; }
-
-				public bool Equals(Group that)
-				{
-					if (that == null)
-					{
-						return false;
-					}
-
-					if (Name != null || that.Name != null)
-					{
-						if (Name == null)
-						{
-							return false;
-						}
-
-						if (!Name.Equals(that.Name))
-						{
-							return false;
-						}
-					}
-
-					if (Values != null || that.Values != null)
-					{
-						if (Values == null || that.Values == null)
-						{
-							return false;
-						}
-
-						if (Values.Length != that.Values.Length)
-						{
-							return false;
-						}
-
-						for (int i = 0; i < Values.Length; ++i)
-						{
-							var thisValue = Values[i];
-							var thatValue = that.Values[i];
-							if (thisValue != null || thatValue != null)
-							{
-								if (thisValue == null)
-								{
-									return false;
-								}
-
-								if (!thisValue.Equals(thatValue))
-								{
-									return false;
-								}
-							}
-						}
-					}
-
-					return true;
-				}
-
-				public class Item
-				{
-					public string Id { get; set; }
-
-					private string _name;
-
-					public string Name
-					{
-						get => _name ?? Id;
-						set => _name = value;
-					}
-
-					public string Description { get; set; }
-
-					public bool Equals(Item that)
-					{
-						if (that == null)
-						{
-							return false;
-						}
-
-						if (Id != null || that.Id != null)
-						{
-							if (Id == null)
-							{
-								return false;
-							}
-
-							if (!Id.Equals(that.Id))
-							{
-								return false;
-							}
-						}
-
-						if (Name != null || that.Name != null)
-						{
-							if (Name == null)
-							{
-								return false;
-							}
-
-							if (!Name.Equals(that.Name))
-							{
-								return false;
-							}
-						}
-
-						if (Description != null || that.Description != null)
-						{
-							if (Description == null)
-							{
-								return false;
-							}
-
-							if (!Description.Equals(that.Description))
-							{
-								return false;
-							}
-						}
-
-						return true;
-					}
-				}
 			}
 		}
 	}

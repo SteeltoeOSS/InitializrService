@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
@@ -9,9 +10,16 @@ namespace Steeltoe.Initializr.WebApi
 		{
 		}
 
-		public static void Main(string[] args)
+		public static int Main(string[] args)
 		{
+			if (args.Length > 0)
+			{
+				Console.Error.WriteLine("too many args");
+				return 1;
+			}
+
 			CreateHostBuilder(args).Build().Run();
+			return 0;
 		}
 
 		public static IHostBuilder CreateHostBuilder(string[] args) =>

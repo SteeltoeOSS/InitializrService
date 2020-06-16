@@ -14,7 +14,7 @@ namespace Steeltoe.Initializr.WebApi.MetadataRepository
 	/// </summary>
 	public class LocalMetadataRepository : IMetadataRepository
 	{
-		private readonly ILogger<LocalMetadataRepository> _logger;
+		private readonly ILogger<IMetadataRepository> _logger;
 
 		private readonly Configuration _configuration;
 
@@ -22,9 +22,9 @@ namespace Steeltoe.Initializr.WebApi.MetadataRepository
 		/// Create a new LocalConfigurationRepository.
 		/// Gets the project configuration defined by a local JSON file specified in appsettings.json.
 		/// </summary>
-		public LocalMetadataRepository(ILoggerFactory loggerFactory, IOptions<MetadataRepositoryOptions> options)
+		public LocalMetadataRepository(IOptions<MetadataRepositoryOptions> options, ILogger<IMetadataRepository> logger)
 		{
-			_logger = loggerFactory.CreateLogger<LocalMetadataRepository>();
+			_logger = logger;
 			var file = new Regex("^file://").Replace(options.Value.Uri, string.Empty);
 			_logger.LogInformation($"loading metadata configuration from file: {file}");
 			_configuration =

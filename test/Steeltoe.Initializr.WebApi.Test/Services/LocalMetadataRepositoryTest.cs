@@ -15,7 +15,7 @@ namespace Steeltoe.Initializr.WebApi.Test.Services
 		{
 			var options = Options.Create(new MetadataRepositoryOptions());
 			options.Value.Uri = "sample-metadata.json";
-			var configRepo = new LocalMetadataRepository(new NullLoggerFactory(), options);
+			var configRepo = new LocalMetadataRepository(options, new NullLogger<IMetadataRepository>());
 			var config = await configRepo.GetConfiguration();
 			config.Should().NotBeNull();
 		}

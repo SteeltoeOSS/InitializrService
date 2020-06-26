@@ -10,10 +10,10 @@
 
 	<ItemGroup>
 		<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+		<PackageReference Include="Steeltoe.Extensions.Configuration.ConfigServerCore" Version="3.0.0-m2" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Steeltoe.Initializr.WebApi.MetadataRepository\Steeltoe.Initializr.WebApi.MetadataRepository.csproj" />
 		<ProjectReference Include="..\Steeltoe.Initializr.WebApi.Models\Steeltoe.Initializr.WebApi.Models.csproj" />
 		<ProjectReference Include="..\Steeltoe.Initializr.WebApi.Services\Steeltoe.Initializr.WebApi.Services.csproj" />
 	</ItemGroup>

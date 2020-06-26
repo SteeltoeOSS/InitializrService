@@ -1,6 +1,7 @@
 using System;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using Steeltoe.Extensions.Configuration.ConfigServer;
 
 namespace Steeltoe.Initializr.WebApi
 {
@@ -24,6 +25,7 @@ namespace Steeltoe.Initializr.WebApi
 
 		public static IHostBuilder CreateHostBuilder(string[] args) =>
 			Host.CreateDefaultBuilder(args)
+				.AddConfigServer()
 				.ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
 	}
 }

@@ -2,6 +2,7 @@
 
 	<PropertyGroup>
 		<TargetFramework>netcoreapp3.1</TargetFramework>
+		<RootNamespace>Steeltoe.Initializr.WebApi.MetadataRepository</RootNamespace>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -13,6 +14,7 @@
 		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.5" />
 		<PackageReference Include="Microsoft.Extensions.Options" Version="3.1.5" />
 		<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+		<PackageReference Include="Steeltoe.Extensions.Configuration.ConfigServerCore" Version="3.0.0-m2" />
 	</ItemGroup>
 
 </Project>

@@ -3,7 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Steeltoe.Initializr.WebApi.MetadataRepository;
+using Steeltoe.Extensions.Configuration.ConfigServer;
+using Steeltoe.Initializr.WebApi.Models.Metadata;
 using Steeltoe.Initializr.WebApi.Services;
 
 namespace Steeltoe.Initializr.WebApi
@@ -20,9 +21,10 @@ namespace Steeltoe.Initializr.WebApi
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.Configure<MetadataRepositoryOptions>(
-				Configuration.GetSection(MetadataRepositoryOptions.MetatdataRepository));
-			services.AddSingleton<IMetadataRepository, LocalMetadataRepository>();
+			services.AddOptions();
+			services.ConfigureConfigServerClientOptions(Configuration);
+			services.Configure<Configuration>(Configuration);
+			services.AddSingleton<IMetadataRepository, ConfigServerMetadataRepository>();
 			services.AddSingleton<IProjectGenerator, DummyProjectGenerator>();
 			services.AddControllers();
 		}

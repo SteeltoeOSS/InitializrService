@@ -5,23 +5,23 @@ using Microsoft.Extensions.Hosting;
 
 namespace Steeltoe.Initializr.WebApi.Test.TestUtils
 {
-	public class HttpClientBuilder
-	{
-		private static readonly IHost Host;
+    public class HttpClientBuilder
+    {
+        private static readonly IHost Host;
 
-		static HttpClientBuilder()
-		{
-			var hostBuilder = new HostBuilder().ConfigureWebHost(webHost =>
-			{
-				webHost.UseTestServer();
-				webHost.UseStartup<Startup>();
-			});
-			Host = hostBuilder.Start();
-		}
+        static HttpClientBuilder()
+        {
+            var hostBuilder = new HostBuilder().ConfigureWebHost(webHost =>
+            {
+                webHost.UseTestServer();
+                webHost.UseStartup<Startup>();
+            });
+            Host = hostBuilder.Start();
+        }
 
-		public HttpClient Build()
-		{
-			return Host.GetTestClient();
-		}
-	}
+        public HttpClient Build()
+        {
+            return Host.GetTestClient();
+        }
+    }
 }

@@ -10,22 +10,22 @@ using Xunit;
 
 namespace Steeltoe.Initializr.WebApi.Test.Controllers
 {
-	public class ProjectControllerTest
-	{
-		[Fact]
-		public async Task EndpointReturnsBytes()
-		{
-			// Arrange
-			var mockGenerator = new Mock<IProjectGenerator>();
-			mockGenerator.Setup(g => g.GenerateProject(new Specification())).ReturnsAsync(new MemoryStream());
-			var controller = new ProjectController(mockGenerator.Object);
+    public class ProjectControllerTest
+    {
+        [Fact]
+        public async Task EndpointReturnsBytes()
+        {
+            // Arrange
+            var mockGenerator = new Mock<IProjectGenerator>();
+            mockGenerator.Setup(g => g.GenerateProject(new Specification())).ReturnsAsync(new MemoryStream());
+            var controller = new ProjectController(mockGenerator.Object);
 
-			// Act
-			var result = await controller.Get();
+            // Act
+            var result = await controller.Get();
 
-			// Assert
-			var okResult = Assert.IsType<OkObjectResult>(result);
-			okResult.Value.Should().BeOfType<byte[]>();
-		}
-	}
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            okResult.Value.Should().BeOfType<byte[]>();
+        }
+    }
 }

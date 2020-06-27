@@ -38,6 +38,52 @@ namespace Steeltoe.Initializr.WebApi.Test.Models.Metadata
             Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
         }
 
+        [Fact]
+        public void AboutEquivalence()
+        {
+            Cfg1.About = new Configuration.Product();
+            Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
+            Cfg2.About = new Configuration.Product();
+            Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
+            Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
+            Cfg3.About = new Configuration.Product();
+            Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
+            Cfg1.About.Name = "some name";
+            Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
+            Cfg2.About.Name = "some name";
+            Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
+            Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
+            Cfg3.About.Name = "some name";
+            Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
+            Cfg1.About.Vendor = "some vendor";
+            Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
+            Cfg2.About.Vendor = "some vendor";
+            Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
+            Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
+            Cfg3.About.Vendor = "some vendor";
+            Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
+            Cfg1.About.Url = "some url";
+            Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
+            Cfg2.About.Url = "some url";
+            Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
+            Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
+            Cfg3.About.Url = "some url";
+            Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
+            Cfg1.About.Version = "some version";
+            Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
+            Cfg2.About.Version = "some version";
+            Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
+            Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
+            Cfg3.About.Version = "some version";
+            Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
+            Cfg1.About.Commit = "some commit";
+            Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
+            Cfg2.About.Commit = "some commit";
+            Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
+            Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
+            Cfg3.About.Commit = "some commit";
+            Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
+        }
 
         [Fact]
         public void ReleasesEquivalence()

@@ -26,6 +26,15 @@ namespace Steeltoe.Initializr.WebApi.Services
             ILogger<IMetadataRepository> logger)
         {
             _configuration = configuration.Value;
+            var about = new Program.About();
+            _configuration.About = new Configuration.Product
+            {
+                Name = about.Name,
+                Vendor = about.Vendor,
+                Url = about.ProductUrl,
+                Version = about.Version,
+                Commit = about.Commit,
+            };
             logger.LogInformation($"Using Config Server listening on {settings.Value.Uri}");
         }
 

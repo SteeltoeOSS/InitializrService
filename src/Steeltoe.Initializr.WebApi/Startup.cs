@@ -11,7 +11,6 @@ using Microsoft.Extensions.Logging;
 using Steeltoe.Extensions.Configuration.ConfigServer;
 using Steeltoe.Initializr.WebApi.Models.Metadata;
 using Steeltoe.Initializr.WebApi.Services;
-using System.Reflection;
 
 namespace Steeltoe.Initializr.WebApi
 {
@@ -38,10 +37,8 @@ namespace Steeltoe.Initializr.WebApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
         {
-            var versionAttr = typeof(Program).Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
-            var name = typeof(Program).Namespace ?? "unknown";
-            var version = versionAttr?.InformationalVersion ?? "unknown";
-            logger.LogInformation($"{name}, version {version}");
+            var about = new Program.About();
+            logger.LogInformation($"{about.Name}, version {about.Version} [{about.Commit}]");
 
             if (env.IsDevelopment())
             {

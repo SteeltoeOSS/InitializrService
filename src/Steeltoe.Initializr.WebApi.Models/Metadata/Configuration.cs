@@ -9,6 +9,8 @@ namespace Steeltoe.Initializr.WebApi.Models.Metadata
     /// </summary>
     public sealed class Configuration
     {
+        public Product About { get; set; }
+
         /// <summary>
         /// Steeltoe releases
         /// </summary>
@@ -33,6 +35,38 @@ namespace Steeltoe.Initializr.WebApi.Models.Metadata
         /// Project dependencies
         /// </summary>
         public GroupList Dependencies { get; set; }
+
+        /// <summary>
+        /// Product information, such as version.
+        /// </summary>
+        public class Product
+        {
+            /// <summary>
+            /// Gets or sets the product name.
+            /// </summary>
+            public string Name { get; set; }
+
+            /// <summary>
+            /// Gets or sets the product vendor.
+            /// </summary>
+            public string Vendor { get; set; }
+
+            /// <summary>
+            /// Gets or sets the product URL.
+            /// </summary>
+            public string Url { get; set; }
+
+            /// <summary>
+            /// Gets or sets the product version.
+            /// </summary>
+            public string Version { get; set; }
+
+            /// <summary>
+            /// Gets or sets the product build source control commit ID.
+            /// </summary>
+            public string Commit { get; set; }
+        }
+
 
         public abstract class Item
         {

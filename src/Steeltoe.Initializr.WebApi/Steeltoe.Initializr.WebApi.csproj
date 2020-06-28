@@ -15,7 +15,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Steeltoe.Initializr.WebApi.Models\Steeltoe.Initializr.WebApi.Models.csproj" />
-		<ProjectReference Include="..\Steeltoe.Initializr.WebApi.Services\Steeltoe.Initializr.WebApi.Services.csproj" />
 	</ItemGroup>
 
 

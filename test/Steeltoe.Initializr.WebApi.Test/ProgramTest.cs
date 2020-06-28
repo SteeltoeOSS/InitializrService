@@ -17,7 +17,7 @@ namespace Steeltoe.Initializr.WebApi.Test
             about.Vendor.Should().Be("SteeltoeOSS/VMware");
             about.ProductUrl.Should().Be("https://github.com/steeltoeoss-incubator/Steeltoe.Initializr.WebApi/");
             about.Version.Should().NotBeNull();
-            about.Version.Should().Be("0.7.0");
+            about.Version.Should().StartWith("0.7.0");
             about.Commit.Should().NotBeNull();
             about.Commit.Length.Should().Be(40); // Git SHA string length
         }

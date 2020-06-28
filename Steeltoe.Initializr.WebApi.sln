@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Steeltoe.Initializr.WebApi.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Steeltoe.Initializr.WebApi.Models", "src\Steeltoe.Initializr.WebApi.Models\Steeltoe.Initializr.WebApi.Models.csproj", "{ACE6FEE1-9CEA-4A95-9D76-C62A41947C8F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Steeltoe.Initializr.WebApi.Services", "src\Steeltoe.Initializr.WebApi.Services\Steeltoe.Initializr.WebApi.Services.csproj", "{D3C1E0C4-F4E5-44FA-82EA-ED8D040D96A5}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -60,17 +58,5 @@ Global
 		{ACE6FEE1-9CEA-4A95-9D76-C62A41947C8F}.Release|x64.Build.0 = Release|Any CPU
 		{ACE6FEE1-9CEA-4A95-9D76-C62A41947C8F}.Release|x86.ActiveCfg = Release|Any CPU
 		{ACE6FEE1-9CEA-4A95-9D76-C62A41947C8F}.Release|x86.Build.0 = Release|Any CPU
-		{D3C1E0C4-F4E5-44FA-82EA-ED8D040D96A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D3C1E0C4-F4E5-44FA-82EA-ED8D040D96A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D3C1E0C4-F4E5-44FA-82EA-ED8D040D96A5}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{D3C1E0C4-F4E5-44FA-82EA-ED8D040D96A5}.Debug|x64.Build.0 = Debug|Any CPU
-		{D3C1E0C4-F4E5-44FA-82EA-ED8D040D96A5}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{D3C1E0C4-F4E5-44FA-82EA-ED8D040D96A5}.Debug|x86.Build.0 = Debug|Any CPU
-		{D3C1E0C4-F4E5-44FA-82EA-ED8D040D96A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D3C1E0C4-F4E5-44FA-82EA-ED8D040D96A5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D3C1E0C4-F4E5-44FA-82EA-ED8D040D96A5}.Release|x64.ActiveCfg = Release|Any CPU
-		{D3C1E0C4-F4E5-44FA-82EA-ED8D040D96A5}.Release|x64.Build.0 = Release|Any CPU
-		{D3C1E0C4-F4E5-44FA-82EA-ED8D040D96A5}.Release|x86.ActiveCfg = Release|Any CPU
-		{D3C1E0C4-F4E5-44FA-82EA-ED8D040D96A5}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

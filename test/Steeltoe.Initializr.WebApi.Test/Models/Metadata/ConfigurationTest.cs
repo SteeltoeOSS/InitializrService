@@ -39,6 +39,58 @@ namespace Steeltoe.Initializr.WebApi.Test.Models.Metadata
         }
 
         [Fact]
+        public void NameEquivalence()
+        {
+            Cfg1.Name = new Configuration.Text();
+            Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
+            Cfg2.Name = new Configuration.Text();
+            Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
+            Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
+            Cfg3.Name = new Configuration.Text();
+            Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
+            Cfg1.Name.Type = "some type";
+            Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
+            Cfg2.Name.Type = "some type";
+            Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
+            Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
+            Cfg3.Name.Type = "some type";
+            Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
+            Cfg1.Name.Default = "some default";
+            Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
+            Cfg2.Name.Default = "some default";
+            Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
+            Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
+            Cfg3.Name.Default = "some default";
+            Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
+        }
+
+        [Fact]
+        public void DescriptionEquivalence()
+        {
+            Cfg1.Description = new Configuration.Text();
+            Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
+            Cfg2.Description = new Configuration.Text();
+            Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
+            Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
+            Cfg3.Description = new Configuration.Text();
+            Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
+            Cfg1.Description.Type = "some type";
+            Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
+            Cfg2.Description.Type = "some type";
+            Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
+            Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
+            Cfg3.Description.Type = "some type";
+            Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
+            Cfg1.Description.Default = "some default";
+            Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
+            Cfg2.Description.Default = "some default";
+            Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
+            Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
+            Cfg3.Description.Default = "some default";
+            Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
+        }
+
+        [Fact]
         public void AboutEquivalence()
         {
             Cfg1.About = new Configuration.Product();
@@ -88,54 +140,54 @@ namespace Steeltoe.Initializr.WebApi.Test.Models.Metadata
         [Fact]
         public void ReleasesEquivalence()
         {
-            Cfg1.Releases = new Configuration.SingleSelectList();
+            Cfg1.SteeltoeRelease = new Configuration.SingleSelectList();
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
-            Cfg2.Releases = new Configuration.SingleSelectList();
+            Cfg2.SteeltoeRelease = new Configuration.SingleSelectList();
             Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
             Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
-            Cfg3.Releases = new Configuration.SingleSelectList();
+            Cfg3.SteeltoeRelease = new Configuration.SingleSelectList();
             Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
-            Cfg1.Releases.Default = "some default";
+            Cfg1.SteeltoeRelease.Default = "some default";
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
-            Cfg2.Releases.Default = "some default";
+            Cfg2.SteeltoeRelease.Default = "some default";
             Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
             Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
-            Cfg3.Releases.Default = "some default";
+            Cfg3.SteeltoeRelease.Default = "some default";
             Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
-            Cfg1.Releases.Type = "some type";
+            Cfg1.SteeltoeRelease.Type = "some type";
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
-            Cfg2.Releases.Type = "some type";
+            Cfg2.SteeltoeRelease.Type = "some type";
             Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
             Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
-            Cfg3.Releases.Type = "some type";
+            Cfg3.SteeltoeRelease.Type = "some type";
             Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
-            Cfg1.Releases.Values = new Configuration.SelectItem[1];
+            Cfg1.SteeltoeRelease.Values = new Configuration.SelectItem[1];
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
-            Cfg2.Releases.Values = new Configuration.SelectItem[1];
+            Cfg2.SteeltoeRelease.Values = new Configuration.SelectItem[1];
             Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
             Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
-            Cfg3.Releases.Values = new Configuration.SelectItem[1];
+            Cfg3.SteeltoeRelease.Values = new Configuration.SelectItem[1];
             Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
-            Cfg1.Releases.Values[0] = new Configuration.SelectItem();
+            Cfg1.SteeltoeRelease.Values[0] = new Configuration.SelectItem();
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
-            Cfg2.Releases.Values[0] = new Configuration.SelectItem();
+            Cfg2.SteeltoeRelease.Values[0] = new Configuration.SelectItem();
             Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
             Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
-            Cfg3.Releases.Values[0] = new Configuration.SelectItem();
+            Cfg3.SteeltoeRelease.Values[0] = new Configuration.SelectItem();
             Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
-            Cfg1.Releases.Values[0].Id = "some item id";
+            Cfg1.SteeltoeRelease.Values[0].Id = "some item id";
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
-            Cfg2.Releases.Values[0].Id = "some item id";
+            Cfg2.SteeltoeRelease.Values[0].Id = "some item id";
             Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
             Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
-            Cfg3.Releases.Values[0].Id = "some item id";
+            Cfg3.SteeltoeRelease.Values[0].Id = "some item id";
             Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
-            Cfg1.Releases.Values[0].Name = "some item name";
+            Cfg1.SteeltoeRelease.Values[0].Name = "some item name";
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
-            Cfg2.Releases.Values[0].Name = "some item name";
+            Cfg2.SteeltoeRelease.Values[0].Name = "some item name";
             Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
             Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
-            Cfg3.Releases.Values[0].Name = "some item name";
+            Cfg3.SteeltoeRelease.Values[0].Name = "some item name";
             Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
             Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
         }
@@ -143,161 +195,161 @@ namespace Steeltoe.Initializr.WebApi.Test.Models.Metadata
         [Fact]
         public void TargetsEquivalence()
         {
-            Cfg1.Targets = new Configuration.SingleSelectList();
+            Cfg1.DotnetFrameworkTarget = new Configuration.SingleSelectList();
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
-            Cfg2.Targets = new Configuration.SingleSelectList();
+            Cfg2.DotnetFrameworkTarget = new Configuration.SingleSelectList();
             Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
             Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
-            Cfg3.Targets = new Configuration.SingleSelectList();
+            Cfg3.DotnetFrameworkTarget = new Configuration.SingleSelectList();
             Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
-            Cfg1.Targets.Default = "some default";
+            Cfg1.DotnetFrameworkTarget.Default = "some default";
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
-            Cfg2.Targets.Default = "some default";
+            Cfg2.DotnetFrameworkTarget.Default = "some default";
             Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
             Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
-            Cfg3.Targets.Default = "some default";
+            Cfg3.DotnetFrameworkTarget.Default = "some default";
             Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
-            Cfg1.Targets.Type = "some type";
+            Cfg1.DotnetFrameworkTarget.Type = "some type";
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
-            Cfg2.Targets.Type = "some type";
+            Cfg2.DotnetFrameworkTarget.Type = "some type";
             Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
             Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
-            Cfg3.Targets.Type = "some type";
+            Cfg3.DotnetFrameworkTarget.Type = "some type";
             Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
-            Cfg1.Targets.Values = new Configuration.SelectItem[1];
+            Cfg1.DotnetFrameworkTarget.Values = new Configuration.SelectItem[1];
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
-            Cfg2.Targets.Values = new Configuration.SelectItem[1];
+            Cfg2.DotnetFrameworkTarget.Values = new Configuration.SelectItem[1];
             Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
             Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
-            Cfg3.Targets.Values = new Configuration.SelectItem[1];
+            Cfg3.DotnetFrameworkTarget.Values = new Configuration.SelectItem[1];
             Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
-            Cfg1.Targets.Values[0] = new Configuration.SelectItem();
+            Cfg1.DotnetFrameworkTarget.Values[0] = new Configuration.SelectItem();
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
-            Cfg2.Targets.Values[0] = new Configuration.SelectItem();
+            Cfg2.DotnetFrameworkTarget.Values[0] = new Configuration.SelectItem();
             Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
             Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
-            Cfg3.Targets.Values[0] = new Configuration.SelectItem();
+            Cfg3.DotnetFrameworkTarget.Values[0] = new Configuration.SelectItem();
             Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
-            Cfg1.Targets.Values[0].Id = "some item id";
+            Cfg1.DotnetFrameworkTarget.Values[0].Id = "some item id";
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
-            Cfg2.Targets.Values[0].Id = "some item id";
+            Cfg2.DotnetFrameworkTarget.Values[0].Id = "some item id";
             Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
             Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
-            Cfg3.Targets.Values[0].Id = "some item id";
+            Cfg3.DotnetFrameworkTarget.Values[0].Id = "some item id";
             Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
-            Cfg1.Targets.Values[0].Name = "some item name";
+            Cfg1.DotnetFrameworkTarget.Values[0].Name = "some item name";
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
-            Cfg2.Targets.Values[0].Name = "some item name";
+            Cfg2.DotnetFrameworkTarget.Values[0].Name = "some item name";
             Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
             Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
-            Cfg3.Targets.Values[0].Name = "some item name";
+            Cfg3.DotnetFrameworkTarget.Values[0].Name = "some item name";
             Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
         }
 
         [Fact]
         public void TemplatesEquivalence()
         {
-            Cfg1.Templates = new Configuration.SingleSelectList();
+            Cfg1.DotnetTemplate = new Configuration.SingleSelectList();
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
-            Cfg2.Templates = new Configuration.SingleSelectList();
+            Cfg2.DotnetTemplate = new Configuration.SingleSelectList();
             Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
             Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
-            Cfg3.Templates = new Configuration.SingleSelectList();
+            Cfg3.DotnetTemplate = new Configuration.SingleSelectList();
             Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
-            Cfg1.Templates.Default = "some default";
+            Cfg1.DotnetTemplate.Default = "some default";
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
-            Cfg2.Templates.Default = "some default";
+            Cfg2.DotnetTemplate.Default = "some default";
             Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
             Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
-            Cfg3.Templates.Default = "some default";
+            Cfg3.DotnetTemplate.Default = "some default";
             Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
-            Cfg1.Templates.Type = "some type";
+            Cfg1.DotnetTemplate.Type = "some type";
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
-            Cfg2.Templates.Type = "some type";
+            Cfg2.DotnetTemplate.Type = "some type";
             Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
             Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
-            Cfg3.Templates.Type = "some type";
+            Cfg3.DotnetTemplate.Type = "some type";
             Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
-            Cfg1.Templates.Values = new Configuration.SelectItem[1];
+            Cfg1.DotnetTemplate.Values = new Configuration.SelectItem[1];
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
-            Cfg2.Templates.Values = new Configuration.SelectItem[1];
+            Cfg2.DotnetTemplate.Values = new Configuration.SelectItem[1];
             Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
             Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
-            Cfg3.Templates.Values = new Configuration.SelectItem[1];
+            Cfg3.DotnetTemplate.Values = new Configuration.SelectItem[1];
             Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
-            Cfg1.Templates.Values[0] = new Configuration.SelectItem();
+            Cfg1.DotnetTemplate.Values[0] = new Configuration.SelectItem();
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
-            Cfg2.Templates.Values[0] = new Configuration.SelectItem();
+            Cfg2.DotnetTemplate.Values[0] = new Configuration.SelectItem();
             Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
             Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
-            Cfg3.Templates.Values[0] = new Configuration.SelectItem();
+            Cfg3.DotnetTemplate.Values[0] = new Configuration.SelectItem();
             Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
-            Cfg1.Templates.Values[0].Id = "some item id";
+            Cfg1.DotnetTemplate.Values[0].Id = "some item id";
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
-            Cfg2.Templates.Values[0].Id = "some item id";
+            Cfg2.DotnetTemplate.Values[0].Id = "some item id";
             Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
             Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
-            Cfg3.Templates.Values[0].Id = "some item id";
+            Cfg3.DotnetTemplate.Values[0].Id = "some item id";
             Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
-            Cfg1.Templates.Values[0].Name = "some item name";
+            Cfg1.DotnetTemplate.Values[0].Name = "some item name";
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
-            Cfg2.Templates.Values[0].Name = "some item name";
+            Cfg2.DotnetTemplate.Values[0].Name = "some item name";
             Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
             Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
-            Cfg3.Templates.Values[0].Name = "some item name";
+            Cfg3.DotnetTemplate.Values[0].Name = "some item name";
         }
 
         [Fact]
         public void LanguagesEquivalence()
         {
-            Cfg1.Languages = new Configuration.SingleSelectList();
+            Cfg1.DotnetLanguage = new Configuration.SingleSelectList();
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
-            Cfg2.Languages = new Configuration.SingleSelectList();
+            Cfg2.DotnetLanguage = new Configuration.SingleSelectList();
             Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
             Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
-            Cfg3.Languages = new Configuration.SingleSelectList();
+            Cfg3.DotnetLanguage = new Configuration.SingleSelectList();
             Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
-            Cfg1.Languages.Default = "some default";
+            Cfg1.DotnetLanguage.Default = "some default";
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
-            Cfg2.Languages.Default = "some default";
+            Cfg2.DotnetLanguage.Default = "some default";
             Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
             Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
-            Cfg3.Languages.Default = "some default";
+            Cfg3.DotnetLanguage.Default = "some default";
             Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
-            Cfg1.Languages.Type = "some type";
+            Cfg1.DotnetLanguage.Type = "some type";
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
-            Cfg2.Languages.Type = "some type";
+            Cfg2.DotnetLanguage.Type = "some type";
             Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
             Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
-            Cfg3.Languages.Type = "some type";
+            Cfg3.DotnetLanguage.Type = "some type";
             Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
-            Cfg1.Languages.Values = new Configuration.SelectItem[1];
+            Cfg1.DotnetLanguage.Values = new Configuration.SelectItem[1];
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
-            Cfg2.Languages.Values = new Configuration.SelectItem[1];
+            Cfg2.DotnetLanguage.Values = new Configuration.SelectItem[1];
             Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
             Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
-            Cfg3.Languages.Values = new Configuration.SelectItem[1];
+            Cfg3.DotnetLanguage.Values = new Configuration.SelectItem[1];
             Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
-            Cfg1.Languages.Values[0] = new Configuration.SelectItem();
+            Cfg1.DotnetLanguage.Values[0] = new Configuration.SelectItem();
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
-            Cfg2.Languages.Values[0] = new Configuration.SelectItem();
+            Cfg2.DotnetLanguage.Values[0] = new Configuration.SelectItem();
             Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
             Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
-            Cfg3.Languages.Values[0] = new Configuration.SelectItem();
+            Cfg3.DotnetLanguage.Values[0] = new Configuration.SelectItem();
             Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
-            Cfg1.Languages.Values[0].Id = "some item id";
+            Cfg1.DotnetLanguage.Values[0].Id = "some item id";
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
-            Cfg2.Languages.Values[0].Id = "some item id";
+            Cfg2.DotnetLanguage.Values[0].Id = "some item id";
             Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
             Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
-            Cfg3.Languages.Values[0].Id = "some item id";
+            Cfg3.DotnetLanguage.Values[0].Id = "some item id";
             Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
-            Cfg1.Languages.Values[0].Name = "some item name";
+            Cfg1.DotnetLanguage.Values[0].Name = "some item name";
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
-            Cfg2.Languages.Values[0].Name = "some item name";
+            Cfg2.DotnetLanguage.Values[0].Name = "some item name";
             Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
             Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
-            Cfg3.Languages.Values[0].Name = "some item name";
+            Cfg3.DotnetLanguage.Values[0].Name = "some item name";
         }
 
         [Fact]

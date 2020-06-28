@@ -21,7 +21,7 @@ namespace Steeltoe.Initializr.WebApi.Test.Services
         {
             // Arrange
             var expected = new Configuration
-                {Releases = new Configuration.SingleSelectList {Default = "a default", Type = "a type"}};
+                {SteeltoeRelease = new Configuration.SingleSelectList {Default = "a default", Type = "a type"}};
             var mockConfigOptions = new Mock<IOptions<Configuration>>();
             mockConfigOptions.Setup(opts => opts.Value).Returns(expected);
             var mockSettings = new ConfigServerClientSettingsOptions {Uri = "a uri"};

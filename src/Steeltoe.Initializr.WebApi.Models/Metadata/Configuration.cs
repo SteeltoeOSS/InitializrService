@@ -9,27 +9,40 @@ namespace Steeltoe.Initializr.WebApi.Models.Metadata
     /// </summary>
     public sealed class Configuration
     {
+        /// <summary>
+        /// "About" the server from whence this configuration.
+        /// </summary>
         public Product About { get; set; }
+
+        /// <summary>
+        /// Project name.
+        /// </summary>
+        public Text Name { get; set; }
+
+        /// <summary>
+        /// Project description.
+        /// </summary>
+        public Text Description { get; set; }
 
         /// <summary>
         /// Steeltoe releases
         /// </summary>
-        public SingleSelectList Releases { get; set; }
+        public SingleSelectList SteeltoeRelease { get; set; }
 
         /// <summary>
         /// DotNet target frameworks
         /// </summary>
-        public SingleSelectList Targets { get; set; }
+        public SingleSelectList DotnetFrameworkTarget { get; set; }
 
         /// <summary>
         /// DotNet templates
         /// </summary>
-        public SingleSelectList Templates { get; set; }
+        public SingleSelectList DotnetTemplate { get; set; }
 
         /// <summary>
         /// DotNet languages
         /// </summary>
-        public SingleSelectList Languages { get; set; }
+        public SingleSelectList DotnetLanguage { get; set; }
 
         /// <summary>
         /// Project dependencies
@@ -67,6 +80,12 @@ namespace Steeltoe.Initializr.WebApi.Models.Metadata
             public string Commit { get; set; }
         }
 
+        public class Text
+        {
+            public string Type { get; set; } = "text";
+
+            public string Default { get; set; }
+        }
 
         public abstract class Item
         {
@@ -80,6 +99,7 @@ namespace Steeltoe.Initializr.WebApi.Models.Metadata
                 set => _name = value;
             }
         }
+
 
         public abstract class ItemList
         {

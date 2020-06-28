@@ -7,13 +7,8 @@ namespace Steeltoe.Initializr.WebApi.Models.Project
     /// <summary>
     /// A model of the specification used to generate a project.
     /// </summary>
-    public class Specification
+    public sealed class Specification
     {
-        /// <summary>
-        /// Compares the specified object to this object.
-        /// </summary>
-        /// <param name="obj">other instance</param>
-        /// <returns>whether objects are equal</returns>
         public override bool Equals(object obj)
         {
             return true;
@@ -27,5 +22,17 @@ namespace Steeltoe.Initializr.WebApi.Models.Project
         {
             return 0;
         }
+
+        public string ProjectName { get; set; }
+
+        public string ProjectDescription { get; set; }
+
+        public string SteeltoeReleaseId { get; set; }
+
+        public string DotnetFrameworkTargetId { get; set; }
+
+        public string DotnetTemplateId { get; set; }
+
+        public string DotnetLanguageId { get; set; }
     }
 }

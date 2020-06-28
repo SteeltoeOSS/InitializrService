@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Steeltoe.Extensions.Configuration.ConfigServer;
-using Steeltoe.Initializr.WebApi.Models.Metadata;
+using Steeltoe.Initializr.WebApi.Models;
 using Steeltoe.Initializr.WebApi.Services;
 
 namespace Steeltoe.Initializr.WebApi
@@ -28,7 +28,7 @@ namespace Steeltoe.Initializr.WebApi
         {
             services.AddOptions();
             services.ConfigureConfigServerClientOptions(Configuration);
-            services.Configure<Configuration>(Configuration);
+            services.Configure<ConfigurationMetadata>(Configuration);
             services.AddSingleton<IMetadataRepository, ConfigServerMetadataRepository>();
             services.AddSingleton<IProjectGenerator, DummyProjectGenerator>();
             services.AddControllers();

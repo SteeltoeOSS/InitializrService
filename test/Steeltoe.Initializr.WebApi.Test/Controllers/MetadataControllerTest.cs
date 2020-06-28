@@ -7,7 +7,7 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Steeltoe.Initializr.WebApi.Controllers;
-using Steeltoe.Initializr.WebApi.Models.Metadata;
+using Steeltoe.Initializr.WebApi.Models;
 using Steeltoe.Initializr.WebApi.Services;
 using Xunit;
 
@@ -20,7 +20,7 @@ namespace Steeltoe.Initializr.WebApi.Test.Controllers
         {
             // Arrange
             var mockRepo = new Mock<IMetadataRepository>();
-            mockRepo.Setup(repo => repo.GetConfiguration()).ReturnsAsync(new Configuration());
+            mockRepo.Setup(repo => repo.GetConfiguration()).ReturnsAsync(new ConfigurationMetadata());
             var controller = new MetadataController(mockRepo.Object);
 
             // Act
@@ -28,7 +28,7 @@ namespace Steeltoe.Initializr.WebApi.Test.Controllers
 
             // Assert
             var indexResult = Assert.IsType<OkObjectResult>(result);
-            indexResult.Value.Should().BeOfType<Configuration>();
+            indexResult.Value.Should().BeOfType<ConfigurationMetadata>();
         }
     }
 }

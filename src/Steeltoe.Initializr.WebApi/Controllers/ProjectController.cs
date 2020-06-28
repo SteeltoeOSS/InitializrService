@@ -6,7 +6,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Steeltoe.Initializr.WebApi.Models.Project;
+using Steeltoe.Initializr.WebApi.Models;
 using Steeltoe.Initializr.WebApi.Services;
 
 namespace Steeltoe.Initializr.WebApi.Controllers
@@ -37,7 +37,7 @@ namespace Steeltoe.Initializr.WebApi.Controllers
         [HttpGet]
         public async Task<ActionResult> Get()
         {
-            var spec = new Specification();
+            var spec = new ProjectSpecification();
             var stream = await _projectGenerator.GenerateProject(spec);
             var buf = new MemoryStream();
             await stream.CopyToAsync(buf);

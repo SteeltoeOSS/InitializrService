@@ -4,28 +4,28 @@
 
 using FluentAssertions.Json;
 using Newtonsoft.Json.Linq;
-using Steeltoe.Initializr.WebApi.Models.Metadata;
+using Steeltoe.Initializr.WebApi.Models;
 using Xunit;
 
-namespace Steeltoe.Initializr.WebApi.Test.Models.Metadata
+namespace Steeltoe.Initializr.WebApi.Test.Models
 {
-    public class ConfigurationTest
+    public class ConfigurationMetadataTest
     {
-        private Configuration Cfg1 { get; } = new Configuration();
+        private ConfigurationMetadata Cfg1 { get; } = new ConfigurationMetadata();
 
         private JToken Cfg1Json
         {
             get => JToken.FromObject(Cfg1);
         }
 
-        private Configuration Cfg2 { get; } = new Configuration();
+        private ConfigurationMetadata Cfg2 { get; } = new ConfigurationMetadata();
 
         private JToken Cfg2Json
         {
             get => JToken.FromObject(Cfg2);
         }
 
-        private Configuration Cfg3 { get; } = new Configuration();
+        private ConfigurationMetadata Cfg3 { get; } = new ConfigurationMetadata();
 
         private JToken Cfg3Json
         {
@@ -41,12 +41,12 @@ namespace Steeltoe.Initializr.WebApi.Test.Models.Metadata
         [Fact]
         public void NameEquivalence()
         {
-            Cfg1.Name = new Configuration.Text();
+            Cfg1.Name = new ConfigurationMetadata.Text();
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
-            Cfg2.Name = new Configuration.Text();
+            Cfg2.Name = new ConfigurationMetadata.Text();
             Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
             Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
-            Cfg3.Name = new Configuration.Text();
+            Cfg3.Name = new ConfigurationMetadata.Text();
             Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
             Cfg1.Name.Type = "some type";
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
@@ -67,12 +67,12 @@ namespace Steeltoe.Initializr.WebApi.Test.Models.Metadata
         [Fact]
         public void DescriptionEquivalence()
         {
-            Cfg1.Description = new Configuration.Text();
+            Cfg1.Description = new ConfigurationMetadata.Text();
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
-            Cfg2.Description = new Configuration.Text();
+            Cfg2.Description = new ConfigurationMetadata.Text();
             Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
             Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
-            Cfg3.Description = new Configuration.Text();
+            Cfg3.Description = new ConfigurationMetadata.Text();
             Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
             Cfg1.Description.Type = "some type";
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
@@ -93,12 +93,12 @@ namespace Steeltoe.Initializr.WebApi.Test.Models.Metadata
         [Fact]
         public void AboutEquivalence()
         {
-            Cfg1.About = new Configuration.Product();
+            Cfg1.About = new ConfigurationMetadata.Product();
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
-            Cfg2.About = new Configuration.Product();
+            Cfg2.About = new ConfigurationMetadata.Product();
             Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
             Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
-            Cfg3.About = new Configuration.Product();
+            Cfg3.About = new ConfigurationMetadata.Product();
             Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
             Cfg1.About.Name = "some name";
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
@@ -140,12 +140,12 @@ namespace Steeltoe.Initializr.WebApi.Test.Models.Metadata
         [Fact]
         public void ReleasesEquivalence()
         {
-            Cfg1.SteeltoeRelease = new Configuration.SingleSelectList();
+            Cfg1.SteeltoeRelease = new ConfigurationMetadata.SingleSelectList();
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
-            Cfg2.SteeltoeRelease = new Configuration.SingleSelectList();
+            Cfg2.SteeltoeRelease = new ConfigurationMetadata.SingleSelectList();
             Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
             Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
-            Cfg3.SteeltoeRelease = new Configuration.SingleSelectList();
+            Cfg3.SteeltoeRelease = new ConfigurationMetadata.SingleSelectList();
             Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
             Cfg1.SteeltoeRelease.Default = "some default";
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
@@ -161,19 +161,19 @@ namespace Steeltoe.Initializr.WebApi.Test.Models.Metadata
             Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
             Cfg3.SteeltoeRelease.Type = "some type";
             Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
-            Cfg1.SteeltoeRelease.Values = new Configuration.SelectItem[1];
+            Cfg1.SteeltoeRelease.Values = new ConfigurationMetadata.SelectItem[1];
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
-            Cfg2.SteeltoeRelease.Values = new Configuration.SelectItem[1];
+            Cfg2.SteeltoeRelease.Values = new ConfigurationMetadata.SelectItem[1];
             Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
             Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
-            Cfg3.SteeltoeRelease.Values = new Configuration.SelectItem[1];
+            Cfg3.SteeltoeRelease.Values = new ConfigurationMetadata.SelectItem[1];
             Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
-            Cfg1.SteeltoeRelease.Values[0] = new Configuration.SelectItem();
+            Cfg1.SteeltoeRelease.Values[0] = new ConfigurationMetadata.SelectItem();
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
-            Cfg2.SteeltoeRelease.Values[0] = new Configuration.SelectItem();
+            Cfg2.SteeltoeRelease.Values[0] = new ConfigurationMetadata.SelectItem();
             Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
             Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
-            Cfg3.SteeltoeRelease.Values[0] = new Configuration.SelectItem();
+            Cfg3.SteeltoeRelease.Values[0] = new ConfigurationMetadata.SelectItem();
             Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
             Cfg1.SteeltoeRelease.Values[0].Id = "some item id";
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
@@ -195,12 +195,12 @@ namespace Steeltoe.Initializr.WebApi.Test.Models.Metadata
         [Fact]
         public void TargetsEquivalence()
         {
-            Cfg1.DotnetFrameworkTarget = new Configuration.SingleSelectList();
+            Cfg1.DotnetFrameworkTarget = new ConfigurationMetadata.SingleSelectList();
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
-            Cfg2.DotnetFrameworkTarget = new Configuration.SingleSelectList();
+            Cfg2.DotnetFrameworkTarget = new ConfigurationMetadata.SingleSelectList();
             Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
             Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
-            Cfg3.DotnetFrameworkTarget = new Configuration.SingleSelectList();
+            Cfg3.DotnetFrameworkTarget = new ConfigurationMetadata.SingleSelectList();
             Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
             Cfg1.DotnetFrameworkTarget.Default = "some default";
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
@@ -216,19 +216,19 @@ namespace Steeltoe.Initializr.WebApi.Test.Models.Metadata
             Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
             Cfg3.DotnetFrameworkTarget.Type = "some type";
             Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
-            Cfg1.DotnetFrameworkTarget.Values = new Configuration.SelectItem[1];
+            Cfg1.DotnetFrameworkTarget.Values = new ConfigurationMetadata.SelectItem[1];
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
-            Cfg2.DotnetFrameworkTarget.Values = new Configuration.SelectItem[1];
+            Cfg2.DotnetFrameworkTarget.Values = new ConfigurationMetadata.SelectItem[1];
             Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
             Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
-            Cfg3.DotnetFrameworkTarget.Values = new Configuration.SelectItem[1];
+            Cfg3.DotnetFrameworkTarget.Values = new ConfigurationMetadata.SelectItem[1];
             Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
-            Cfg1.DotnetFrameworkTarget.Values[0] = new Configuration.SelectItem();
+            Cfg1.DotnetFrameworkTarget.Values[0] = new ConfigurationMetadata.SelectItem();
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
-            Cfg2.DotnetFrameworkTarget.Values[0] = new Configuration.SelectItem();
+            Cfg2.DotnetFrameworkTarget.Values[0] = new ConfigurationMetadata.SelectItem();
             Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
             Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
-            Cfg3.DotnetFrameworkTarget.Values[0] = new Configuration.SelectItem();
+            Cfg3.DotnetFrameworkTarget.Values[0] = new ConfigurationMetadata.SelectItem();
             Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
             Cfg1.DotnetFrameworkTarget.Values[0].Id = "some item id";
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
@@ -249,12 +249,12 @@ namespace Steeltoe.Initializr.WebApi.Test.Models.Metadata
         [Fact]
         public void TemplatesEquivalence()
         {
-            Cfg1.DotnetTemplate = new Configuration.SingleSelectList();
+            Cfg1.DotnetTemplate = new ConfigurationMetadata.SingleSelectList();
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
-            Cfg2.DotnetTemplate = new Configuration.SingleSelectList();
+            Cfg2.DotnetTemplate = new ConfigurationMetadata.SingleSelectList();
             Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
             Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
-            Cfg3.DotnetTemplate = new Configuration.SingleSelectList();
+            Cfg3.DotnetTemplate = new ConfigurationMetadata.SingleSelectList();
             Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
             Cfg1.DotnetTemplate.Default = "some default";
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
@@ -270,19 +270,19 @@ namespace Steeltoe.Initializr.WebApi.Test.Models.Metadata
             Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
             Cfg3.DotnetTemplate.Type = "some type";
             Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
-            Cfg1.DotnetTemplate.Values = new Configuration.SelectItem[1];
+            Cfg1.DotnetTemplate.Values = new ConfigurationMetadata.SelectItem[1];
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
-            Cfg2.DotnetTemplate.Values = new Configuration.SelectItem[1];
+            Cfg2.DotnetTemplate.Values = new ConfigurationMetadata.SelectItem[1];
             Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
             Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
-            Cfg3.DotnetTemplate.Values = new Configuration.SelectItem[1];
+            Cfg3.DotnetTemplate.Values = new ConfigurationMetadata.SelectItem[1];
             Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
-            Cfg1.DotnetTemplate.Values[0] = new Configuration.SelectItem();
+            Cfg1.DotnetTemplate.Values[0] = new ConfigurationMetadata.SelectItem();
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
-            Cfg2.DotnetTemplate.Values[0] = new Configuration.SelectItem();
+            Cfg2.DotnetTemplate.Values[0] = new ConfigurationMetadata.SelectItem();
             Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
             Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
-            Cfg3.DotnetTemplate.Values[0] = new Configuration.SelectItem();
+            Cfg3.DotnetTemplate.Values[0] = new ConfigurationMetadata.SelectItem();
             Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
             Cfg1.DotnetTemplate.Values[0].Id = "some item id";
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
@@ -302,12 +302,12 @@ namespace Steeltoe.Initializr.WebApi.Test.Models.Metadata
         [Fact]
         public void LanguagesEquivalence()
         {
-            Cfg1.DotnetLanguage = new Configuration.SingleSelectList();
+            Cfg1.DotnetLanguage = new ConfigurationMetadata.SingleSelectList();
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
-            Cfg2.DotnetLanguage = new Configuration.SingleSelectList();
+            Cfg2.DotnetLanguage = new ConfigurationMetadata.SingleSelectList();
             Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
             Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
-            Cfg3.DotnetLanguage = new Configuration.SingleSelectList();
+            Cfg3.DotnetLanguage = new ConfigurationMetadata.SingleSelectList();
             Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
             Cfg1.DotnetLanguage.Default = "some default";
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
@@ -323,19 +323,19 @@ namespace Steeltoe.Initializr.WebApi.Test.Models.Metadata
             Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
             Cfg3.DotnetLanguage.Type = "some type";
             Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
-            Cfg1.DotnetLanguage.Values = new Configuration.SelectItem[1];
+            Cfg1.DotnetLanguage.Values = new ConfigurationMetadata.SelectItem[1];
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
-            Cfg2.DotnetLanguage.Values = new Configuration.SelectItem[1];
+            Cfg2.DotnetLanguage.Values = new ConfigurationMetadata.SelectItem[1];
             Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
             Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
-            Cfg3.DotnetLanguage.Values = new Configuration.SelectItem[1];
+            Cfg3.DotnetLanguage.Values = new ConfigurationMetadata.SelectItem[1];
             Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
-            Cfg1.DotnetLanguage.Values[0] = new Configuration.SelectItem();
+            Cfg1.DotnetLanguage.Values[0] = new ConfigurationMetadata.SelectItem();
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
-            Cfg2.DotnetLanguage.Values[0] = new Configuration.SelectItem();
+            Cfg2.DotnetLanguage.Values[0] = new ConfigurationMetadata.SelectItem();
             Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
             Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
-            Cfg3.DotnetLanguage.Values[0] = new Configuration.SelectItem();
+            Cfg3.DotnetLanguage.Values[0] = new ConfigurationMetadata.SelectItem();
             Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
             Cfg1.DotnetLanguage.Values[0].Id = "some item id";
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
@@ -355,12 +355,12 @@ namespace Steeltoe.Initializr.WebApi.Test.Models.Metadata
         [Fact]
         public void DependenciesEquivalence()
         {
-            Cfg1.Dependencies = new Configuration.GroupList();
+            Cfg1.Dependencies = new ConfigurationMetadata.GroupList();
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
-            Cfg2.Dependencies = new Configuration.GroupList();
+            Cfg2.Dependencies = new ConfigurationMetadata.GroupList();
             Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
             Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
-            Cfg3.Dependencies = new Configuration.GroupList();
+            Cfg3.Dependencies = new ConfigurationMetadata.GroupList();
             Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
             Cfg1.Dependencies.Type = "some type";
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
@@ -369,19 +369,19 @@ namespace Steeltoe.Initializr.WebApi.Test.Models.Metadata
             Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
             Cfg3.Dependencies.Type = "some type";
             Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
-            Cfg1.Dependencies.Values = new Configuration.Group[1];
+            Cfg1.Dependencies.Values = new ConfigurationMetadata.Group[1];
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
-            Cfg2.Dependencies.Values = new Configuration.Group[1];
+            Cfg2.Dependencies.Values = new ConfigurationMetadata.Group[1];
             Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
             Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
-            Cfg3.Dependencies.Values = new Configuration.Group[1];
+            Cfg3.Dependencies.Values = new ConfigurationMetadata.Group[1];
             Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
-            Cfg1.Dependencies.Values[0] = new Configuration.Group();
+            Cfg1.Dependencies.Values[0] = new ConfigurationMetadata.Group();
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
-            Cfg2.Dependencies.Values[0] = new Configuration.Group();
+            Cfg2.Dependencies.Values[0] = new ConfigurationMetadata.Group();
             Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
             Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
-            Cfg3.Dependencies.Values[0] = new Configuration.Group();
+            Cfg3.Dependencies.Values[0] = new ConfigurationMetadata.Group();
             Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
             Cfg1.Dependencies.Values[0].Name = "some group name";
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
@@ -390,19 +390,19 @@ namespace Steeltoe.Initializr.WebApi.Test.Models.Metadata
             Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
             Cfg3.Dependencies.Values[0].Name = "some group name";
             Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
-            Cfg1.Dependencies.Values[0].Values = new Configuration.GroupItem[1];
+            Cfg1.Dependencies.Values[0].Values = new ConfigurationMetadata.GroupItem[1];
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
-            Cfg2.Dependencies.Values[0].Values = new Configuration.GroupItem[1];
+            Cfg2.Dependencies.Values[0].Values = new ConfigurationMetadata.GroupItem[1];
             Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
             Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
-            Cfg3.Dependencies.Values[0].Values = new Configuration.GroupItem[1];
+            Cfg3.Dependencies.Values[0].Values = new ConfigurationMetadata.GroupItem[1];
             Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
-            Cfg1.Dependencies.Values[0].Values[0] = new Configuration.GroupItem();
+            Cfg1.Dependencies.Values[0].Values[0] = new ConfigurationMetadata.GroupItem();
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
-            Cfg2.Dependencies.Values[0].Values[0] = new Configuration.GroupItem();
+            Cfg2.Dependencies.Values[0].Values[0] = new ConfigurationMetadata.GroupItem();
             Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
             Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
-            Cfg3.Dependencies.Values[0].Values[0] = new Configuration.GroupItem();
+            Cfg3.Dependencies.Values[0].Values[0] = new ConfigurationMetadata.GroupItem();
             Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
             Cfg1.Dependencies.Values[0].Values[0].Id = "some item id";
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);

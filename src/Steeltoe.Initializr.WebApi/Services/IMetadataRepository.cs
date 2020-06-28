@@ -3,7 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using System.Threading.Tasks;
-using Steeltoe.Initializr.WebApi.Models.Metadata;
+using Steeltoe.Initializr.WebApi.Models;
 
 namespace Steeltoe.Initializr.WebApi.Services
 {
@@ -16,6 +16,6 @@ namespace Steeltoe.Initializr.WebApi.Services
         /// Gets the project generation configuration.
         /// </summary>
         /// <returns>project generation configuration</returns>
-        public Task<Configuration> GetConfiguration();
+        public Task<ConfigurationMetadata> GetConfiguration();
     }
 }

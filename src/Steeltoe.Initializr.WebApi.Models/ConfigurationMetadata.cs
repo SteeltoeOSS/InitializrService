@@ -2,12 +2,12 @@
 // The .NET Foundation licenses this file to you under the Apache 2.0 License.
 // See the LICENSE file in the project root for more information.
 
-namespace Steeltoe.Initializr.WebApi.Models.Metadata
+namespace Steeltoe.Initializr.WebApi.Models
 {
     /// <summary>
     /// A model of configuration metadata used by Initializr UIs and clients.
     /// </summary>
-    public sealed class Configuration
+    public sealed class ConfigurationMetadata
     {
         /// <summary>
         /// "About" the server from whence this configuration.

@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using Moq;
 using Steeltoe.Extensions.Configuration.ConfigServer;
-using Steeltoe.Initializr.WebApi.Models.Metadata;
+using Steeltoe.Initializr.WebApi.Models;
 using Steeltoe.Initializr.WebApi.Services;
 using Xunit;
 
@@ -20,9 +20,9 @@ namespace Steeltoe.Initializr.WebApi.Test.Services
         public async Task ConfigurationShouldNotBeNull()
         {
             // Arrange
-            var expected = new Configuration
-                {SteeltoeRelease = new Configuration.SingleSelectList {Default = "a default", Type = "a type"}};
-            var mockConfigOptions = new Mock<IOptions<Configuration>>();
+            var expected = new ConfigurationMetadata
+                {SteeltoeRelease = new ConfigurationMetadata.SingleSelectList {Default = "a default", Type = "a type"}};
+            var mockConfigOptions = new Mock<IOptions<ConfigurationMetadata>>();
             mockConfigOptions.Setup(opts => opts.Value).Returns(expected);
             var mockSettings = new ConfigServerClientSettingsOptions {Uri = "a uri"};
             var mockSettingsOptions = new Mock<IOptions<ConfigServerClientSettingsOptions>>();
@@ -34,7 +34,7 @@ namespace Steeltoe.Initializr.WebApi.Test.Services
             var actual = await repo.GetConfiguration();
 
             // Assert
-            Assert.IsType<Configuration>(actual);
+            Assert.IsType<ConfigurationMetadata>(actual);
             actual.Should().Be(expected);
             actual.About.Should().NotBeNull();
             actual.About.Name.Should().NotBeNull();

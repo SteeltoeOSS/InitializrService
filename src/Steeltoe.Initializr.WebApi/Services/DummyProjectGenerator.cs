@@ -5,7 +5,7 @@
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
-using Steeltoe.Initializr.WebApi.Models.Project;
+using Steeltoe.Initializr.WebApi.Models;
 
 namespace Steeltoe.Initializr.WebApi.Services
 {
@@ -14,7 +14,7 @@ namespace Steeltoe.Initializr.WebApi.Services
     /// </summary>
     public class DummyProjectGenerator : IProjectGenerator
     {
-        public Task<Stream> GenerateProject(Specification specification)
+        public Task<Stream> GenerateProject(ProjectSpecification specification)
         {
             var bytes = new UnicodeEncoding().GetBytes("DummyProject");
             var stream = new MemoryStream(bytes.Length);

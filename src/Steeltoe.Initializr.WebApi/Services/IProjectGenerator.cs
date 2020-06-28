@@ -4,7 +4,7 @@
 
 using System.IO;
 using System.Threading.Tasks;
-using Steeltoe.Initializr.WebApi.Models.Project;
+using Steeltoe.Initializr.WebApi.Models;
 
 namespace Steeltoe.Initializr.WebApi.Services
 {
@@ -18,6 +18,6 @@ namespace Steeltoe.Initializr.WebApi.Services
         /// </summary>
         /// <param name="specification">Project configuration</param>
         /// <returns>project bundle  byte stream</returns>
-        public Task<Stream> GenerateProject(Specification specification);
+        public Task<Stream> GenerateProject(ProjectSpecification specification);
     }
 }

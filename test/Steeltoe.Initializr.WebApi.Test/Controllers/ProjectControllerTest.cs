@@ -8,7 +8,7 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Steeltoe.Initializr.WebApi.Controllers;
-using Steeltoe.Initializr.WebApi.Models.Project;
+using Steeltoe.Initializr.WebApi.Models;
 using Steeltoe.Initializr.WebApi.Services;
 using Xunit;
 
@@ -21,7 +21,7 @@ namespace Steeltoe.Initializr.WebApi.Test.Controllers
         {
             // Arrange
             var mockGenerator = new Mock<IProjectGenerator>();
-            mockGenerator.Setup(g => g.GenerateProject(new Specification())).ReturnsAsync(new MemoryStream());
+            mockGenerator.Setup(g => g.GenerateProject(new ProjectSpecification())).ReturnsAsync(new MemoryStream());
             var controller = new ProjectController(mockGenerator.Object);
 
             // Act

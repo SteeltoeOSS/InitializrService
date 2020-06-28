@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Steeltoe.Extensions.Configuration.ConfigServer;
-using Steeltoe.Initializr.WebApi.Models.Metadata;
+using Steeltoe.Initializr.WebApi.Models;
 
 namespace Steeltoe.Initializr.WebApi.Services
 {
     public class ConfigServerMetadataRepository : IMetadataRepository
     {
-        private readonly Configuration _configuration;
+        private readonly ConfigurationMetadata _configuration;
 
         /// <summary>
         /// Create a new ConfigServerMetadataRepository.
@@ -21,13 +21,13 @@ namespace Steeltoe.Initializr.WebApi.Services
         /// <param name="settings">Config Server settings</param>
         /// <param name="logger">application logger</param>
         public ConfigServerMetadataRepository(
-            IOptions<Configuration> configuration,
+            IOptions<ConfigurationMetadata> configuration,
             IOptions<ConfigServerClientSettingsOptions> settings,
             ILogger<IMetadataRepository> logger)
         {
             _configuration = configuration.Value;
             var about = new Program.About();
-            _configuration.About = new Configuration.Product
+            _configuration.About = new ConfigurationMetadata.Product
             {
                 Name = about.Name,
                 Vendor = about.Vendor,
@@ -42,9 +42,9 @@ namespace Steeltoe.Initializr.WebApi.Services
         /// Return the configuration metadata.
         /// </summary>
         /// <returns>configuration metadata</returns>
-        public Task<Configuration> GetConfiguration()
+        public Task<ConfigurationMetadata> GetConfiguration()
         {
-            var result = new TaskCompletionSource<Configuration>();
+            var result = new TaskCompletionSource<ConfigurationMetadata>();
             result.SetResult(_configuration);
             return result.Task;
         }

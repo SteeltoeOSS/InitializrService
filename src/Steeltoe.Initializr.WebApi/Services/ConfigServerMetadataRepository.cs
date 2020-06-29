@@ -35,7 +35,7 @@ namespace Steeltoe.Initializr.WebApi.Services
                 Version = about.Version,
                 Commit = about.Commit,
             };
-            logger.LogInformation($"Using Config Server listening on {settings.Value.Uri}");
+            logger.LogInformation($"Using Config Server listening at {settings.Value.Uri ?? "default URI"}");
         }
 
         /// <summary>

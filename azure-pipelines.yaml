@@ -77,3 +77,13 @@ jobs:
         inputs:
           command: pack
           arguments: --no-build
+      - task: Powershell@2
+        displayName: Packages Sign
+        inputs:
+          filePath: sign-packages.ps1
+        env:
+          SignClientUser: $(SignClientUser)
+          SignClientSecret: $(SignClientSecret)
+          ArtifactStagingDirectory: $(Build.ArtifactStagingDirectory)
+        condition:
+          and(succeeded(), not(eq(variables['build.reason'], 'PullRequest')))

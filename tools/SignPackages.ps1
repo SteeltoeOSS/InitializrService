@@ -11,6 +11,6 @@ dotnet tool install --tool-path "$toolDir" signclient
 "signing"
 & $toolDir/SignClient Sign `
         --input "**/*.nupkg" `
-        --config "$appSettings"
+        --config "$appSettings" `
         --user $Env:SignClientUser --secret $Env:SignClientSecret `
         --name "Steeltoe" --description "Steeltoe" --descriptionUrl "https://github.com/SteeltoeOSS"

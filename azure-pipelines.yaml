@@ -14,11 +14,12 @@ variables:
     value: true
   - name: DOTNET_CLI_TELEMETRY_OPTOUT
     value: 1
+  - group: PackageSigningSecrets
 
 name: $(major).$(minor).$(micro)-$(Rev:r)
 
 jobs:
-  - job: Windows
+  - job: BuildAndPublishArtifacts
     pool:
       vmImage: Windows-2019
     steps:
@@ -36,7 +37,7 @@ jobs:
           extraProperties: |
               sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)\**\*opencover.xml
               sonar.cs.vstest.reportsPaths=$(Agent.TempDirectory)\*.trx
-              sonar.coverage.exclusions=**/*Test*/**/*
+              sonar.coverage.exclusions=**\*Test*\**\*
       - pwsh: dotnet tool install -g dotnet-reportgenerator-globaltool
         displayName: CodeCoverage Prep
       - task: DotNetCoreCLI@2
@@ -60,8 +61,8 @@ jobs:
         displayName: CodeCoverage Publish
         inputs:
           codeCoverageTool: Cobertura
-          summaryFileLocation: '$(Build.SourcesDirectory)\CodeCoverage\Cobertura.xml'
-          reportDirectory: '$(Build.SourcesDirectory)\CodeCoverage'
+          summaryFileLocation: $(Build.SourcesDirectory)\CodeCoverage\Cobertura.xml
+          reportDirectory: $(Build.SourcesDirectory)\CodeCoverage
           condition: always()
       - bash: bash <(curl -s https://codecov.io/bash)
         displayName: CodeCoverage Upload
@@ -78,12 +79,12 @@ jobs:
           command: pack
           arguments: --no-build
       - task: Powershell@2
-        displayName: Packages Sign
+        displayName: Artifacts Sign
         inputs:
           filePath: sign\SignPackages.ps1
         env:
+          ArtifactStagingDirectory: $(Build.ArtifactStagingDirectory)
           SignClientUser: $(SignClientUser)
           SignClientSecret: $(SignClientSecret)
-          ArtifactStagingDirectory: $(Build.ArtifactStagingDirectory)
         condition:
           and(succeeded(), not(eq(variables['build.reason'], 'PullRequest')))

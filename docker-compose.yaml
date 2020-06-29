@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+  webapi:
+    build: .
+    ports:
+      - '5000:80'
+    environment:
+      SPRING__CLOUD__CONFIG__URI: http://configserver:8888
+      SPRING__CLOUD__CONFIG__ENV: Development
+      SPRING__CLOUD__CONFIG__LABEL: master
+    entrypoint: ["./wait-for-it", "configserver:8888", "--", "dotnet", "Steeltoe.Initializr.WebApi.dll"]
+  configserver:
+    image: steeltoeoss/initializr.configserver

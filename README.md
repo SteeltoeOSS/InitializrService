@@ -10,6 +10,7 @@ reference implementation of a Steeltoe Initializr Server project generator
 ### `api/metadata`
 
 This endpoint provides configuration metadata for client UIs.  The metadata includes:
+
 * Steeltoe release versions
 * Dotnet target frameworks
 * Dotnet templates
@@ -19,53 +20,73 @@ This endpoint provides configuration metadata for client UIs.  The metadata incl
 
 The configuration data for `Steeltoe.Initializr.WebApi` is provided by a [Spring Cloud Config Server](https://cloud.spring.io/spring-cloud-config/reference/html/) pointing at https://github.com/steeltoeoss-incubator/Steeltoe.Initializr.Configuration.
 
-## Building
+### `api/project`
 
-```
-dotnet build
-dotnet test
-```
+*Under construction*
 
 ## Running
 
-### Starting the Config Server
+### Running `Steeltoe.Initializr.WebApi`
+
+You can run using Dotnet or Docker Compose.
+
+#### Run using Dotnet
+
+This approach requires a running Config Server.  See "Starting a Config Server" below for options.
+
+```
+dotnet run -p src/Steeltoe.Initializr.WebApi
+```
+
+#### Run using Docker Compose
+
+This approach requires includes a running Config Server.
+
+```
+docker-compose up             # starts config server and webapi
+docker-compose down           # stops config server and webapi
+docker-compose build          # run this if you've made changes after running "docker-compose up"
+```
+
+### Starting a Config Server
 
 Before running, you'll need a Config Server.  You have several options:
 
-* use `Steeltoe.Initializr.ConfigServer` *(recommended)*
-* use the Docker image `steeltoeoss/config-server`
+* Docker image `steeltoess/initializr.configserver` *(recommended)*
+* build `Steeltoe.Initializr.ConfigServer`
 * roll your own (beyond the scope of this document)
 
-#### `Steeltoe.Initializr.ConfigServer`
+#### Docker Image `steeltoeoss/initializr.configserver`
 
-`Steeltoe.Initializr.ConfigServer` is a vanilla Config Server pre-configured to use https://github.com/steeltoeoss-incubator/Steeltoe.Initializr.Configuration.
+The Docker image `steeltoeoss/initializr.configserver` is a Spring Cloud Config Server configured to use https://github.com/steeltoeoss-incubator/Steeltoe.Initializr.Configuration.
+
+To run:
+
+```
+docker run --publish 8888:8888 steeltoeoss/initializr.configserver
+```
+
+You can override defaults using standard Spring command line parameters.
+
+Example:
+```
+# use a different config source and enable DEBUG logging
+docker run --publish 8888:8888 steeltoeoss/initializr.configserver \
+    --spring:cloud:config:uri=http://localhost:8888 \
+    --logging.level.org.springframework.web=debug
+```
+
+#### Build `Steeltoe.Initializr.ConfigServer`
+
+`Steeltoe.Initializr.ConfigServer` is the Spring Cloud Config Server used in the `steeltoeoss/initializr.configserver` Docker image.
 
 *To build from source, you'll need Java 14 JDK or later.*
 
 ```
-# build
+# clone
 git clone https://github.com/steeltoeoss-incubator/Steeltoe.Initializr.ConfigServer.git
 cd Steeltoe.Initializr.ConfigServer
 
 # run
 ./gradlew bootRun
 ```
-
-#### Docker Image `steeltoeoss/config-server`
-
-The Docker image `steeltoeoss/config-server` is a vanilla Config Server using Spring Cloud's default configuratation repo.
-
-When running, you'll need to override the configuration URI:
-
-```
-docker run --publish 8888:8888 steeltoeoss/config-server:2 \
-    --spring.cloud.config.server.git.uri=https://github.com/steeltoeoss-incubator/Steeltoe.Initializr.Configuration
-```
-
-### Starting `Steeltoe.Initializr.WebApi`
-
-```
-dotnet run -p src/Steeltoe.Initializr.WebApi
-```
-
-

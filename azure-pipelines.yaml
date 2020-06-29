@@ -80,7 +80,7 @@ jobs:
       - task: Powershell@2
         displayName: Packages Sign
         inputs:
-          filePath: sign-packages.ps1
+          filePath: tools\SignPackages.ps1
         env:
           SignClientUser: $(SignClientUser)
           SignClientSecret: $(SignClientSecret)

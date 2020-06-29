@@ -88,3 +88,9 @@ jobs:
           SignClientSecret: $(SignClientSecret)
         condition:
           and(succeeded(), not(eq(variables['build.reason'], 'PullRequest')))
+      - task: 'PublishBuildArtifacts@1'
+        displayName: Artifacts Publish
+          inputs:
+            pathToPublish: $(Build.ArtifactStagingDirectory)
+            artifactName: Packages
+            publishLocation: Container

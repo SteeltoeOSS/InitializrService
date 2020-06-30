@@ -2,6 +2,7 @@
 // The .NET Foundation licenses this file to you under the Apache 2.0 License.
 // See the LICENSE file in the project root for more information.
 
+using FluentAssertions;
 using Steeltoe.Initializr.WebApi.Models;
 using Xunit;
 
@@ -17,10 +18,16 @@ namespace Steeltoe.Initializr.WebApi.Test.Models
                 ProjectName = "some name",
                 ProjectDescription = "some description",
                 SteeltoeReleaseId = "some Steeltoe release ID",
-                DotnetFrameworkTargetId = "some DotNet framework target ID",
-                DotnetLanguageId = "some Dotnet language ID",
+                DotnetFrameworkTargetId = "some DotNet framework ID",
+                DotnetLanguageId = "some DotNet language ID",
                 DotnetTemplateId = "some DotNet template ID",
             };
+            spec.ProjectName.Should().Be("some name");
+            spec.ProjectDescription.Should().Be("some description");
+            spec.SteeltoeReleaseId.Should().Be("some Steeltoe release ID");
+            spec.DotnetFrameworkTargetId.Should().Be("some DotNet framework ID");
+            spec.DotnetLanguageId.Should().Be("some DotNet language ID");
+            spec.DotnetTemplateId.Should().Be("some DotNet template ID");
         }
     }
 }

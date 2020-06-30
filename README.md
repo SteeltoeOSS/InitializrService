@@ -80,7 +80,7 @@ docker run --publish 8888:8888 steeltoeoss/initializr.configserver \
 
 `Steeltoe.Initializr.ConfigServer` is the Spring Cloud Config Server used in the `steeltoeoss/initializr.configserver` Docker image.
 
-*To build from source, you'll need Java 14 JDK or later.*
+*To build from source, you'll need Java 11 JDK or later.*
 
 ```
 # clone

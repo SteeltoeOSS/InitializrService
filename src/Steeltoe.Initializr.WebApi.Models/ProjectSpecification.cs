@@ -9,20 +9,6 @@ namespace Steeltoe.Initializr.WebApi.Models
     /// </summary>
     public sealed class ProjectSpecification
     {
-        public override bool Equals(object obj)
-        {
-            return true;
-        }
-
-        /// <summary>
-        /// Returns the hash code for this object.
-        /// </summary>
-        /// <returns>object hash code</returns>
-        public override int GetHashCode()
-        {
-            return 0;
-        }
-
         public string ProjectName { get; set; }
 
         public string ProjectDescription { get; set; }

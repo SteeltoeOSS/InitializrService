@@ -21,7 +21,7 @@ namespace Steeltoe.Initializr.WebApi.Test.Controllers
         {
             // Arrange
             var mockGenerator = new Mock<IProjectGenerator>();
-            mockGenerator.Setup(g => g.GenerateProject(new ProjectSpecification())).ReturnsAsync(new MemoryStream());
+            mockGenerator.Setup(g => g.GenerateProject(It.IsAny<ProjectSpecification>())).ReturnsAsync(new MemoryStream());
             var controller = new ProjectController(mockGenerator.Object);
 
             // Act

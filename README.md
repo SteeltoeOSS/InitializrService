@@ -1,5 +1,5 @@
 # Steeltoe.Initializr.WebApi
-reference implementation of a Steeltoe Initializr Server project generator
+Steeltoe Initializr Web API reference implementation
 
 ## Overview
 

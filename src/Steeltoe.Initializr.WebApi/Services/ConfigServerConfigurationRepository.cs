@@ -10,24 +10,24 @@ using Steeltoe.Initializr.WebApi.Models;
 
 namespace Steeltoe.Initializr.WebApi.Services
 {
-    public class ConfigServerMetadataRepository : IMetadataRepository
+    public class ConfigServerConfigurationRepository : IConfigurationRepository
     {
-        private readonly ConfigurationMetadata _configuration;
+        private readonly Configuration _configuration;
 
         /// <summary>
-        /// An IMetadataRepository implementation using a Spring Cloud Config Server.
+        /// An IConfigurationRepository implementation using a Spring Cloud Config Server.
         /// </summary>
-        /// <param name="configuration">configuration metadata</param>
+        /// <param name="configuration">configuration</param>
         /// <param name="settings">Config Server settings</param>
         /// <param name="logger">application logger</param>
-        public ConfigServerMetadataRepository(
-            IOptions<ConfigurationMetadata> configuration,
+        public ConfigServerConfigurationRepository(
+            IOptions<Configuration> configuration,
             IOptions<ConfigServerClientSettingsOptions> settings,
-            ILogger<IMetadataRepository> logger)
+            ILogger<IConfigurationRepository> logger)
         {
             _configuration = configuration.Value;
             var about = new Program.About();
-            _configuration.About = new ConfigurationMetadata.Product
+            _configuration.About = new Configuration.Product
             {
                 Name = about.Name,
                 Vendor = about.Vendor,
@@ -39,12 +39,12 @@ namespace Steeltoe.Initializr.WebApi.Services
         }
 
         /// <summary>
-        /// Return the configuration metadata.
+        /// Return the configuration
         /// </summary>
-        /// <returns>configuration metadata</returns>
-        public Task<ConfigurationMetadata> GetConfiguration()
+        /// <returns>configuration</returns>
+        public Task<Configuration> GetConfiguration()
         {
-            var result = new TaskCompletionSource<ConfigurationMetadata>();
+            var result = new TaskCompletionSource<Configuration>();
             result.SetResult(_configuration);
             return result.Task;
         }

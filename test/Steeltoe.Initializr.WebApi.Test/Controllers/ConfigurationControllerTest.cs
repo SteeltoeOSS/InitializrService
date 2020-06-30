@@ -13,22 +13,22 @@ using Xunit;
 
 namespace Steeltoe.Initializr.WebApi.Test.Controllers
 {
-    public class MetadataControllerTest
+    public class ConfigurationControllerTest
     {
         [Fact]
         public async Task EndpointReturnsAConfiguration()
         {
             // Arrange
-            var mockRepo = new Mock<IMetadataRepository>();
-            mockRepo.Setup(repo => repo.GetConfiguration()).ReturnsAsync(new ConfigurationMetadata());
-            var controller = new MetadataController(mockRepo.Object);
+            var mockRepo = new Mock<IConfigurationRepository>();
+            mockRepo.Setup(repo => repo.GetConfiguration()).ReturnsAsync(new Configuration());
+            var controller = new ConfigurationController(mockRepo.Object);
 
             // Act
             var result = await controller.Get();
 
             // Assert
             var indexResult = Assert.IsType<OkObjectResult>(result);
-            indexResult.Value.Should().BeOfType<ConfigurationMetadata>();
+            indexResult.Value.Should().BeOfType<Configuration>();
         }
     }
 }

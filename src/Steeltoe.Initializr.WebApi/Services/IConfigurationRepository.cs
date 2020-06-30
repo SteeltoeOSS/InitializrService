@@ -8,14 +8,14 @@ using Steeltoe.Initializr.WebApi.Models;
 namespace Steeltoe.Initializr.WebApi.Services
 {
     /// <summary>
-    /// Contract for configuration repository implementations.
+    /// Contract for project configuration repository implementations.
     /// </summary>
-    public interface IMetadataRepository
+    public interface IConfigurationRepository
     {
         /// <summary>
         /// Gets the project generation configuration.
         /// </summary>
         /// <returns>project generation configuration</returns>
-        public Task<ConfigurationMetadata> GetConfiguration();
+        public Task<Configuration> GetConfiguration();
     }
 }

@@ -9,31 +9,31 @@ using Steeltoe.Initializr.WebApi.Services;
 namespace Steeltoe.Initializr.WebApi.Controllers
 {
     /// <summary>
-    /// Project generation configuration metadata endpoint.
+    /// Project generation configuration endpoint.
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
-    public class MetadataController : ControllerBase
+    public class ConfigurationController : ControllerBase
     {
-        private readonly IMetadataRepository _metadataRepository;
+        private readonly IConfigurationRepository _configurationRepository;
 
         /// <summary>
         /// Create a new ConfigurationController.
         /// </summary>
-        /// <param name="metadataRepository">configuration repository</param>
-        public MetadataController(IMetadataRepository metadataRepository)
+        /// <param name="configurationRepository">configuration repository</param>
+        public ConfigurationController(IConfigurationRepository configurationRepository)
         {
-            _metadataRepository = metadataRepository;
+            _configurationRepository = configurationRepository;
         }
 
         /// <summary>
         /// Implements <code>GET</code>..
         /// </summary>
-        /// <returns>Project generation configuration metadata</returns>
+        /// <returns>configuration</returns>
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var config = await _metadataRepository.GetConfiguration();
+            var config = await _configurationRepository.GetConfiguration();
             return Ok(config);
         }
     }

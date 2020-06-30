@@ -28,8 +28,8 @@ namespace Steeltoe.Initializr.WebApi
         {
             services.AddOptions();
             services.ConfigureConfigServerClientOptions(Configuration);
-            services.Configure<ConfigurationMetadata>(Configuration);
-            services.AddSingleton<IMetadataRepository, ConfigServerMetadataRepository>();
+            services.Configure<Configuration>(Configuration);
+            services.AddSingleton<IConfigurationRepository, ConfigServerConfigurationRepository>();
             services.AddSingleton<IProjectGenerator, StubbleProjectGenerator>();
             services.AddControllers();
         }

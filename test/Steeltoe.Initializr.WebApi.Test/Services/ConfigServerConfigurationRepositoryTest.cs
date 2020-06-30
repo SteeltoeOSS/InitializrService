@@ -14,27 +14,27 @@ using Xunit;
 
 namespace Steeltoe.Initializr.WebApi.Test.Services
 {
-    public class ConfigServerMetadataRepositoryTest
+    public class ConfigServerConfigurationRepositoryTest
     {
         [Fact]
         public async Task ConfigurationShouldNotBeNull()
         {
             // Arrange
-            var expected = new ConfigurationMetadata
-                {SteeltoeRelease = new ConfigurationMetadata.SingleSelectList {Default = "a default", Type = "a type"}};
-            var mockConfigOptions = new Mock<IOptions<ConfigurationMetadata>>();
+            var expected = new Configuration
+                {SteeltoeRelease = new Configuration.SingleSelectList {Default = "a default", Type = "a type"}};
+            var mockConfigOptions = new Mock<IOptions<Configuration>>();
             mockConfigOptions.Setup(opts => opts.Value).Returns(expected);
             var mockSettings = new ConfigServerClientSettingsOptions {Uri = "a uri"};
             var mockSettingsOptions = new Mock<IOptions<ConfigServerClientSettingsOptions>>();
             mockSettingsOptions.Setup(settings => settings.Value).Returns(mockSettings);
-            var repo = new ConfigServerMetadataRepository(mockConfigOptions.Object, mockSettingsOptions.Object,
-                new NullLogger<ConfigServerMetadataRepository>());
+            var repo = new ConfigServerConfigurationRepository(mockConfigOptions.Object, mockSettingsOptions.Object,
+                new NullLogger<ConfigServerConfigurationRepository>());
 
             // Act
             var actual = await repo.GetConfiguration();
 
             // Assert
-            Assert.IsType<ConfigurationMetadata>(actual);
+            Assert.IsType<Configuration>(actual);
             actual.Should().Be(expected);
             actual.About.Should().NotBeNull();
             actual.About.Name.Should().NotBeNull();

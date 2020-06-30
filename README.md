@@ -4,10 +4,10 @@ Steeltoe Initializr Web API reference implementation
 ## Overview
 
 `Steeltoe.Initializr.WebApi` provides two REST/HTTP endpoints:
-* `api/metadata`
+* `api/configuration`
 * `api/project`
 
-### `api/metadata`
+### `api/configuration`
 
 This endpoint provides configuration metadata for client UIs.  The metadata includes:
 
@@ -18,7 +18,7 @@ This endpoint provides configuration metadata for client UIs.  The metadata incl
 * Dependencies
 * Server "about" details
 
-The configuration data for `Steeltoe.Initializr.WebApi` is provided by a [Spring Cloud Config Server](https://cloud.spring.io/spring-cloud-config/reference/html/) pointing at https://github.com/steeltoeoss-incubator/Steeltoe.Initializr.Configuration.
+The configuration metadata for `Steeltoe.Initializr.WebApi` is provided by a [Spring Cloud Config Server](https://cloud.spring.io/spring-cloud-config/reference/html/) pointing at https://github.com/steeltoeoss-incubator/Steeltoe.Initializr.Configuration.
 
 ### `api/project`
 

@@ -2,6 +2,7 @@
 // The .NET Foundation licenses this file to you under the Apache 2.0 License.
 // See the LICENSE file in the project root for more information.
 
+using System;
 using System.IO;
 using System.Threading.Tasks;
 using Steeltoe.Initializr.WebApi.Models;
@@ -21,7 +22,7 @@ namespace Steeltoe.Initializr.WebApi.Services
         /// <exception cref="NotImplementedException"></exception>
         public Task<Stream> GenerateProject(ProjectSpecification specification)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

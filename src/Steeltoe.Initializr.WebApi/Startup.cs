@@ -30,7 +30,7 @@ namespace Steeltoe.Initializr.WebApi
             services.ConfigureConfigServerClientOptions(Configuration);
             services.Configure<ConfigurationMetadata>(Configuration);
             services.AddSingleton<IMetadataRepository, ConfigServerMetadataRepository>();
-            services.AddSingleton<IProjectGenerator, DummyProjectGenerator>();
+            services.AddSingleton<IProjectGenerator, StubbleProjectGenerator>();
             services.AddControllers();
         }
 

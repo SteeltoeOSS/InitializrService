@@ -15,7 +15,7 @@ namespace Steeltoe.Initializr.WebApi.Services
         private readonly ConfigurationMetadata _configuration;
 
         /// <summary>
-        /// Create a new ConfigServerMetadataRepository.
+        /// An IMetadataRepository implementation using a Spring Cloud Config Server.
         /// </summary>
         /// <param name="configuration">configuration metadata</param>
         /// <param name="settings">Config Server settings</param>

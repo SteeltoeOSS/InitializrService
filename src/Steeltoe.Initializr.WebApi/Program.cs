@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
@@ -10,6 +11,7 @@ using Steeltoe.Extensions.Configuration.ConfigServer;
 
 namespace Steeltoe.Initializr.WebApi
 {
+    [ExcludeFromCodeCoverage]
     public class Program
     {
         protected Program()

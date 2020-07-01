@@ -10,4 +10,4 @@ services:
       SPRING__CLOUD__CONFIG__LABEL: master
     entrypoint: ["./wait-for-it", "configserver:8888", "--", "dotnet", "Steeltoe.Initializr.WebApi.dll"]
   configserver:
-    image: steeltoeoss/initializr.configserver
+    image: steeltoeoss/initializr.configserver:0.1.0

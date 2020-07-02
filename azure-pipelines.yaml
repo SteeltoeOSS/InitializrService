@@ -33,7 +33,7 @@ jobs:
         inputs:
           SonarCloud: SonarCloud
           organization: steeltoeoss
-          projectKey: Steeltoe_InitializrApi
+          projectKey: InitializrApi
           extraProperties: |
               sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)\**\*opencover.xml
               sonar.cs.vstest.reportsPaths=$(Agent.TempDirectory)\*.trx

@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Steeltoe.Initializr.WebApi", "src\Steeltoe.Initializr.WebApi\Steeltoe.Initializr.WebApi.csproj", "{7597F74D-528E-448B-BBE8-994092F04CA4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Steeltoe.InitializrApi", "src\InitializrApi\Steeltoe.InitializrApi.csproj", "{7597F74D-528E-448B-BBE8-994092F04CA4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Steeltoe.Initializr.WebApi.Models", "src\Steeltoe.Initializr.WebApi.Models\Steeltoe.Initializr.WebApi.Models.csproj", "{ACE6FEE1-9CEA-4A95-9D76-C62A41947C8F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Steeltoe.InitializrApi.Models", "src\InitializrApi.Models\Steeltoe.InitializrApi.Models.csproj", "{ACE6FEE1-9CEA-4A95-9D76-C62A41947C8F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Steeltoe.Initializr.WebApi.Test", "test\Steeltoe.Initializr.WebApi.Test\Steeltoe.Initializr.WebApi.Test.csproj", "{EA849C8F-7118-45DB-BBF2-D36CE1FD43B4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Steeltoe.Initializr.WebApi.Test", "test\InitializrApi.Test\Steeltoe.InitializrApi.Test.csproj", "{EA849C8F-7118-45DB-BBF2-D36CE1FD43B4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

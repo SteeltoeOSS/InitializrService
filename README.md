@@ -1,9 +1,9 @@
-# Steeltoe.Initializr.WebApi
-Steeltoe Initializr Web API reference implementation
+# InitializrApi
+Steeltoe Initializr API reference implementation
 
 ## Overview
 
-`Steeltoe.Initializr.WebApi` provides two REST/HTTP endpoints:
+`InitializrApi` provides two REST/HTTP endpoints:
 * `api/configuration`
 * `api/project`
 
@@ -18,7 +18,7 @@ This endpoint provides configuration metadata for client UIs.  The metadata incl
 * Dependencies
 * Server "about" details
 
-The configuration metadata for `Steeltoe.Initializr.WebApi` is provided by a [Spring Cloud Config Server](https://cloud.spring.io/spring-cloud-config/reference/html/) pointing at https://github.com/steeltoeoss-incubator/Steeltoe.Initializr.Configuration.
+The configuration metadata for `InitializrApi` is provided by a [Spring Cloud Config Server](https://cloud.spring.io/spring-cloud-config/reference/html/) pointing at https://github.com/steeltoeoss-incubator/Steeltoe.Initializr.Configuration.
 
 ### `api/project`
 
@@ -26,7 +26,7 @@ The configuration metadata for `Steeltoe.Initializr.WebApi` is provided by a [Sp
 
 ## Running
 
-### Running `Steeltoe.Initializr.WebApi`
+### Running `InitializrApi`
 
 You can run using Dotnet or Docker Compose.
 
@@ -35,7 +35,7 @@ You can run using Dotnet or Docker Compose.
 This approach requires a running Config Server.  See "Starting a Config Server" below for options.
 
 ```
-dotnet run -p src/Steeltoe.Initializr.WebApi
+dotnet run -p src/InitializrApi
 ```
 
 #### Run using Docker Compose
@@ -43,8 +43,8 @@ dotnet run -p src/Steeltoe.Initializr.WebApi
 This approach requires includes a running Config Server.
 
 ```
-docker-compose up             # starts config server and webapi
-docker-compose down           # stops config server and webapi
+docker-compose up             # starts config server and api
+docker-compose down           # stops config server and api
 docker-compose build          # run this if you've made changes after running "docker-compose up"
 ```
 

@@ -33,11 +33,13 @@ jobs:
         inputs:
           SonarCloud: SonarCloud
           organization: steeltoeoss
-          projectKey: InitializrApi
+          projectKey: Steeltoe_InitializrApi
           extraProperties: |
               sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)\**\*opencover.xml
               sonar.cs.vstest.reportsPaths=$(Agent.TempDirectory)\*.trx
               sonar.coverage.exclusions=**\*Test*\**\*
+      - pwsh: dotnet tool install -g dotnet-reportgenerator-globaltool
+        displayName: CodeCoverage Prep
       - task: DotNetCoreCLI@2
         displayName: Dotnet Restore
         inputs:
@@ -51,7 +53,20 @@ jobs:
         displayName: Dotnet Test
         inputs:
           command: test
-          arguments: --no-build /p:CollectCoverage=true
+          arguments: --no-build /p:CollectCoverage=true /p:CoverletOutputFormat="opencover"
+      - pwsh: reportgenerator "-reports:**\*.opencover.xml" "-targetdir:$(Build.SourcesDirectory)\CodeCoverage" -reporttypes:Cobertura
+        displayName: CodeCoverage Analyze
+        condition: always()
+      - task: PublishCodeCoverageResults@1
+        displayName: CodeCoverage Publish
+        inputs:
+          codeCoverageTool: Cobertura
+          summaryFileLocation: $(Build.SourcesDirectory)\CodeCoverage\Cobertura.xml
+          reportDirectory: $(Build.SourcesDirectory)\CodeCoverage
+          condition: always()
+      - bash: bash <(curl -s https://codecov.io/bash)
+        displayName: CodeCoverage Upload
+        condition: always()
       - task: SonarSource.sonarcloud.ce096e50-6155-4de8-8800-4221aaeed4a1.SonarCloudAnalyze@1
         displayName: SonarCloud Analyze
         condition: always()

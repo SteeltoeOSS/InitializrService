@@ -2,6 +2,8 @@
 // The .NET Foundation licenses this file to you under the Apache 2.0 License.
 // See the LICENSE file in the project root for more information.
 
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
@@ -9,12 +11,15 @@ using Moq;
 using Steeltoe.Initializr.WebApi.Controllers;
 using Steeltoe.Initializr.WebApi.Models;
 using Steeltoe.Initializr.WebApi.Services;
+using Steeltoe.Initializr.WebApi.Test.TestUtils;
 using Xunit;
 
 namespace Steeltoe.Initializr.WebApi.Test.Controllers
 {
     public class ConfigurationControllerTest
     {
+        private const string Endpoint = "/api/configuration";
+
         [Fact]
         public async Task EndpointReturnsAConfiguration()
         {
@@ -29,6 +34,61 @@ namespace Steeltoe.Initializr.WebApi.Test.Controllers
             // Assert
             var indexResult = Assert.IsType<OkObjectResult>(result);
             indexResult.Value.Should().BeOfType<Configuration>();
+        }
+
+        [Fact]
+        public async Task PostNotSupported()
+        {
+            // Arrange
+            var client = new HttpClientBuilder().Build();
+            var content = new Mock<HttpContent>();
+
+            // Act
+            var response = await client.PostAsync(Endpoint, content.Object);
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.MethodNotAllowed);
+        }
+
+        [Fact]
+        public async Task PutNotSupported()
+        {
+            // Arrange
+            var client = new HttpClientBuilder().Build();
+            var content = new Mock<HttpContent>();
+
+            // Act
+            var response = await client.PutAsync(Endpoint, content.Object);
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.MethodNotAllowed);
+        }
+
+        [Fact]
+        public async Task PatchNotSupported()
+        {
+            // Arrange
+            var client = new HttpClientBuilder().Build();
+            var content = new Mock<HttpContent>();
+
+            // Act
+            var response = await client.PatchAsync(Endpoint, content.Object);
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.MethodNotAllowed);
+        }
+
+        [Fact]
+        public async Task DeleteNotSupported()
+        {
+            // Arrange
+            var client = new HttpClientBuilder().Build();
+
+            // Act
+            var response = await client.DeleteAsync(Endpoint);
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.MethodNotAllowed);
         }
     }
 }

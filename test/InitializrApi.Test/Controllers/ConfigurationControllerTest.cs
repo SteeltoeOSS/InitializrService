@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using Steeltoe.Initializr.WebApi.Controllers;
-using Steeltoe.Initializr.WebApi.Models;
-using Steeltoe.Initializr.WebApi.Services;
-using Steeltoe.Initializr.WebApi.Test.TestUtils;
+using Steeltoe.InitializrApi.Controllers;
+using Steeltoe.InitializrApi.Models;
+using Steeltoe.InitializrApi.Services;
+using Steeltoe.InitializrApi.Test.TestUtils;
 using Xunit;
 
-namespace Steeltoe.Initializr.WebApi.Test.Controllers
+namespace Steeltoe.InitializrApi.Test.Controllers
 {
     public class ConfigurationControllerTest
     {

@@ -5,9 +5,9 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using Steeltoe.Initializr.WebApi.Models;
+using Steeltoe.InitializrApi.Models;
 
-namespace Steeltoe.Initializr.WebApi.Services
+namespace Steeltoe.InitializrApi.Services
 {
     /// <summary>
     /// An IProjectGeneration implementation using Stubble, a Mustache template engine implemented in C#.

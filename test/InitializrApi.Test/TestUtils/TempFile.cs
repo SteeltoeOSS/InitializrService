@@ -5,7 +5,7 @@
 using System;
 using System.IO;
 
-namespace Steeltoe.Initializr.WebApi.Test.TestUtils
+namespace Steeltoe.InitializrApi.Test.TestUtils
 {
     public sealed class TempFile : IDisposable
     {

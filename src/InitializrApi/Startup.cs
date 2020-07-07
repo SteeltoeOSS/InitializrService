@@ -10,10 +10,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Steeltoe.Extensions.Configuration.ConfigServer;
-using Steeltoe.Initializr.WebApi.Models;
-using Steeltoe.Initializr.WebApi.Services;
+using Steeltoe.InitializrApi.Models;
+using Steeltoe.InitializrApi.Services;
 
-namespace Steeltoe.Initializr.WebApi
+namespace Steeltoe.InitializrApi
 {
     [ExcludeFromCodeCoverage]
     public class Startup

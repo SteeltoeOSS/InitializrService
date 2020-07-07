@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Steeltoe.Extensions.Configuration.ConfigServer;
-using Steeltoe.Initializr.WebApi.Models;
+using Steeltoe.InitializrApi.Models;
 
-namespace Steeltoe.Initializr.WebApi.Services
+namespace Steeltoe.InitializrApi.Services
 {
     public class ConfigServerConfigurationRepository : IConfigurationRepository
     {

@@ -5,7 +5,7 @@
 using FluentAssertions;
 using Xunit;
 
-namespace Steeltoe.Initializr.WebApi.Test
+namespace Steeltoe.InitializrApi.Test
 {
     public class ProgramTest
     {
@@ -13,9 +13,9 @@ namespace Steeltoe.Initializr.WebApi.Test
         public void About()
         {
             var about = new Program.About();
-            about.Name.Should().Be("Steeltoe.Initializr.WebApi");
+            about.Name.Should().Be("Steeltoe.InitializrApi");
             about.Vendor.Should().Be("SteeltoeOSS/VMware");
-            about.ProductUrl.Should().Be("https://github.com/steeltoeoss-incubator/Steeltoe.Initializr.WebApi/");
+            about.ProductUrl.Should().Be("https://github.com/SteeltoeOSS/InitializrApi/");
             about.Version.Should().NotBeNull();
             about.Version.Should().StartWith("0.7.0");
             about.Commit.Should().NotBeNull();

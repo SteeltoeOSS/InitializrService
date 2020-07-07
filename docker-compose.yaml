@@ -8,6 +8,6 @@ services:
       SPRING__CLOUD__CONFIG__URI: http://configserver:8888
       SPRING__CLOUD__CONFIG__ENV: Development
       SPRING__CLOUD__CONFIG__LABEL: master
-    entrypoint: ["./wait-for-it", "configserver:8888", "--", "dotnet", "Steeltoe.Initializr.WebApi.dll"]
+    entrypoint: ["./wait-for-it", "configserver:8888", "--", "dotnet", "Steeltoe.InitializrApi.dll"]
   configserver:
     image: steeltoeoss/initializr.configserver:0.1.0

@@ -8,11 +8,11 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using Moq;
 using Steeltoe.Extensions.Configuration.ConfigServer;
-using Steeltoe.Initializr.WebApi.Models;
-using Steeltoe.Initializr.WebApi.Services;
+using Steeltoe.InitializrApi.Models;
+using Steeltoe.InitializrApi.Services;
 using Xunit;
 
-namespace Steeltoe.Initializr.WebApi.Test.Services
+namespace Steeltoe.InitializrApi.Test.Services
 {
     public class ConfigServerConfigurationRepositoryTest
     {

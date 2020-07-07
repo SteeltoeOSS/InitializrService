@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Steeltoe.Extensions.Configuration.ConfigServer;
 
-namespace Steeltoe.Initializr.WebApi
+namespace Steeltoe.InitializrApi
 {
     [ExcludeFromCodeCoverage]
     public class Program
@@ -70,7 +70,7 @@ namespace Steeltoe.Initializr.WebApi
             {
                 Name = typeof(Program).Namespace ?? "unknown";
                 Vendor = "SteeltoeOSS/VMware";
-                ProductUrl = "https://github.com/steeltoeoss-incubator/Steeltoe.Initializr.WebApi/";
+                ProductUrl = "https://github.com/SteeltoeOSS/InitializrApi/";
                 var versionAttr = typeof(Program).Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
                 if (versionAttr != null)
                 {

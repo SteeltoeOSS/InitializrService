@@ -7,11 +7,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
-using Steeltoe.Initializr.WebApi.Controllers;
-using Steeltoe.Initializr.WebApi.Services;
+using Steeltoe.InitializrApi.Controllers;
+using Steeltoe.InitializrApi.Services;
 using Xunit;
 
-namespace Steeltoe.Initializr.WebApi.Test
+namespace Steeltoe.InitializrApi.Test
 {
     public class StartupTest
     {

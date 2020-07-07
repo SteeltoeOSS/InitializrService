@@ -3,10 +3,10 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
-using Steeltoe.Initializr.WebApi.Test.TestUtils;
+using Steeltoe.InitializrApi.Test.TestUtils;
 using Xunit;
 
-namespace Steeltoe.Initializr.WebApi.Test
+namespace Steeltoe.InitializrApi.Test
 {
     public class HttpTest
     {

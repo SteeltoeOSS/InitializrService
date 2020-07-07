@@ -4,9 +4,9 @@
 
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Steeltoe.Initializr.WebApi.Services;
+using Steeltoe.InitializrApi.Services;
 
-namespace Steeltoe.Initializr.WebApi.Controllers
+namespace Steeltoe.InitializrApi.Controllers
 {
     /// <summary>
     /// Project generation configuration endpoint.

@@ -10,4 +10,4 @@ WORKDIR /srv
 RUN curl https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh > wait-for-it \
             && chmod +x wait-for-it
 COPY --from=build /srv .
-ENTRYPOINT ["dotnet", "Steeltoe.Initializr.WebApi.dll"]
+ENTRYPOINT ["dotnet", "Steeltoe.InitializrApi.dll"]

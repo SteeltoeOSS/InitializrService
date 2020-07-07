@@ -3,9 +3,9 @@
 // See the LICENSE file in the project root for more information.
 
 using System.Threading.Tasks;
-using Steeltoe.Initializr.WebApi.Models;
+using Steeltoe.InitializrApi.Models;
 
-namespace Steeltoe.Initializr.WebApi.Services
+namespace Steeltoe.InitializrApi.Services
 {
     /// <summary>
     /// Contract for project configuration repository implementations.

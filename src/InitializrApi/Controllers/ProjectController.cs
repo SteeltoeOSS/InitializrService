@@ -5,10 +5,10 @@
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Steeltoe.Initializr.WebApi.Models;
-using Steeltoe.Initializr.WebApi.Services;
+using Steeltoe.InitializrApi.Models;
+using Steeltoe.InitializrApi.Services;
 
-namespace Steeltoe.Initializr.WebApi.Controllers
+namespace Steeltoe.InitializrApi.Controllers
 {
     /// <summary>
     /// Project generation endpoint.

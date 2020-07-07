@@ -4,10 +4,10 @@
 
 using FluentAssertions.Json;
 using Newtonsoft.Json.Linq;
-using Steeltoe.Initializr.WebApi.Models;
+using Steeltoe.InitializrApi.Models;
 using Xunit;
 
-namespace Steeltoe.Initializr.WebApi.Test.Models
+namespace Steeltoe.InitializrApi.Test.Models
 {
     public class ConfigurationTest
     {

@@ -2,12 +2,12 @@
 // The .NET Foundation licenses this file to you under the Apache 2.0 License.
 // See the LICENSE file in the project root for more information.
 
-using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Steeltoe.Extensions.Configuration.ConfigServer;
+using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 
 namespace Steeltoe.InitializrApi
 {
@@ -35,12 +35,25 @@ namespace Steeltoe.InitializrApi
                 .AddConfigServer()
                 .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
 
-
         /// <summary>
         /// Program "About" details, such as version.
         /// </summary>
         public class About
         {
+            public About()
+            {
+                Name = typeof(Program).Namespace ?? "unknown";
+                Vendor = "SteeltoeOSS/VMware";
+                ProductUrl = "https://github.com/SteeltoeOSS/InitializrApi/";
+                var versionAttr = typeof(Program).Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
+                if (versionAttr != null)
+                {
+                    var fields = versionAttr.InformationalVersion.Split('+');
+                    Version = fields[0];
+                    Commit = fields[1];
+                }
+            }
+
             /// <summary>
             /// Gets the program name.
             /// </summary>
@@ -65,20 +78,6 @@ namespace Steeltoe.InitializrApi
             /// Gets the program build source control commit ID.
             /// </summary>
             public string Commit { get; }
-
-            public About()
-            {
-                Name = typeof(Program).Namespace ?? "unknown";
-                Vendor = "SteeltoeOSS/VMware";
-                ProductUrl = "https://github.com/SteeltoeOSS/InitializrApi/";
-                var versionAttr = typeof(Program).Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
-                if (versionAttr != null)
-                {
-                    var fields = versionAttr.InformationalVersion.Split('+');
-                    Version = fields[0];
-                    Commit = fields[1];
-                }
-            }
         }
     }
 }

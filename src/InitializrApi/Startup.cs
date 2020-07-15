@@ -15,17 +15,30 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Steeltoe.InitializrApi
 {
+    /// <summary>
+    /// The Steeltoe Initializr Api dependency injection setup.
+    /// </summary>
     [ExcludeFromCodeCoverage]
     public class Startup
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Startup"/> class.
+        /// </summary>
+        /// <param name="configuration">Injected configuration.</param>
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
+        /// <summary>
+        /// Gets the configuration.
+        /// </summary>
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        /// <summary>
+        /// Called by the runtime.  Adds <see cref="IConfigurationRepository"/> and <see cref="IProjectGenerator"/> services.
+        /// </summary>
+        /// <param name="services">Injected services.</param>
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddOptions();
@@ -36,7 +49,12 @@ namespace Steeltoe.InitializrApi
             services.AddControllers();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// <summary>
+        /// Called by the runtime.  Sets up HTTP request pipeline.
+        /// </summary>
+        /// <param name="app">Injected IApplicationBuilder.</param>
+        /// <param name="env">Injected IWebHostEnvironment.</param>
+        /// <param name="logger">Injected ILogger.</param>
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
         {
             var about = new Program.About();

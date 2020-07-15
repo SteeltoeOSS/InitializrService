@@ -9,15 +9,15 @@ using System.Threading.Tasks;
 namespace Steeltoe.InitializrApi.Services
 {
     /// <summary>
-    /// Contract for project generator implementations.
+    /// Contract for a project generator implementations.
     /// </summary>
     public interface IProjectGenerator
     {
         /// <summary>
-        /// Generates a project as a byte stream.
+        /// Generates a project bundle as a ZIP archive byte stream.
         /// </summary>
-        /// <param name="specification">Project configuration</param>
-        /// <returns>project bundle  byte stream</returns>
+        /// <param name="specification">Project specification.</param>
+        /// <returns>A task containing generated project bundle.</returns>
         public Task<Stream> GenerateProject(ProjectSpecification specification);
     }
 }

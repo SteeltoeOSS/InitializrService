@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Steeltoe.InitializrApi.Models;
 using Steeltoe.InitializrApi.Services;
 using System.IO;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace Steeltoe.InitializrApi.Controllers
@@ -20,19 +21,19 @@ namespace Steeltoe.InitializrApi.Controllers
         private readonly IProjectGenerator _projectGenerator;
 
         /// <summary>
-        /// Create a new ProjectGeneratorController.
+        /// Initializes a new instance of the <see cref="ProjectController"/> class.
         /// </summary>
-        /// <param name="projectGenerator">project generator</param>
+        /// <param name="projectGenerator">Injected project generator.</param>
         public ProjectController(IProjectGenerator projectGenerator)
         {
             _projectGenerator = projectGenerator;
         }
 
         /// <summary>
-        /// Implements <code>GET</code> by returning a project per provided configuration.
-        /// Project is bundled as a byte array.
+        /// Implements <c>GET</c>.
+        /// Generated project is bundled in a ZIP archive.
         /// </summary>
-        /// <returns>Bundled generated project</returns>
+        /// <returns>A task containing the <c>GET</c> result which, if <see cref="HttpStatusCode.OK"/>, contains a project bundle stream.</returns>
         [HttpGet]
         public async Task<ActionResult> Get()
         {

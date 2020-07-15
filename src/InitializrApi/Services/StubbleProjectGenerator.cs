@@ -10,16 +10,11 @@ using System.Threading.Tasks;
 namespace Steeltoe.InitializrApi.Services
 {
     /// <summary>
-    /// An IProjectGeneration implementation using Stubble, a Mustache template engine implemented in C#.
+    /// An <see cref="IProjectGenerator"/> implementation using <a gref="https://github.com/StubbleOrg/Stubble">Stubble</a>, a Mustache template engine implemented in C#.
     /// </summary>
     public class StubbleProjectGenerator : IProjectGenerator
     {
-        /// <summary>
-        /// Generate the project stream.
-        /// </summary>
-        /// <param name="specification"></param>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
+        /// <inheritdoc/>
         public Task<Stream> GenerateProject(ProjectSpecification specification)
         {
             throw new NotImplementedException();

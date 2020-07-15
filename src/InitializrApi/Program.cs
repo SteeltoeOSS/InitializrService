@@ -11,19 +11,33 @@ using System.Reflection;
 
 namespace Steeltoe.InitializrApi
 {
+    /// <summary>
+    /// The Steeltoe Initializr Api program.
+    /// </summary>
     [ExcludeFromCodeCoverage]
     public class Program
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Program"/> class.
+        /// </summary>
         protected Program()
         {
         }
 
+        /// <summary>
+        /// Program entrypoint.
+        /// </summary>
         public static int Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
             return 0;
         }
 
+        /// <summary>
+        /// Create a generic host (see <a href="https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/generic-host?view=aspnetcore-3.1"></a>.
+        /// </summary>
+        /// <param name="args">Command line args.</param>
+        /// <returns>A generic host.</returns>
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .AddConfigServer()
@@ -34,6 +48,9 @@ namespace Steeltoe.InitializrApi
         /// </summary>
         public class About
         {
+            /// <summary>
+            /// Initializes a new instance of the <see cref="About"/> class.
+            /// </summary>
             public About()
             {
                 Name = typeof(Program).Namespace ?? "unknown";

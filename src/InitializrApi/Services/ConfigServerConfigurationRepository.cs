@@ -10,16 +10,19 @@ using System.Threading.Tasks;
 
 namespace Steeltoe.InitializrApi.Services
 {
+    /// <summary>
+    /// An <see cref="IConfigurationRepository"/> using a <a href="https://cloud.spring.io/spring-cloud-config/reference/html/#_spring_cloud_config_server">Spring Cloud Config Server</a> backend.
+    /// </summary>
     public class ConfigServerConfigurationRepository : IConfigurationRepository
     {
         private readonly Configuration _configuration;
 
         /// <summary>
-        /// An IConfigurationRepository implementation using a Spring Cloud Config Server.
+        /// Initializes a new instance of the <see cref="ConfigServerConfigurationRepository"/> class.
         /// </summary>
-        /// <param name="configuration">configuration</param>
-        /// <param name="settings">Config Server settings</param>
-        /// <param name="logger">application logger</param>
+        /// <param name="configuration">Injected configuration from Config Server.</param>
+        /// <param name="settings">Injected Config Server settings.</param>
+        /// <param name="logger">Injected logger.</param>
         public ConfigServerConfigurationRepository(
             IOptions<Configuration> configuration,
             IOptions<ConfigServerClientSettingsOptions> settings,
@@ -38,10 +41,7 @@ namespace Steeltoe.InitializrApi.Services
             logger.LogInformation($"Using Config Server listening at {settings.Value.Uri ?? "default URI"}");
         }
 
-        /// <summary>
-        /// Return the configuration
-        /// </summary>
-        /// <returns>configuration</returns>
+        /// <inheritdoc/>
         public Task<Configuration> GetConfiguration()
         {
             var result = new TaskCompletionSource<Configuration>();

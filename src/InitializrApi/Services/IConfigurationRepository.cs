@@ -15,7 +15,7 @@ namespace Steeltoe.InitializrApi.Services
         /// <summary>
         /// Gets the project generation configuration.
         /// </summary>
-        /// <returns>project generation configuration</returns>
+        /// <returns>A task containing the project configuration metadata.</returns>
         public Task<Configuration> GetConfiguration();
     }
 }

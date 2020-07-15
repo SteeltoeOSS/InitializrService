@@ -1,6 +1,9 @@
 # User-specific state
 *.sln.DotSettings.user
 
+# Visual Studio
+.vs/
+
 # Visual Studio Code
 .vscode/
 

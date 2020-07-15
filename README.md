@@ -94,3 +94,11 @@ cd Steeltoe.Initializr.ConfigServer
 # run
 ./gradlew bootRun
 ```
+
+## Deploying
+
+## Cloud Foundry
+
+```
+cf push deploy/cloud-foundry.manifest-<profile>.yaml
+```

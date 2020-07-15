@@ -21,10 +21,10 @@ name: $(major).$(minor).$(micro)-$(Rev:r)
 jobs:
   - job: BuildAndPublishArtifacts
     pool:
-      vmImage: Windows-2019
+      vmImage: windows-latest
     steps:
       - task: UseDotNet@2
-        displayName: Dotnet Prep
+        displayName: DotNet 3 Prep
         inputs:
           packageType: sdk
           version: $(DotNet3Version)
@@ -94,3 +94,17 @@ jobs:
           pathToPublish: $(Build.ArtifactStagingDirectory)
           artifactName: Packages
           publishLocation: Container
+      - task: CloudFoundryCLIInstall@0
+        displayName: Install CF CLI
+        inputs:
+          cfVersion: 6.51.0
+      - task: CloudFoundry@1
+        displayName: Push to Staging
+        condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+        inputs:
+          cfEndpoint: PCFone
+          skipSSLValidation: true
+          org: group-steeltoe
+          space: staging
+          deploymentOptions: manifest
+          cfManifest: deploy/cloud-foundry/manifest-Staging.yaml

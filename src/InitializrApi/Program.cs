@@ -20,12 +20,6 @@ namespace Steeltoe.InitializrApi
 
         public static int Main(string[] args)
         {
-            if (args.Length > 0)
-            {
-                Console.Error.WriteLine("too many args");
-                return 1;
-            }
-
             CreateHostBuilder(args).Build().Run();
             return 0;
         }
@@ -50,7 +44,7 @@ namespace Steeltoe.InitializrApi
                 {
                     var fields = versionAttr.InformationalVersion.Split('+');
                     Version = fields[0];
-                    Commit = fields[1];
+                    Commit = fields.Length > 1 ? fields[1] : "unknown";
                 }
             }
 

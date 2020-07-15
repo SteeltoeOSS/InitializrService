@@ -1,0 +1,11 @@
+---
+applications:
+- name: steeltoe-initializr-api
+  path: ../..
+  buildpacks:
+   - dotnet_core_buildpack
+  memory: 1024M
+  env:
+    ASPNETCORE_ENVIRONMENT: Staging
+    DOTNET_CLI_TELEMETRY_OPTOUT: 1
+    DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true

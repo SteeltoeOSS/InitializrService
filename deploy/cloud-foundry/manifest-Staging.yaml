@@ -1,7 +1,7 @@
 ---
 applications:
 - name: steeltoe-initializr-api
-  path: ../..
+  path: ../../src/InitializrApi/bin/Debug/netcoreapp3.1
   buildpacks:
    - dotnet_core_buildpack
   memory: 1024M

@@ -100,5 +100,6 @@ cd Steeltoe.Initializr.ConfigServer
 ## Cloud Foundry
 
 ```
+dotnet build
 cf push deploy/cloud-foundry.manifest-<profile>.yaml
 ```

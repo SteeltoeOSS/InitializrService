@@ -73,6 +73,20 @@ jobs:
       - task: SonarSource.sonarcloud.38b27399-a642-40af-bb7d-9971f69712e8.SonarCloudPublish@1
         displayName: SonarCloud Publish
         condition: always()
+      - task: CloudFoundryCLIInstall@0
+        displayName: Install Cloud Foundry CLI
+        inputs:
+          cfVersion: 6.51.0
+      - task: CloudFoundry@1
+        displayName: Push Staging to Cloud Foundry
+        condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+        inputs:
+          cfEndpoint: PCFone
+          skipSSLValidation: true
+          org: group-steeltoe
+          space: staging
+          deploymentOptions: manifest
+          cfManifest: deploy/cloud-foundry/manifest-Staging.yaml
       - task: DotNetCoreCLI@2
         displayName: Dotnet Pack
         inputs:
@@ -94,17 +108,3 @@ jobs:
           pathToPublish: $(Build.ArtifactStagingDirectory)
           artifactName: Packages
           publishLocation: Container
-      - task: CloudFoundryCLIInstall@0
-        displayName: Install CF CLI
-        inputs:
-          cfVersion: 6.51.0
-      - task: CloudFoundry@1
-        displayName: Push to Staging
-        condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-        inputs:
-          cfEndpoint: PCFone
-          skipSSLValidation: true
-          org: group-steeltoe
-          space: staging
-          deploymentOptions: manifest
-          cfManifest: deploy/cloud-foundry/manifest-Staging.yaml

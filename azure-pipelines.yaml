@@ -100,7 +100,7 @@ jobs:
           cfEndpoint: PCFone
           skipSSLValidation: true
           org: group-steeltoe
-          space: development
+          space: initializr
           deploymentOptions: manifest
           cfManifest: deploy/cloud-foundry/manifest-Development.yaml
         condition:

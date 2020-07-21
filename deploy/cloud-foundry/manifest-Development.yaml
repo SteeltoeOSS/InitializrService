@@ -1,6 +1,6 @@
 ---
 applications:
-- name: initializr-api-dev
+- name: initializr-api
   path: ../../src/InitializrApi/bin/Debug/netcoreapp3.1/publish
   buildpacks:
    - dotnet_core_buildpack

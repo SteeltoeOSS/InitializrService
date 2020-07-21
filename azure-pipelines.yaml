@@ -44,16 +44,16 @@ jobs:
         inputs:
           cfVersion: 6.51.0
       - task: DotNetCoreCLI@2
-        displayName: Dotnet Restore
+        displayName: DotNet Restore
         inputs:
           command: restore
       - task: DotNetCoreCLI@2
-        displayName: Dotnet Build
+        displayName: DotNet Build
         inputs:
           command: build
           arguments: --no-restore /p:TreatWarningsAsErrors=True
       - task: DotNetCoreCLI@2
-        displayName: Dotnet Test
+        displayName: DotNet Test
         inputs:
           command: test
           arguments: --no-build /p:CollectCoverage=true /p:CoverletOutputFormat="opencover"
@@ -62,7 +62,7 @@ jobs:
       - task: SonarSource.sonarcloud.38b27399-a642-40af-bb7d-9971f69712e8.SonarCloudPublish@1
         displayName: Sonar Publish
       - task: DotNetCoreCLI@2
-        displayName: Dotnet Pack
+        displayName: DotNet Pack
         inputs:
           command: pack
           arguments: --no-build
@@ -87,7 +87,7 @@ jobs:
         condition:
           and(succeeded(), not(eq(variables['build.reason'], 'PullRequest')))
       - task: DotNetCoreCLI@2
-        displayName: Dotnet Publish
+        displayName: DotNet Publish
         inputs:
           command: publish
           arguments: --no-build

@@ -5,7 +5,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Steeltoe.Extensions.Configuration.ConfigServer;
-using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 

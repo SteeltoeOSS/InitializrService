@@ -43,14 +43,10 @@ jobs:
         inputs:
           cfVersion: 6.51.0
       - task: DotNetCoreCLI@2
-        displayName: Restore
-        inputs:
-          command: restore
-      - task: DotNetCoreCLI@2
         displayName: Build
         inputs:
           command: build
-          arguments: --no-restore /p:TreatWarningsAsErrors=True
+          arguments: /p:TreatWarningsAsErrors=True
       - task: DotNetCoreCLI@2
         displayName: Test
         inputs:

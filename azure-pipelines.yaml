@@ -43,28 +43,28 @@ jobs:
         inputs:
           cfVersion: 6.51.0
       - task: DotNetCoreCLI@2
-        displayName: Build
+        displayName: Dotnet Build
         inputs:
           command: build
           arguments: /p:TreatWarningsAsErrors=True
       - task: DotNetCoreCLI@2
-        displayName: Test
+        displayName: Dotnet Test
         inputs:
           command: test
           arguments: --no-build /p:CollectCoverage=true /p:CoverletOutputFormat="opencover"
       - task: SonarSource.sonarcloud.ce096e50-6155-4de8-8800-4221aaeed4a1.SonarCloudAnalyze@1
-        displayName: Analyze
+        displayName: Sonar Analyze
       - task: SonarSource.sonarcloud.38b27399-a642-40af-bb7d-9971f69712e8.SonarCloudPublish@1
-        displayName: Publish Analysis
+        displayName: Sonar Publish
       - task: DotNetCoreCLI@2
-        displayName: Pack
+        displayName: Dotnet Pack
         inputs:
           command: pack
           arguments: --no-build
         condition:
           and(succeeded(), not(eq(variables['build.reason'], 'PullRequest')))
       - task: Powershell@2
-        displayName: Sign
+        displayName: Sign Nugets
         inputs:
           filePath: sign\SignPackages.ps1
         env:
@@ -74,7 +74,7 @@ jobs:
         condition:
           and(succeeded(), not(eq(variables['build.reason'], 'PullRequest')))
       - task: PublishBuildArtifacts@1
-        displayName: NuGets
+        displayName: Publish NuGets
         inputs:
           pathToPublish: $(Build.ArtifactStagingDirectory)
           artifactName: Packages
@@ -82,7 +82,7 @@ jobs:
         condition:
           and(succeeded(), not(eq(variables['build.reason'], 'PullRequest')))
       - task: DotNetCoreCLI@2
-        displayName: Publish
+        displayName: Dotnet Publish
         inputs:
           command: publish
           arguments: --no-build
@@ -90,7 +90,7 @@ jobs:
         condition:
           and(succeeded(), not(eq(variables['build.reason'], 'PullRequest')))
       - task: CloudFoundry@1
-        displayName: Stage
+        displayName: Deploy Staging
         inputs:
           cfEndpoint: PCFone
           skipSSLValidation: true

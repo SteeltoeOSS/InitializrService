@@ -1,6 +1,6 @@
 ---
 applications:
-- name: steeltoe-initializr-api
+- name: initializr-api-dev
   path: ../../src/InitializrApi/bin/Debug/netcoreapp3.1/publish
   buildpacks:
    - dotnet_core_buildpack

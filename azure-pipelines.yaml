@@ -90,6 +90,7 @@ jobs:
         inputs:
           command: publish
           arguments: --no-build
+          zipAfterPublish: false
         condition:
           and(succeeded(), not(eq(variables['build.reason'], 'PullRequest')))
       - task: CloudFoundry@1

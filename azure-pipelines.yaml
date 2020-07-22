@@ -39,7 +39,7 @@ jobs:
           organization: steeltoeoss
           projectKey: InitializrApi
           extraProperties: |
-            sonar.cs.opencover.reportsPaths=test\**\coverage.opencover.xml
+            sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)\**\*opencover.xml
       - task: DotNetCoreCLI@2
         displayName: DotNet Restore
         inputs:

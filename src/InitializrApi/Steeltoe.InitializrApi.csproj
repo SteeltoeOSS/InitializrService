@@ -2,7 +2,6 @@
 
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
-        <!-- <RuntimeIdentifier>linux-x64</RuntimeIdentifier> -->
     </PropertyGroup>
 
     <PropertyGroup>
@@ -16,19 +15,19 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Folder Include="Controllers" />
+        <Folder Include="Controllers"/>
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-        <PackageReference Include="Steeltoe.Extensions.Configuration.ConfigServerCore" Version="3.0.0-m2" />
+        <PackageReference Include="Newtonsoft.Json" Version="12.0.3"/>
+        <PackageReference Include="Steeltoe.Extensions.Configuration.ConfigServerCore" Version="3.0.0-m2"/>
         <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
             <PrivateAssets>All</PrivateAssets>
         </PackageReference>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\InitializrApi.Models\Steeltoe.InitializrApi.Models.csproj" />
+        <ProjectReference Include="..\InitializrApi.Models\Steeltoe.InitializrApi.Models.csproj"/>
     </ItemGroup>
 
     <ItemGroup>

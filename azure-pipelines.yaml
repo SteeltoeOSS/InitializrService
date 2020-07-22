@@ -23,8 +23,6 @@ jobs:
     pool:
       vmImage: windows-latest
     steps:
-      - pwsh: dotnet tool install -g dotnet-reportgenerator-globaltool
-        displayName: Install ReportGenerator
       - task: UseDotNet@2
         displayName: Prep DotNet 3
         inputs:
@@ -37,9 +35,9 @@ jobs:
           organization: steeltoeoss
           projectKey: InitializrApi
           extraProperties: |
-              sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)\**\*opencover.xml
-              sonar.cs.vstest.reportsPaths=$(Agent.TempDirectory)\*.trx
-              sonar.coverage.exclusions=**\*Test*\**\*
+            sonar.sources=$(Build.SourcesDirectory)\src\**
+            sonar.test=$(Build.SourcesDirectory)\test\**
+            sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)\test\**\coverage.opencover.xml
       - task: CloudFoundryCLIInstall@0
         displayName: Prep Cloud Foundry CLI
         inputs:
@@ -57,7 +55,7 @@ jobs:
         displayName: DotNet Test
         inputs:
           command: test
-          arguments: --no-build /p:CollectCoverage=true /p:CoverletOutputFormat="opencover"
+          arguments: --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
       - task: SonarSource.sonarcloud.ce096e50-6155-4de8-8800-4221aaeed4a1.SonarCloudAnalyze@1
         displayName: Sonar Analyze
       - task: SonarSource.sonarcloud.38b27399-a642-40af-bb7d-9971f69712e8.SonarCloudPublish@1

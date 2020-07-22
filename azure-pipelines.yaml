@@ -40,7 +40,6 @@ jobs:
           projectKey: InitializrApi
           extraProperties: |
             sonar.sources=$(Build.SourcesDirectory)\src
-            sonar.test=$(Build.SourcesDirectory)\test
             sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)\test\**\coverage.opencover.xml
       - task: DotNetCoreCLI@2
         displayName: DotNet Restore

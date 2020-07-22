@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information.
 
 using Steeltoe.InitializrApi.Models;
-using System;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -17,7 +16,9 @@ namespace Steeltoe.InitializrApi.Services
         /// <inheritdoc/>
         public Task<Stream> GenerateProject(ProjectSpecification specification)
         {
-            throw new NotImplementedException();
+            var result = new TaskCompletionSource<Stream>();
+            result.SetResult(new MemoryStream());
+            return result.Task;
         }
     }
 }

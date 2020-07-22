@@ -3,10 +3,12 @@
 // See the LICENSE file in the project root for more information.
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Net.Http.Headers;
 using Steeltoe.InitializrApi.Models;
 using Steeltoe.InitializrApi.Services;
 using System.IO;
 using System.Net;
+using System.Net.Mime;
 using System.Threading.Tasks;
 
 namespace Steeltoe.InitializrApi.Controllers
@@ -35,16 +37,24 @@ namespace Steeltoe.InitializrApi.Controllers
         /// </summary>
         /// <returns>A task containing the <c>GET</c> result which, if <see cref="HttpStatusCode.OK"/>, contains a project bundle stream.</returns>
         [HttpGet]
-        public async Task<ActionResult> Get()
+        public async Task<ActionResult> Get([FromQuery] ProjectSpecification spec)
         {
-            var spec = new ProjectSpecification();
             var stream = await _projectGenerator.GenerateProject(spec);
-            var buf = new MemoryStream();
-            await stream.CopyToAsync(buf);
-            var bytes = buf.ToArray();
-            stream.Close();
-            buf.Close();
-            return Ok(bytes);
+            byte[] bytes;
+            await using (var buf = new MemoryStream())
+            {
+                await stream.CopyToAsync(buf);
+                bytes = buf.ToArray();
+            }
+
+            var cd = new ContentDispositionHeaderValue("attachment")
+            {
+                FileName = $"{spec.ProjectName}.zip",
+            };
+
+            Response.Headers.Add(HeaderNames.ContentDisposition, cd.ToString());
+
+            return File(bytes, MediaTypeNames.Application.Zip);
         }
     }
 }

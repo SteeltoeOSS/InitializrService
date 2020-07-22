@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Steeltoe.InitializrApi.Controllers;
@@ -22,23 +23,22 @@ namespace Steeltoe.InitializrApi.Test.Controllers
         private const string Endpoint = "/api/project";
 
         [Fact]
-        public async Task EndpointReturnsBytes()
+        public async Task GetReturnsProjectArchive()
         {
             // Arrange
-            var mockGenerator = new Mock<IProjectGenerator>();
-            mockGenerator.Setup(g => g.GenerateProject(It.IsAny<ProjectSpecification>())).ReturnsAsync(new MemoryStream());
-            var controller = new ProjectController(mockGenerator.Object);
+            var controller = new ProjectControllerBuilder().Build();
 
             // Act
-            var result = await controller.Get();
+            var unknown = await controller.Get(new ProjectSpecification());
 
             // Assert
-            var okResult = Assert.IsType<OkObjectResult>(result);
-            okResult.Value.Should().BeOfType<byte[]>();
+            var result = Assert.IsType<FileContentResult>(unknown);
+            result.ContentType.Should().Be("application/zip");
+            result.FileContents.Should().NotBeNull();
         }
 
         [Fact]
-        public async Task PostNotSupported()
+        public async Task PostReturnsMethodNotAllowed()
         {
             // Arrange
             var client = new HttpClientBuilder().Build();
@@ -52,7 +52,7 @@ namespace Steeltoe.InitializrApi.Test.Controllers
         }
 
         [Fact]
-        public async Task PutNotSupported()
+        public async Task PutReturnsMethodNotAllowed()
         {
             // Arrange
             var client = new HttpClientBuilder().Build();
@@ -66,7 +66,7 @@ namespace Steeltoe.InitializrApi.Test.Controllers
         }
 
         [Fact]
-        public async Task PatchNotSupported()
+        public async Task PatchReturnsMethodNotAllowed()
         {
             // Arrange
             var client = new HttpClientBuilder().Build();
@@ -80,7 +80,7 @@ namespace Steeltoe.InitializrApi.Test.Controllers
         }
 
         [Fact]
-        public async Task DeleteNotSupported()
+        public async Task DeleteReturnsMethodNotAllowed()
         {
             // Arrange
             var client = new HttpClientBuilder().Build();
@@ -90,6 +90,25 @@ namespace Steeltoe.InitializrApi.Test.Controllers
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.MethodNotAllowed);
+        }
+
+        class ProjectControllerBuilder
+        {
+            private readonly ProjectController _projectController;
+
+            internal ProjectControllerBuilder()
+            {
+                var mockGenerator = new Mock<IProjectGenerator>();
+                mockGenerator.Setup(g => g.GenerateProject(It.IsAny<ProjectSpecification>()))
+                    .ReturnsAsync(new MemoryStream());
+                _projectController = new ProjectController(mockGenerator.Object);
+            }
+
+            internal ProjectController Build()
+            {
+                _projectController.ControllerContext.HttpContext = new DefaultHttpContext();
+                return _projectController;
+            }
         }
     }
 }

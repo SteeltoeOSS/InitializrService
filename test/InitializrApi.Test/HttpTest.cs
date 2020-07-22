@@ -1,8 +1,6 @@
 using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using FluentAssertions;
-using Moq;
 using Steeltoe.InitializrApi.Test.TestUtils;
 using Xunit;
 
@@ -15,7 +13,6 @@ namespace Steeltoe.InitializrApi.Test
         {
             // Arrange
             var client = new HttpClientBuilder().Build();
-            var content = new Mock<HttpContent>();
 
             // Act
             var response = await client.GetAsync("no such path");
@@ -23,6 +20,5 @@ namespace Steeltoe.InitializrApi.Test
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
-
     }
 }

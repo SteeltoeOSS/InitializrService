@@ -23,6 +23,8 @@ jobs:
     pool:
       vmImage: windows-latest
     steps:
+      - pwsh: dotnet tool install -g dotnet-reportgenerator-globaltool
+        displayName: Install ReportGenerator
       - task: UseDotNet@2
         displayName: Prep DotNet 3
         inputs:

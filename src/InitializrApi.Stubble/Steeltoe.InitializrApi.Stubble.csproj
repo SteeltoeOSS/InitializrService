@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\InitializrApi.Models\Steeltoe.InitializrApi.Models.csproj" />
+      <ProjectReference Include="..\InitializrApi.Services\Steeltoe.InitializrApi.Services.csproj" />
+    </ItemGroup>
+
+</Project>

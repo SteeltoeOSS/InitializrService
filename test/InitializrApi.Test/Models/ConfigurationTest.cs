@@ -93,12 +93,12 @@ namespace Steeltoe.InitializrApi.Test.Models
         [Fact]
         public void AboutEquivalence()
         {
-            Cfg1.About = new Configuration.Product();
+            Cfg1.About = new About();
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);
-            Cfg2.About = new Configuration.Product();
+            Cfg2.About = new About();
             Cfg1Json.Should().BeEquivalentTo(Cfg2Json);
             Cfg3Json.Should().NotBeEquivalentTo(Cfg1Json);
-            Cfg3.About = new Configuration.Product();
+            Cfg3.About = new About();
             Cfg3Json.Should().BeEquivalentTo(Cfg1Json);
             Cfg1.About.Name = "some name";
             Cfg1Json.Should().NotBeEquivalentTo(Cfg2Json);

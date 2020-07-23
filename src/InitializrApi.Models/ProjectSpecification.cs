@@ -9,16 +9,30 @@ namespace Steeltoe.InitializrApi.Models
     /// </summary>
     public sealed class ProjectSpecification
     {
-        public string ProjectName { get; set; }
+        /// <summary>
+        /// Gets or sets the project name.
+        /// </summary>
+        public string Name { get; set; }
 
-        public string ProjectDescription { get; set; }
+        /// <summary>
+        /// Gets or sets the project description.
+        /// </summary>
+        public string Description { get; set; }
 
-        public string SteeltoeReleaseId { get; set; }
+        /// <summary>
+        /// Gets or sets the Steeltoe version.
+        /// </summary>
+        public string SteeltoeVersion { get; set; }
 
         public string DotnetFrameworkTargetId { get; set; }
 
         public string DotnetTemplateId { get; set; }
 
         public string DotnetLanguageId { get; set; }
+
+        public override string ToString()
+        {
+            return $"[name={Name}]";
+        }
     }
 }

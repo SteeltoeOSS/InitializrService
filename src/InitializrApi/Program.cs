@@ -5,6 +5,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Steeltoe.Extensions.Configuration.ConfigServer;
+using Steeltoe.InitializrApi.Services;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
@@ -45,49 +46,29 @@ namespace Steeltoe.InitializrApi
         /// <summary>
         /// Program "About" details, such as version.
         /// </summary>
-        public class About
+        public class About : IAbout
         {
             /// <summary>
-            /// Initializes a new instance of the <see cref="About"/> class.
+            /// Get the "about" details of this program.
             /// </summary>
-            public About()
+            /// <returns>program about.</returns>
+            public Models.About GetAbout()
             {
-                Name = typeof(Program).Namespace ?? "unknown";
-                Vendor = "SteeltoeOSS/VMware";
-                ProductUrl = "https://github.com/SteeltoeOSS/InitializrApi/";
-                var versionAttr = typeof(Program).Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
+                var about = new Models.About();
+                about.Name = typeof(Program).Namespace ?? "unknown";
+                about.Vendor = "SteeltoeOSS/VMware";
+                about.Url = "https://github.com/SteeltoeOSS/InitializrApi/";
+                var versionAttr =
+                    typeof(Program).Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
                 if (versionAttr != null)
                 {
                     var fields = versionAttr.InformationalVersion.Split('+');
-                    Version = fields[0];
-                    Commit = fields.Length > 1 ? fields[1] : "unknown";
+                    about.Version = fields[0];
+                    about.Commit = fields.Length > 1 ? fields[1] : "unknown";
                 }
+
+                return about;
             }
-
-            /// <summary>
-            /// Gets the program name.
-            /// </summary>
-            public string Name { get; }
-
-            /// <summary>
-            /// Gets the program vendor.
-            /// </summary>
-            public string Vendor { get; }
-
-            /// <summary>
-            /// Gets the program product URL.
-            /// </summary>
-            public string ProductUrl { get; }
-
-            /// <summary>
-            /// Gets the program version.
-            /// </summary>
-            public string Version { get; }
-
-            /// <summary>
-            /// Gets the program build source control commit ID.
-            /// </summary>
-            public string Commit { get; }
         }
     }
 }

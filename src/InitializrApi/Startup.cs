@@ -9,8 +9,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Steeltoe.Extensions.Configuration.ConfigServer;
+using Steeltoe.InitializrApi.ConfigServer;
 using Steeltoe.InitializrApi.Models;
 using Steeltoe.InitializrApi.Services;
+using Steeltoe.InitializrApi.Stubble;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Steeltoe.InitializrApi
@@ -45,6 +47,7 @@ namespace Steeltoe.InitializrApi
             services.ConfigureConfigServerClientOptions(Configuration);
             services.Configure<Configuration>(Configuration);
             services.AddSingleton<IConfigurationRepository, ConfigServerConfigurationRepository>();
+            services.AddSingleton<IAbout, Program.About>();
             services.AddSingleton<IProjectGenerator, StubbleProjectGenerator>();
             services.AddControllers();
         }
@@ -57,7 +60,7 @@ namespace Steeltoe.InitializrApi
         /// <param name="logger">Injected ILogger.</param>
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
         {
-            var about = new Program.About();
+            var about = new Program.About().GetAbout();
             logger.LogInformation($"{about.Name}, version {about.Version} [{about.Commit}]");
 
             if (env.IsDevelopment())

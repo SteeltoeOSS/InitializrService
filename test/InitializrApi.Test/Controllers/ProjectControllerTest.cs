@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using Steeltoe.InitializrApi.Controllers;
 using Steeltoe.InitializrApi.Models;
@@ -27,14 +28,18 @@ namespace Steeltoe.InitializrApi.Test.Controllers
         {
             // Arrange
             var controller = new ProjectControllerBuilder().Build();
+            var spec = new ProjectSpecification
+            {
+                Name = "someProject",
+            };
 
             // Act
-            var unknown = await controller.Get(new ProjectSpecification());
+            var unknown = await controller.Get(spec);
 
             // Assert
             var result = Assert.IsType<FileContentResult>(unknown);
             result.ContentType.Should().Be("application/zip");
-            result.FileContents.Should().NotBeNull();
+            result.FileDownloadName.Should().Be("someProject.zip");
         }
 
         [Fact]
@@ -101,7 +106,7 @@ namespace Steeltoe.InitializrApi.Test.Controllers
                 var mockGenerator = new Mock<IProjectGenerator>();
                 mockGenerator.Setup(g => g.GenerateProject(It.IsAny<ProjectSpecification>()))
                     .ReturnsAsync(new MemoryStream());
-                _projectController = new ProjectController(mockGenerator.Object);
+                _projectController = new ProjectController(mockGenerator.Object, new NullLogger<ProjectController>());
             }
 
             internal ProjectController Build()

@@ -5,7 +5,7 @@
 using System.Threading.Tasks;
 using FluentAssertions;
 using Steeltoe.InitializrApi.Models;
-using Steeltoe.InitializrApi.Services;
+using Steeltoe.InitializrApi.Stubble;
 using Xunit;
 
 namespace Steeltoe.InitializrApi.Test.Services

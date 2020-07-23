@@ -40,6 +40,7 @@ namespace Steeltoe.InitializrApi.Test
             var cfg = new ConfigurationBuilder().Build();
             var startup = new Startup(cfg);
             IServiceCollection svcs = new ServiceCollection();
+            svcs.AddSingleton<ILogger<ProjectController>>(new NullLogger<ProjectController>());
             startup.ConfigureServices(svcs);
 
             // Act

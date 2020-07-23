@@ -8,8 +8,8 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using Moq;
 using Steeltoe.Extensions.Configuration.ConfigServer;
+using Steeltoe.InitializrApi.ConfigServer;
 using Steeltoe.InitializrApi.Models;
-using Steeltoe.InitializrApi.Services;
 using Xunit;
 
 namespace Steeltoe.InitializrApi.Test.Services
@@ -28,6 +28,7 @@ namespace Steeltoe.InitializrApi.Test.Services
             var mockSettingsOptions = new Mock<IOptions<ConfigServerClientSettingsOptions>>();
             mockSettingsOptions.Setup(settings => settings.Value).Returns(mockSettings);
             var repo = new ConfigServerConfigurationRepository(mockConfigOptions.Object, mockSettingsOptions.Object,
+                new Program.About(),
                 new NullLogger<ConfigServerConfigurationRepository>());
 
             // Act

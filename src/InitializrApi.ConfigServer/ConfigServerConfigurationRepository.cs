@@ -2,13 +2,14 @@
 // The .NET Foundation licenses this file to you under the Apache 2.0 License.
 // See the LICENSE file in the project root for more information.
 
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Steeltoe.Extensions.Configuration.ConfigServer;
 using Steeltoe.InitializrApi.Models;
-using System.Threading.Tasks;
+using Steeltoe.InitializrApi.Services;
 
-namespace Steeltoe.InitializrApi.Services
+namespace Steeltoe.InitializrApi.ConfigServer
 {
     /// <summary>
     /// An <see cref="IConfigurationRepository"/> using a <a href="https://cloud.spring.io/spring-cloud-config/reference/html/#_spring_cloud_config_server">Spring Cloud Config Server</a> backend.
@@ -22,22 +23,16 @@ namespace Steeltoe.InitializrApi.Services
         /// </summary>
         /// <param name="configuration">Injected configuration from Config Server.</param>
         /// <param name="settings">Injected Config Server settings.</param>
+        /// <param name="about">Injected about.</param>
         /// <param name="logger">Injected logger.</param>
         public ConfigServerConfigurationRepository(
             IOptions<Configuration> configuration,
             IOptions<ConfigServerClientSettingsOptions> settings,
+            IAbout about,
             ILogger<IConfigurationRepository> logger)
         {
             _configuration = configuration.Value;
-            var about = new Program.About();
-            _configuration.About = new Configuration.Product
-            {
-                Name = about.Name,
-                Vendor = about.Vendor,
-                Url = about.ProductUrl,
-                Version = about.Version,
-                Commit = about.Commit,
-            };
+            _configuration.About = about.GetAbout();
             logger.LogInformation($"Using Config Server listening at {settings.Value.Uri ?? "default URI"}");
         }
 

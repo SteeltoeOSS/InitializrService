@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\InitializrApi.Models\Steeltoe.InitializrApi.Models.csproj" />
+      <ProjectReference Include="..\InitializrApi.Services\Steeltoe.InitializrApi.Services.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.5" />
+      <PackageReference Include="Steeltoe.Extensions.Configuration.ConfigServerBase" Version="3.0.0-m2" />
+    </ItemGroup>
+
+</Project>

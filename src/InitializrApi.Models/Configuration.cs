@@ -12,7 +12,7 @@ namespace Steeltoe.InitializrApi.Models
         /// <summary>
         /// "About" the server from whence this configuration.
         /// </summary>
-        public Product About { get; set; }
+        public About About { get; set; }
 
         /// <summary>
         /// Project name.
@@ -48,37 +48,6 @@ namespace Steeltoe.InitializrApi.Models
         /// Project dependencies
         /// </summary>
         public GroupList Dependencies { get; set; }
-
-        /// <summary>
-        /// Product information, such as version.
-        /// </summary>
-        public class Product
-        {
-            /// <summary>
-            /// Gets or sets the product name.
-            /// </summary>
-            public string Name { get; set; }
-
-            /// <summary>
-            /// Gets or sets the product vendor.
-            /// </summary>
-            public string Vendor { get; set; }
-
-            /// <summary>
-            /// Gets or sets the product URL.
-            /// </summary>
-            public string Url { get; set; }
-
-            /// <summary>
-            /// Gets or sets the product version.
-            /// </summary>
-            public string Version { get; set; }
-
-            /// <summary>
-            /// Gets or sets the product build source control commit ID.
-            /// </summary>
-            public string Commit { get; set; }
-        }
 
         public class Text
         {

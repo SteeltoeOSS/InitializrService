@@ -3,7 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Net.Http.Headers;
+using Microsoft.Extensions.Logging;
 using Steeltoe.InitializrApi.Models;
 using Steeltoe.InitializrApi.Services;
 using System.IO;
@@ -22,13 +22,17 @@ namespace Steeltoe.InitializrApi.Controllers
     {
         private readonly IProjectGenerator _projectGenerator;
 
+        private readonly ILogger<ProjectController> _logger;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ProjectController"/> class.
         /// </summary>
         /// <param name="projectGenerator">Injected project generator.</param>
-        public ProjectController(IProjectGenerator projectGenerator)
+        /// <param name="logger">Injected logger.</param>
+        public ProjectController(IProjectGenerator projectGenerator, ILogger<ProjectController> logger)
         {
             _projectGenerator = projectGenerator;
+            _logger = logger;
         }
 
         /// <summary>
@@ -39,6 +43,7 @@ namespace Steeltoe.InitializrApi.Controllers
         [HttpGet]
         public async Task<ActionResult> Get([FromQuery] ProjectSpecification spec)
         {
+            _logger.LogDebug($"Project specification: {spec}");
             var stream = await _projectGenerator.GenerateProject(spec);
             byte[] bytes;
             await using (var buf = new MemoryStream())
@@ -47,14 +52,7 @@ namespace Steeltoe.InitializrApi.Controllers
                 bytes = buf.ToArray();
             }
 
-            var cd = new ContentDispositionHeaderValue("attachment")
-            {
-                FileName = $"{spec.ProjectName}.zip",
-            };
-
-            Response.Headers.Add(HeaderNames.ContentDisposition, cd.ToString());
-
-            return File(bytes, MediaTypeNames.Application.Zip);
+            return File(bytes, MediaTypeNames.Application.Zip, $"{spec.Name}.zip");
         }
     }
 }

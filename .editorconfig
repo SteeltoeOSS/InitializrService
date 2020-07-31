@@ -10,7 +10,7 @@ charset = utf-8
 [*.cs]
 indent_size = 4
 
-[*.{xml,csproj}]
+[*.{xml,csproj,props}]
 indent_size = 4
 
 [*.yaml]

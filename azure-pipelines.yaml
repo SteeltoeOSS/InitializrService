@@ -91,13 +91,3 @@ jobs:
           zipAfterPublish: false
         condition:
           and(succeeded(), not(eq(variables['build.reason'], 'PullRequest')))
-      - task: CloudFoundry@1
-        displayName: Deploy Development Environment
-        inputs:
-          cfEndpoint: PCFone
-          org: group-steeltoe
-          space: initializr
-          deploymentOptions: manifest
-          cfManifest: deploy/cloud-foundry/manifest.yaml
-        condition:
-          and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/dev'), not(eq(variables['build.reason'], 'PullRequest')))

@@ -1,28 +1,41 @@
 <Project>
 
-	<PropertyGroup>
-		<Authors>Steeltoe,VMware</Authors>
-		<PublishRepositoryUrl>true</PublishRepositoryUrl>
-		<IncludeSymbols>true</IncludeSymbols>
-		<EmbedUntrackedSources>true</EmbedUntrackedSources>
-		<AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
-	</PropertyGroup>
+    <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
 
-	<PropertyGroup>
-		<Version Condition=" '$(BUILD_BUILDNUMBER)' == '' ">0.7.0</Version>
-		<Version Condition=" '$(BUILD_BUILDNUMBER)' != '' ">$(BUILD_BUILDNUMBER)</Version>
-	</PropertyGroup>
+    <PropertyGroup>
+        <Authors>Steeltoe,VMware</Authors>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <IncludeSymbols>true</IncludeSymbols>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    </PropertyGroup>
 
-	<PropertyGroup Condition="'$(TF_BUILD)' == 'true'">
-		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
-	</PropertyGroup>
+    <PropertyGroup>
+        <!-- SA1101: Prefix local calls with this -->
+        <!-- SA1309: Field '...' should not begin with an underscore -->
+        <NoWarn>SA1101;SA1309</NoWarn>
+    </PropertyGroup>
 
-	<ItemGroup>
-		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
-	</ItemGroup>
+    <PropertyGroup>
+        <Version Condition=" '$(BUILD_BUILDNUMBER)' == '' ">0.7.0</Version>
+        <Version Condition=" '$(BUILD_BUILDNUMBER)' != '' ">$(BUILD_BUILDNUMBER)</Version>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(TF_BUILD)' == 'true'">
+        <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
+        <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+            <PrivateAssets>All</PrivateAssets>
+        </PackageReference>
+        <AdditionalFiles Include="$(MSBuildThisFileDirectory)\..\stylecop.json" />
+    </ItemGroup>
 
 </Project>
 
 <!--
-	vim: ft=xml
+    vim: ft=xml
 -->

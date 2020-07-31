@@ -2,12 +2,12 @@
 // The .NET Foundation licenses this file to you under the Apache 2.0 License.
 // See the LICENSE file in the project root for more information.
 
-using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Steeltoe.Extensions.Configuration.ConfigServer;
 using Steeltoe.InitializrApi.Models;
 using Steeltoe.InitializrApi.Services;
+using System.Threading.Tasks;
 
 namespace Steeltoe.InitializrApi.ConfigServer
 {

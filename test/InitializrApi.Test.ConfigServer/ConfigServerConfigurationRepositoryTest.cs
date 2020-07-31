@@ -10,9 +10,10 @@ using Moq;
 using Steeltoe.Extensions.Configuration.ConfigServer;
 using Steeltoe.InitializrApi.ConfigServer;
 using Steeltoe.InitializrApi.Models;
+using Steeltoe.InitializrApi.Services;
 using Xunit;
 
-namespace Steeltoe.InitializrApi.Test.Services
+namespace Steeltoe.InitializrApi.Test.ConfigServer
 {
     public class ConfigServerConfigurationRepositoryTest
     {
@@ -20,6 +21,8 @@ namespace Steeltoe.InitializrApi.Test.Services
         public async Task ConfigurationShouldNotBeNull()
         {
             // Arrange
+            var about = new Mock<IAbout>();
+            about.Setup(a => a.GetAbout()).Returns(new About());
             var expected = new Configuration
                 {SteeltoeRelease = new Configuration.SingleSelectList {Default = "a default", Type = "a type"}};
             var mockConfigOptions = new Mock<IOptions<Configuration>>();
@@ -28,7 +31,7 @@ namespace Steeltoe.InitializrApi.Test.Services
             var mockSettingsOptions = new Mock<IOptions<ConfigServerClientSettingsOptions>>();
             mockSettingsOptions.Setup(settings => settings.Value).Returns(mockSettings);
             var repo = new ConfigServerConfigurationRepository(mockConfigOptions.Object, mockSettingsOptions.Object,
-                new Program.About(),
+                about.Object,
                 new NullLogger<ConfigServerConfigurationRepository>());
 
             // Act
@@ -38,11 +41,6 @@ namespace Steeltoe.InitializrApi.Test.Services
             Assert.IsType<Configuration>(actual);
             actual.Should().Be(expected);
             actual.About.Should().NotBeNull();
-            actual.About.Name.Should().NotBeNull();
-            actual.About.Vendor.Should().NotBeNull();
-            actual.About.Url.Should().NotBeNull();
-            actual.About.Version.Should().NotBeNull();
-            actual.About.Commit.Should().NotBeNull();
         }
     }
 }

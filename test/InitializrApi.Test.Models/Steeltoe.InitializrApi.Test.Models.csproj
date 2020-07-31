@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\src\InitializrApi.Models\Steeltoe.InitializrApi.Models.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="FluentAssertions.Json" Version="5.5.0" />
+    </ItemGroup>
+
+</Project>

@@ -24,12 +24,22 @@ namespace Steeltoe.InitializrApi.Models
         /// </summary>
         public string SteeltoeVersion { get; set; }
 
-        public string DotnetFrameworkTargetId { get; set; }
+        /// <summary>
+        /// Gets or sets the DotNet target framework.
+        /// </summary>
+        public string DotnetTargetFrameworkId { get; set; }
 
+        /// <summary>
+        /// Gets or sets the DotNet template ID.
+        /// </summary>
         public string DotnetTemplateId { get; set; }
 
+        /// <summary>
+        /// Gets or sets the DotNet language.
+        /// </summary>
         public string DotnetLanguageId { get; set; }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             return $"[name={Name}]";

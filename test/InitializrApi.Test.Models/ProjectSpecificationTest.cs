@@ -18,14 +18,14 @@ namespace Steeltoe.InitializrApi.Test.Models
                 Name = "some name",
                 Description = "some description",
                 SteeltoeVersion = "some Steeltoe release ID",
-                DotnetFrameworkTargetId = "some DotNet framework ID",
+                DotnetTargetFrameworkId = "some DotNet framework ID",
                 DotnetLanguageId = "some DotNet language ID",
                 DotnetTemplateId = "some DotNet template ID",
             };
             spec.Name.Should().Be("some name");
             spec.Description.Should().Be("some description");
             spec.SteeltoeVersion.Should().Be("some Steeltoe release ID");
-            spec.DotnetFrameworkTargetId.Should().Be("some DotNet framework ID");
+            spec.DotnetTargetFrameworkId.Should().Be("some DotNet framework ID");
             spec.DotnetLanguageId.Should().Be("some DotNet language ID");
             spec.DotnetTemplateId.Should().Be("some DotNet template ID");
         }

@@ -8,7 +8,7 @@ using Steeltoe.InitializrApi.Models;
 using Steeltoe.InitializrApi.Stubble;
 using Xunit;
 
-namespace Steeltoe.InitializrApi.Test.Services
+namespace Steeltoe.InitializrApi.Test.Stubble
 {
     public class StubbleProjectGeneratorTest
     {

@@ -14,6 +14,7 @@ using Steeltoe.InitializrApi.Generators;
 using Steeltoe.InitializrApi.Models;
 using Steeltoe.InitializrApi.Services;
 using System.Diagnostics.CodeAnalysis;
+using System.Transactions;
 
 namespace Steeltoe.InitializrApi
 {
@@ -48,7 +49,7 @@ namespace Steeltoe.InitializrApi
             services.Configure<InitializrApiConfiguration>(Configuration);
             services.AddSingleton<IConfigurationRepository, ConfigServerConfigurationRepository>();
             services.AddSingleton<IProjectGenerator, StubbleProjectGenerator>();
-            services.AddControllers();
+            services.AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.IgnoreNullValues = true);
         }
 
         /// <summary>
@@ -68,11 +69,8 @@ namespace Steeltoe.InitializrApi
             }
 
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }

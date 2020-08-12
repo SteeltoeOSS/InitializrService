@@ -27,7 +27,7 @@ namespace Steeltoe.InitializrApi.Controllers
         }
 
         /// <summary>
-        /// Implements <c>GET</c>.
+        /// Implements <c>GET</c> index.
         /// </summary>
         /// <returns>A task containing the <c>GET</c> result which, if is <see cref="OkObjectResult"/>, contains the server configuration.</returns>
         [HttpGet]
@@ -35,6 +35,30 @@ namespace Steeltoe.InitializrApi.Controllers
         {
             var config = await _configurationRepository.GetConfiguration();
             return Ok(config);
+        }
+
+        /// <summary>
+        /// Implements <c>GET metadata</c>.
+        /// </summary>
+        /// <returns>A task containing the <c>GET</c> result which, if is <see cref="OkObjectResult"/>, contains project metadata configuration.</returns>
+        [HttpGet]
+        [Route("metadata")]
+        public async Task<IActionResult> GetMetadata()
+        {
+            var config = await _configurationRepository.GetConfiguration();
+            return Ok(config.Metadata);
+        }
+
+        /// <summary>
+        /// Implements <c>GET templates</c>.
+        /// </summary>
+        /// <returns>A task containing the <c>GET</c> result which, if is <see cref="OkObjectResult"/>, contains templates configuration.</returns>
+        [HttpGet]
+        [Route("templates")]
+        public async Task<IActionResult> GetTemplates()
+        {
+            var config = await _configurationRepository.GetConfiguration();
+            return Ok(config.Templates);
         }
     }
 }

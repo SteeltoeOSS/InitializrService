@@ -10,8 +10,13 @@ namespace Steeltoe.InitializrApi.Models
     public sealed class InitializrApiConfiguration
     {
         /// <summary>
-        /// Gets or sets the configuration project metadata.
+        /// Gets or sets the project metadata.
         /// </summary>
         public ProjectMetadata Metadata { get; set; }
+
+        /// <summary>
+        /// Gets or sets the project template configurations.
+        /// </summary>
+        public ProjectTemplateConfiguration[] Templates { get; set; }
     }
 }

@@ -16,7 +16,7 @@ namespace Steeltoe.InitializrApi.Test.Models
         {
             var config = new ProjectTemplateConfiguration
             {
-                Uri = new Uri("/a uri"),
+                Uri = new Uri("file:///a uri"),
                 SteeltoeVersionRange = "a steeltoe version range",
                 DotNetVersionRange = "a dotnet version range",
                 Type = "a dotnet template type",

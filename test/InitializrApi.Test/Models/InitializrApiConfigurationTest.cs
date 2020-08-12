@@ -27,7 +27,7 @@ namespace Steeltoe.InitializrApi.Test.Models
                 {
                     new ProjectTemplateConfiguration
                     {
-                        Uri = new Uri("/a uri"),
+                        Uri = new Uri("file:///a uri"),
                     },
                 },
             };

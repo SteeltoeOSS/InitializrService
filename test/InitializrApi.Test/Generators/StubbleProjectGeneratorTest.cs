@@ -4,11 +4,11 @@
 
 using System.Threading.Tasks;
 using FluentAssertions;
+using Steeltoe.InitializrApi.Generators;
 using Steeltoe.InitializrApi.Models;
-using Steeltoe.InitializrApi.Stubble;
 using Xunit;
 
-namespace Steeltoe.InitializrApi.Test.Stubble
+namespace Steeltoe.InitializrApi.Test.Generators
 {
     public class StubbleProjectGeneratorTest
     {

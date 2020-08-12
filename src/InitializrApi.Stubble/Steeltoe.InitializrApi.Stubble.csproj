@@ -1,8 +1,0 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
-    <ItemGroup>
-        <ProjectReference Include="..\InitializrApi.Models\Steeltoe.InitializrApi.Models.csproj"/>
-        <ProjectReference Include="..\InitializrApi.Services\Steeltoe.InitializrApi.Services.csproj"/>
-    </ItemGroup>
-
-</Project>

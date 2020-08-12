@@ -16,24 +16,22 @@ using Xunit;
 
 namespace Steeltoe.InitializrApi.Test.Controllers
 {
-    public class ConfigurationControllerTest
+    public class AboutControllerTest
     {
-        private const string Endpoint = "/api/configuration";
+        private const string Endpoint = "/api/about";
 
         [Fact]
-        public async Task GetConfiguration()
+        public void GetAbout()
         {
             // Arrange
-            var mockRepo = new Mock<IConfigurationRepository>();
-            mockRepo.Setup(repo => repo.GetConfiguration()).ReturnsAsync(new InitializrApiConfiguration());
-            var controller = new ConfigurationController(mockRepo.Object);
+            var controller = new AboutController();
 
             // Act
-            var result = await controller.GetConfiguration();
+            var result = controller.GetAbout();
 
             // Assert
             var indexResult = Assert.IsType<OkObjectResult>(result);
-            indexResult.Value.Should().BeOfType<InitializrApiConfiguration>();
+            indexResult.Value.Should().BeOfType<About>();
         }
 
         [Fact]

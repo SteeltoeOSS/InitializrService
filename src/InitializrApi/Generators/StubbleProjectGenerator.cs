@@ -7,7 +7,7 @@ using Steeltoe.InitializrApi.Services;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace Steeltoe.InitializrApi.Stubble
+namespace Steeltoe.InitializrApi.Generators
 {
     /// <summary>
     /// An <see cref="IProjectGenerator"/> implementation using <a gref="https://github.com/StubbleOrg/Stubble">Stubble</a>, a Mustache template engine implemented in C#.

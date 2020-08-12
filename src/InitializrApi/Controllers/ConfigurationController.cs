@@ -4,13 +4,12 @@
 
 using Microsoft.AspNetCore.Mvc;
 using Steeltoe.InitializrApi.Services;
-using System.Net;
 using System.Threading.Tasks;
 
 namespace Steeltoe.InitializrApi.Controllers
 {
     /// <summary>
-    /// Project configuration metadata endpoint.
+    /// Server configuration endpoint.
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
@@ -30,9 +29,9 @@ namespace Steeltoe.InitializrApi.Controllers
         /// <summary>
         /// Implements <c>GET</c>.
         /// </summary>
-        /// <returns>A task containing the <c>GET</c> result which, if <see cref="HttpStatusCode.OK"/>, contains a project configuration metadata.</returns>
+        /// <returns>A task containing the <c>GET</c> result which, if is <see cref="OkObjectResult"/>, contains the server configuration.</returns>
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> GetConfiguration()
         {
             var config = await _configurationRepository.GetConfiguration();
             return Ok(config);

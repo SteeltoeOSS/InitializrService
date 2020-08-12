@@ -7,13 +7,8 @@ namespace Steeltoe.InitializrApi.Models
     /// <summary>
     /// A model of project configuration metadata used by Initializr UIs and clients.
     /// </summary>
-    public sealed class Configuration
+    public sealed class ProjectMetadata
     {
-        /// <summary>
-        /// Gets or sets "About" the server from whence this configuration.
-        /// </summary>
-        public About About { get; set; }
-
         /// <summary>
         /// Gets or sets the project name.
         /// </summary>
@@ -25,24 +20,29 @@ namespace Steeltoe.InitializrApi.Models
         public Text Description { get; set; }
 
         /// <summary>
-        /// Gets or sets the Steeltoe releases.
+        /// Gets or sets the Steeltoe versions.
         /// </summary>
-        public SingleSelectList SteeltoeRelease { get; set; }
+        public SingleSelectList SteeltoeVersion { get; set; }
 
         /// <summary>
-        /// Gets or sets the DotNet target frameworks.
+        /// Gets or sets the DotNet framework versions.
         /// </summary>
-        public SingleSelectList DotnetFrameworkTarget { get; set; }
+        public SingleSelectList DotNetVersion { get; set; }
 
         /// <summary>
-        /// Gets or sets the DotNet templates.
+        /// Gets or sets the DotNet template types.
         /// </summary>
-        public SingleSelectList DotnetTemplate { get; set; }
+        public SingleSelectList Type { get; set; }
 
         /// <summary>
         /// Gets or sets the DotNet languages.
         /// </summary>
-        public SingleSelectList DotnetLanguage { get; set; }
+        public SingleSelectList Language { get; set; }
+
+        /// <summary>
+        /// Gets or sets the project bundle archive format.
+        /// </summary>
+        public SingleSelectList Format { get; set; }
 
         /// <summary>
         /// Gets or sets the project dependencies.
@@ -130,6 +130,11 @@ namespace Steeltoe.InitializrApi.Models
             /// Gets or sets the description.
             /// </summary>
             public string Description { get; set; }
+
+            /// <summary>
+            /// Gets or sets the Steeltoe version constraints.
+            /// </summary>
+            public string SteeltoeVersionRange { get; set; }
         }
 
         /// <summary>

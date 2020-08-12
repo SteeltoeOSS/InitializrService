@@ -5,7 +5,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Steeltoe.Extensions.Configuration.ConfigServer;
-using Steeltoe.InitializrApi.Services;
+using Steeltoe.InitializrApi.Models;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
@@ -17,12 +17,30 @@ namespace Steeltoe.InitializrApi
     [ExcludeFromCodeCoverage]
     public class Program
     {
+        static Program()
+        {
+            About = new About();
+            About.Name = typeof(Program).Namespace ?? "unknown";
+            About.Vendor = "SteeltoeOSS/VMware";
+            About.Url = "https://github.com/SteeltoeOSS/InitializrApi/";
+            var versionAttr =
+                typeof(Program).Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
+            var fields = versionAttr?.InformationalVersion.Split('+');
+            About.Version = fields?[0];
+            About.Commit = fields?[1];
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Program"/> class.
         /// </summary>
         protected Program()
         {
         }
+
+        /// <summary>
+        /// Gets or sets "About" details, such as version.
+        /// </summary>
+        public static About About { get; set; }
 
         /// <summary>
         /// Program entrypoint.
@@ -42,33 +60,5 @@ namespace Steeltoe.InitializrApi
             Host.CreateDefaultBuilder(args)
                 .AddConfigServer()
                 .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
-
-        /// <summary>
-        /// Program "About" details, such as version.
-        /// </summary>
-        public class About : IAbout
-        {
-            /// <summary>
-            /// Get the "about" details of this program.
-            /// </summary>
-            /// <returns>program about.</returns>
-            public Models.About GetAbout()
-            {
-                var about = new Models.About();
-                about.Name = typeof(Program).Namespace ?? "unknown";
-                about.Vendor = "SteeltoeOSS/VMware";
-                about.Url = "https://github.com/SteeltoeOSS/InitializrApi/";
-                var versionAttr =
-                    typeof(Program).Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
-                if (versionAttr != null)
-                {
-                    var fields = versionAttr.InformationalVersion.Split('+');
-                    about.Version = fields[0];
-                    about.Commit = fields.Length > 1 ? fields[1] : "unknown";
-                }
-
-                return about;
-            }
-        }
     }
 }

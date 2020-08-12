@@ -29,14 +29,5 @@ namespace Steeltoe.InitializrApi.Test.Models
             spec.DotnetLanguageId.Should().Be("some DotNet language ID");
             spec.DotnetTemplateId.Should().Be("some DotNet template ID");
         }
-
-        [Fact]
-        public void StringRepresentation()
-        {
-            var spec = new ProjectSpecification();
-            spec.ToString().Should().Be("[name=]");
-            spec.Name = "aName";
-            spec.ToString().Should().Be("[name=aName]");
-        }
     }
 }

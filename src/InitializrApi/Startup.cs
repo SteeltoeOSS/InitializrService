@@ -9,11 +9,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Steeltoe.Extensions.Configuration.ConfigServer;
-using Steeltoe.InitializrApi.ConfigServer;
+using Steeltoe.InitializrApi.Configuration;
+using Steeltoe.InitializrApi.Generators;
 using Steeltoe.InitializrApi.Models;
 using Steeltoe.InitializrApi.Services;
-using Steeltoe.InitializrApi.Stubble;
 using System.Diagnostics.CodeAnalysis;
+using System.Transactions;
 
 namespace Steeltoe.InitializrApi
 {
@@ -45,11 +46,10 @@ namespace Steeltoe.InitializrApi
         {
             services.AddOptions();
             services.ConfigureConfigServerClientOptions(Configuration);
-            services.Configure<Configuration>(Configuration);
+            services.Configure<InitializrApiConfiguration>(Configuration);
             services.AddSingleton<IConfigurationRepository, ConfigServerConfigurationRepository>();
-            services.AddSingleton<IAbout, Program.About>();
             services.AddSingleton<IProjectGenerator, StubbleProjectGenerator>();
-            services.AddControllers();
+            services.AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.IgnoreNullValues = true);
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace Steeltoe.InitializrApi
         /// <param name="logger">Injected ILogger.</param>
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
         {
-            var about = new Program.About().GetAbout();
+            var about = Program.About;
             logger.LogInformation($"{about.Name}, version {about.Version} [{about.Commit}]");
 
             if (env.IsDevelopment())
@@ -69,11 +69,8 @@ namespace Steeltoe.InitializrApi
             }
 
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }

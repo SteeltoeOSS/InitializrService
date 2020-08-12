@@ -39,7 +39,7 @@ namespace Steeltoe.InitializrApi.Controllers
         /// Implements <c>GET</c>.
         /// Generated project is bundled in a ZIP archive.
         /// </summary>
-        /// <returns>A task containing the <c>GET</c> result which, if <see cref="HttpStatusCode.OK"/>, contains a project bundle stream.</returns>
+        /// <returns>A task containing the <c>GET</c> result which, if is <see cref="FileContentResult"/>, contains a project bundle archive stream.</returns>
         [HttpGet]
         public async Task<ActionResult> Get([FromQuery] ProjectSpecification spec)
         {

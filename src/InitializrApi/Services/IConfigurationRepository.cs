@@ -3,18 +3,19 @@
 // See the LICENSE file in the project root for more information.
 
 using Steeltoe.InitializrApi.Models;
+using System.Threading.Tasks;
 
 namespace Steeltoe.InitializrApi.Services
 {
     /// <summary>
-    /// Contract for object that can proide <see cref="About"/>.
+    /// Contract for project configuration repository implementations.
     /// </summary>
-    public interface IAbout
+    public interface IConfigurationRepository
     {
         /// <summary>
-        /// Gets the <see cref="About"/> details.
+        /// Gets the project generation configuration.
         /// </summary>
-        /// <returns>about.</returns>
-        public About GetAbout();
+        /// <returns>A task containing server configuration.</returns>
+        public Task<InitializrApiConfiguration> GetConfiguration();
     }
 }

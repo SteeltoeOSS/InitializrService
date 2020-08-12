@@ -16,65 +16,22 @@ using Xunit;
 
 namespace Steeltoe.InitializrApi.Test.Controllers
 {
-    public class ConfigurationControllerTest
+    public class AboutControllerTest
     {
-        private const string Endpoint = "/api/configuration";
+        private const string Endpoint = "/api/about";
 
         [Fact]
-        public async Task GetConfiguration()
+        public void GetAbout()
         {
             // Arrange
-            var config = new InitializrApiConfiguration();
-            var mockRepo = new Mock<IConfigurationRepository>();
-            mockRepo.Setup(repo => repo.GetConfiguration()).ReturnsAsync(config);
-            var controller = new ConfigurationController(mockRepo.Object);
+            var controller = new AboutController();
 
             // Act
-            var result = await controller.GetConfiguration();
+            var result = controller.GetAbout();
 
             // Assert
             var indexResult = Assert.IsType<OkObjectResult>(result);
-            indexResult.Value.Should().BeSameAs(config);
-        }
-
-        [Fact]
-        public async Task GetMetadata()
-        {
-            // Arrange
-            var config = new InitializrApiConfiguration
-            {
-                Metadata = new ProjectMetadata(),
-            };
-            var mockRepo = new Mock<IConfigurationRepository>();
-            mockRepo.Setup(repo => repo.GetConfiguration()).ReturnsAsync(config);
-            var controller = new ConfigurationController(mockRepo.Object);
-
-            // Act
-            var result = await controller.GetMetadata();
-
-            // Assert
-            var indexResult = Assert.IsType<OkObjectResult>(result);
-            indexResult.Value.Should().BeSameAs(config.Metadata);
-        }
-
-        [Fact]
-        public async Task GetTemplates()
-        {
-            // Arrange
-            var config = new InitializrApiConfiguration
-            {
-                Templates = new ProjectTemplateConfiguration[0],
-            };
-            var mockRepo = new Mock<IConfigurationRepository>();
-            mockRepo.Setup(repo => repo.GetConfiguration()).ReturnsAsync(config);
-            var controller = new ConfigurationController(mockRepo.Object);
-
-            // Act
-            var result = await controller.GetTemplates();
-
-            // Assert
-            var indexResult = Assert.IsType<OkObjectResult>(result);
-            indexResult.Value.Should().BeSameAs(config.Templates);
+            indexResult.Value.Should().BeOfType<About>();
         }
 
         [Fact]

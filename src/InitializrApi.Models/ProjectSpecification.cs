@@ -38,11 +38,5 @@ namespace Steeltoe.InitializrApi.Models
         /// Gets or sets the DotNet language.
         /// </summary>
         public string DotnetLanguageId { get; set; }
-
-        /// <inheritdoc/>
-        public override string ToString()
-        {
-            return $"[name={Name}]";
-        }
     }
 }

@@ -4,13 +4,12 @@
 
 using Microsoft.AspNetCore.Mvc;
 using Steeltoe.InitializrApi.Services;
-using System.Net;
 using System.Threading.Tasks;
 
 namespace Steeltoe.InitializrApi.Controllers
 {
     /// <summary>
-    /// Project configuration metadata endpoint.
+    /// Server configuration endpoint.
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
@@ -28,14 +27,38 @@ namespace Steeltoe.InitializrApi.Controllers
         }
 
         /// <summary>
-        /// Implements <c>GET</c>.
+        /// Implements <c>GET</c> index.
         /// </summary>
-        /// <returns>A task containing the <c>GET</c> result which, if <see cref="HttpStatusCode.OK"/>, contains a project configuration metadata.</returns>
+        /// <returns>A task containing the <c>GET</c> result which, if is <see cref="OkObjectResult"/>, contains the server configuration.</returns>
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> GetConfiguration()
         {
             var config = await _configurationRepository.GetConfiguration();
             return Ok(config);
+        }
+
+        /// <summary>
+        /// Implements <c>GET metadata</c>.
+        /// </summary>
+        /// <returns>A task containing the <c>GET</c> result which, if is <see cref="OkObjectResult"/>, contains project metadata configuration.</returns>
+        [HttpGet]
+        [Route("metadata")]
+        public async Task<IActionResult> GetMetadata()
+        {
+            var config = await _configurationRepository.GetConfiguration();
+            return Ok(config.Metadata);
+        }
+
+        /// <summary>
+        /// Implements <c>GET templates</c>.
+        /// </summary>
+        /// <returns>A task containing the <c>GET</c> result which, if is <see cref="OkObjectResult"/>, contains templates configuration.</returns>
+        [HttpGet]
+        [Route("templates")]
+        public async Task<IActionResult> GetTemplates()
+        {
+            var config = await _configurationRepository.GetConfiguration();
+            return Ok(config.Templates);
         }
     }
 }

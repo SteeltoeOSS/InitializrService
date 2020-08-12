@@ -12,7 +12,7 @@ namespace Steeltoe.InitializrApi.Test
         [Fact]
         public void About()
         {
-            var about = new Program.About().GetAbout();
+            var about = Program.About;
             about.Name.Should().Be("Steeltoe.InitializrApi");
             about.Vendor.Should().Be("SteeltoeOSS/VMware");
             about.Url.Should().Be("https://github.com/SteeltoeOSS/InitializrApi/");

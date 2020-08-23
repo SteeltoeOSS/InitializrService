@@ -1,13 +1,27 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26124.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30320.27
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Steeltoe.InitializrApi", "src\InitializrApi\Steeltoe.InitializrApi.csproj", "{7597F74D-528E-448B-BBE8-994092F04CA4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Steeltoe.InitializrApi", "src\InitializrApi\Steeltoe.InitializrApi.csproj", "{7597F74D-528E-448B-BBE8-994092F04CA4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Steeltoe.InitializrApi.Models", "src\InitializrApi.Models\Steeltoe.InitializrApi.Models.csproj", "{ACE6FEE1-9CEA-4A95-9D76-C62A41947C8F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Steeltoe.InitializrApi.Models", "src\InitializrApi.Models\Steeltoe.InitializrApi.Models.csproj", "{ACE6FEE1-9CEA-4A95-9D76-C62A41947C8F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Steeltoe.InitializrApi.Test", "test\InitializrApi.Test\Steeltoe.InitializrApi.Test.csproj", "{EA849C8F-7118-45DB-BBF2-D36CE1FD43B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Steeltoe.InitializrApi.Test", "test\InitializrApi.Test\Steeltoe.InitializrApi.Test.csproj", "{EA849C8F-7118-45DB-BBF2-D36CE1FD43B4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F80B44AC-7383-40DA-B353-16163BF279F1}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+		azure-pipelines.yaml = azure-pipelines.yaml
+		codecov.yml = codecov.yml
+		Directory.Build.props = Directory.Build.props
+		docker-compose.yaml = docker-compose.yaml
+		Dockerfile = Dockerfile
+		InitializrApi.sln.DotSettings = InitializrApi.sln.DotSettings
+		LICENSE = LICENSE
+		README.md = README.md
+		stylecop.json = stylecop.json
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,9 +31,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{7597F74D-528E-448B-BBE8-994092F04CA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -34,18 +45,6 @@ Global
 		{7597F74D-528E-448B-BBE8-994092F04CA4}.Release|x64.Build.0 = Release|Any CPU
 		{7597F74D-528E-448B-BBE8-994092F04CA4}.Release|x86.ActiveCfg = Release|Any CPU
 		{7597F74D-528E-448B-BBE8-994092F04CA4}.Release|x86.Build.0 = Release|Any CPU
-		{EA849C8F-7118-45DB-BBF2-D36CE1FD43B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EA849C8F-7118-45DB-BBF2-D36CE1FD43B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EA849C8F-7118-45DB-BBF2-D36CE1FD43B4}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{EA849C8F-7118-45DB-BBF2-D36CE1FD43B4}.Debug|x64.Build.0 = Debug|Any CPU
-		{EA849C8F-7118-45DB-BBF2-D36CE1FD43B4}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{EA849C8F-7118-45DB-BBF2-D36CE1FD43B4}.Debug|x86.Build.0 = Debug|Any CPU
-		{EA849C8F-7118-45DB-BBF2-D36CE1FD43B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EA849C8F-7118-45DB-BBF2-D36CE1FD43B4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EA849C8F-7118-45DB-BBF2-D36CE1FD43B4}.Release|x64.ActiveCfg = Release|Any CPU
-		{EA849C8F-7118-45DB-BBF2-D36CE1FD43B4}.Release|x64.Build.0 = Release|Any CPU
-		{EA849C8F-7118-45DB-BBF2-D36CE1FD43B4}.Release|x86.ActiveCfg = Release|Any CPU
-		{EA849C8F-7118-45DB-BBF2-D36CE1FD43B4}.Release|x86.Build.0 = Release|Any CPU
 		{ACE6FEE1-9CEA-4A95-9D76-C62A41947C8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{ACE6FEE1-9CEA-4A95-9D76-C62A41947C8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ACE6FEE1-9CEA-4A95-9D76-C62A41947C8F}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -58,5 +57,23 @@ Global
 		{ACE6FEE1-9CEA-4A95-9D76-C62A41947C8F}.Release|x64.Build.0 = Release|Any CPU
 		{ACE6FEE1-9CEA-4A95-9D76-C62A41947C8F}.Release|x86.ActiveCfg = Release|Any CPU
 		{ACE6FEE1-9CEA-4A95-9D76-C62A41947C8F}.Release|x86.Build.0 = Release|Any CPU
+		{EA849C8F-7118-45DB-BBF2-D36CE1FD43B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA849C8F-7118-45DB-BBF2-D36CE1FD43B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA849C8F-7118-45DB-BBF2-D36CE1FD43B4}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{EA849C8F-7118-45DB-BBF2-D36CE1FD43B4}.Debug|x64.Build.0 = Debug|Any CPU
+		{EA849C8F-7118-45DB-BBF2-D36CE1FD43B4}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EA849C8F-7118-45DB-BBF2-D36CE1FD43B4}.Debug|x86.Build.0 = Debug|Any CPU
+		{EA849C8F-7118-45DB-BBF2-D36CE1FD43B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA849C8F-7118-45DB-BBF2-D36CE1FD43B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA849C8F-7118-45DB-BBF2-D36CE1FD43B4}.Release|x64.ActiveCfg = Release|Any CPU
+		{EA849C8F-7118-45DB-BBF2-D36CE1FD43B4}.Release|x64.Build.0 = Release|Any CPU
+		{EA849C8F-7118-45DB-BBF2-D36CE1FD43B4}.Release|x86.ActiveCfg = Release|Any CPU
+		{EA849C8F-7118-45DB-BBF2-D36CE1FD43B4}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F773FB5B-7619-4DA7-AA07-919DA1A5181C}
 	EndGlobalSection
 EndGlobal

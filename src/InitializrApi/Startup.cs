@@ -9,12 +9,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Steeltoe.Extensions.Configuration.ConfigServer;
+using Steeltoe.InitializrApi.Archivers;
 using Steeltoe.InitializrApi.Configuration;
 using Steeltoe.InitializrApi.Generators;
 using Steeltoe.InitializrApi.Models;
 using Steeltoe.InitializrApi.Services;
+using Steeltoe.InitializrApi.Templates;
 using System.Diagnostics.CodeAnalysis;
-using System.Transactions;
 
 namespace Steeltoe.InitializrApi
 {
@@ -39,17 +40,23 @@ namespace Steeltoe.InitializrApi
         public IConfiguration Configuration { get; }
 
         /// <summary>
-        /// Called by the runtime.  Adds <see cref="IConfigurationRepository"/> and <see cref="IProjectGenerator"/> services.
+        /// Called by the runtime.  Adds <see cref="IInitializrConfigService"/> and <see cref="IProjectGenerator"/> services.
         /// </summary>
         /// <param name="services">Injected services.</param>
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddOptions();
             services.ConfigureConfigServerClientOptions(Configuration);
-            services.Configure<InitializrApiConfiguration>(Configuration);
-            services.AddSingleton<IConfigurationRepository, ConfigServerConfigurationRepository>();
-            services.AddSingleton<IProjectGenerator, StubbleProjectGenerator>();
-            services.AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.IgnoreNullValues = true);
+            services.Configure<InitializrConfig>(Configuration);
+            services.AddSingleton<IInitializrConfigService, InitializrConfigService>();
+            services.AddSingleton<IProjectTemplateRegistry, ProjectTemplateRegistry>();
+            services.AddSingleton<IArchiverRegistry, ArchiverRegistry>();
+            services.AddTransient<IProjectGenerator, StubbleProjectGenerator>();
+            services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.IgnoreNullValues = true;
+                options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+            });
         }
 
         /// <summary>
@@ -61,7 +68,7 @@ namespace Steeltoe.InitializrApi
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
         {
             var about = Program.About;
-            logger.LogInformation($"{about.Name}, version {about.Version} [{about.Commit}]");
+            logger.LogInformation("{Program}, version {Version} [{Commit}]", about.Name, about.Version, about.Commit);
 
             if (env.IsDevelopment())
             {

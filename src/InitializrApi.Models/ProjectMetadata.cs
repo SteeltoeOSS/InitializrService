@@ -5,10 +5,14 @@
 namespace Steeltoe.InitializrApi.Models
 {
     /// <summary>
-    /// A model of project configuration metadata used by Initializr UIs and clients.
+    /// A model of metadata used to describe the configuration of a project.
     /// </summary>
     public sealed class ProjectMetadata
     {
+        /* ----------------------------------------------------------------- *
+         * properties                                                        *
+         * ----------------------------------------------------------------- */
+
         /// <summary>
         /// Gets or sets the project name.
         /// </summary>
@@ -20,29 +24,34 @@ namespace Steeltoe.InitializrApi.Models
         public Text Description { get; set; }
 
         /// <summary>
+        /// Gets or sets the project namespace.
+        /// </summary>
+        public Text Namespace { get; set; }
+
+        /// <summary>
         /// Gets or sets the Steeltoe versions.
         /// </summary>
         public SingleSelectList SteeltoeVersion { get; set; }
 
         /// <summary>
-        /// Gets or sets the DotNet framework versions.
+        /// Gets or sets the DotNet frameworks.
         /// </summary>
-        public SingleSelectList DotNetVersion { get; set; }
+        public SingleSelectList DotNetFramework { get; set; }
 
         /// <summary>
         /// Gets or sets the DotNet template types.
         /// </summary>
-        public SingleSelectList Type { get; set; }
+        public SingleSelectList DotNetTemplate { get; set; }
 
         /// <summary>
-        /// Gets or sets the DotNet languages.
+        /// Gets or sets the languages.
         /// </summary>
         public SingleSelectList Language { get; set; }
 
         /// <summary>
-        /// Gets or sets the project bundle archive format.
+        /// Gets or sets the project archive mime type.
         /// </summary>
-        public SingleSelectList Format { get; set; }
+        public SingleSelectList ArchiveMimeType { get; set; }
 
         /// <summary>
         /// Gets or sets the project dependencies.
@@ -70,8 +79,6 @@ namespace Steeltoe.InitializrApi.Models
         /// </summary>
         public abstract class Item
         {
-            private string _name;
-
             /// <summary>
             /// Gets or sets the item ID.
             /// </summary>
@@ -80,11 +87,7 @@ namespace Steeltoe.InitializrApi.Models
             /// <summary>
             /// Gets or sets the item name.
             /// </summary>
-            public string Name
-            {
-                get => _name ?? Id;
-                set => _name = value;
-            }
+            public string Name { get; set; }
         }
 
         /// <summary>
@@ -158,6 +161,11 @@ namespace Steeltoe.InitializrApi.Models
         /// </summary>
         public class GroupList : ItemList
         {
+            /// <summary>
+            /// Gets or sets the default dependencies.
+            /// </summary>
+            public string Default { get; set; }
+
             /// <summary>
             /// Gets or sets the groups.
             /// </summary>

@@ -1,20 +1,22 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
-    <ItemGroup>
-        <PackageReference Include="Steeltoe.Extensions.Configuration.ConfigServerCore" Version="3.0.0-m2" />
-    </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Steeltoe.Extensions.Configuration.ConfigServerCore" Version="3.0.0-m2" />
+    <PackageReference Include="Stubble.Core" Version="1.9.3" />
+    <PackageReference Include="YamlDotNet" Version="8.1.2" />
+  </ItemGroup>
 
-    <ItemGroup>
-        <ProjectReference Include="..\InitializrApi.Models\Steeltoe.InitializrApi.Models.csproj" />
-    </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\InitializrApi.Models\Steeltoe.InitializrApi.Models.csproj" />
+  </ItemGroup>
 
-    <ItemGroup>
-      <Content Include="..\DeterministicBuild.targets">
-        <Link>DeterministicBuild.targets</Link>
-      </Content>
-      <Content Include="..\Directory.Build.props">
-        <Link>Directory.Build.props</Link>
-      </Content>
-    </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\DeterministicBuild.targets">
+      <Link>DeterministicBuild.targets</Link>
+    </Content>
+    <Content Include="..\Directory.Build.props">
+      <Link>Directory.Build.props</Link>
+    </Content>
+  </ItemGroup>
 
 </Project>

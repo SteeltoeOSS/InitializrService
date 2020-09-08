@@ -1,8 +1,12 @@
 <Project>
 
-    <PropertyGroup>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
-        <IsPackable>false</IsPackable>
-    </PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <Target Name="CleanBaseOutput" AfterTargets="Clean">
+    <RemoveDir Directories="$(BaseOutputPath)" />
+  </Target>
 
 </Project>

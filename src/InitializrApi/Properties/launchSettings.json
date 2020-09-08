@@ -20,7 +20,7 @@
     "Development": {
       "commandName": "Project",
       "launchBrowser": false,
-      "applicationUrl": "http://localhost:19200",
+      "applicationUrl": "http://0.0.0.0:19200",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
@@ -28,7 +28,7 @@
     "Staging": {
       "commandName": "Project",
       "launchBrowser": false,
-      "applicationUrl": "https://localhost:19201;http://localhost:19200",
+      "applicationUrl": "https://0.0.0.0:19201;http://0.0.0.0:19200",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Staging"
       }

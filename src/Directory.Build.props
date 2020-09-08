@@ -1,6 +1,6 @@
 <Project>
 
-  <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+  <Import Project="..\Directory.Build.props" />
 
   <PropertyGroup>
     <Authors>Steeltoe,VMware</Authors>
@@ -18,7 +18,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version Condition=" '$(BUILD_BUILDNUMBER)' == '' ">0.7.0</Version>
+    <Version Condition=" '$(BUILD_BUILDNUMBER)' == '' ">$(SteeltoeInitializrApiVersion)</Version>
     <Version Condition=" '$(BUILD_BUILDNUMBER)' != '' ">$(BUILD_BUILDNUMBER)</Version>
   </PropertyGroup>
 

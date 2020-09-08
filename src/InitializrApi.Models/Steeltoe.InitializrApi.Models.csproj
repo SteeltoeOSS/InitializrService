@@ -4,8 +4,4 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="YamlDotNet" Version="8.1.2" />
-  </ItemGroup>
-
 </Project>

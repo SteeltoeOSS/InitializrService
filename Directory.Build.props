@@ -5,6 +5,8 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
+  <Import Project="Version.props" />
+
   <Target Name="CleanBaseOutput" AfterTargets="Clean">
     <RemoveDir Directories="$(BaseOutputPath)" />
   </Target>

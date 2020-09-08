@@ -6,8 +6,4 @@
     </Content>
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="YamlDotNet" Version="8.1.2" />
-  </ItemGroup>
-
 </Project>

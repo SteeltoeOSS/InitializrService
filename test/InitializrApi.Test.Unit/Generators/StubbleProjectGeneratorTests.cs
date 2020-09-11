@@ -75,7 +75,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Generators
             project.FileEntries[i++].Text.Should().Be("my steeltoe version");
             project.FileEntries[i++].Text.Should().Be("my dotnet framework");
             project.FileEntries[i++].Text.Should().Be("my dotnet template");
-            project.FileEntries[i++].Text.Should().Be("my language");
+            project.FileEntries[i].Text.Should().Be("my language");
         }
 
         [Fact]
@@ -155,26 +155,26 @@ namespace Steeltoe.InitializrApi.Test.Unit.Generators
             project.FileEntries[i++].Path.Should().Be("f1");
             project.FileEntries[i++].Path.Should().Be("f2");
             project.FileEntries[i++].Path.Should().Be("f3");
-            project.FileEntries[i++].Path.Should().Be("f5");
+            project.FileEntries[i].Path.Should().Be("f5");
         }
 
         [Fact]
-        public void GenerateProject_Should_Evaluate_Parameter_Or_Expressions()
+        public void GenerateProject_Should_Evaluate_Parameter_Value()
         {
             // Arrange
-            var spec = new ProjectSpec { Dependencies = "dep1,dep2" };
+            var spec = new ProjectSpec();
             var template = new ProjectTemplate
             {
                 Manifest = new[]
                 {
-                    new FileEntry { Path = "f", Text = "{{#or}}text{{/or}}" },
+                    new FileEntry { Path = "f", Text = "{{Param}}" },
                 },
                 Parameters = new[]
                 {
-                    new ProjectTemplate.ParameterExpression()
+                    new Parameter()
                     {
-                        Name = "or",
-                        Expression = "dep1||dep2",
+                        Name = "Param",
+                        Value = "text",
                     },
                 },
             };
@@ -185,6 +185,93 @@ namespace Steeltoe.InitializrApi.Test.Unit.Generators
 
             // Assert
             project.FileEntries[0].Text.Should().Be("text");
+        }
+
+        [Fact]
+        public void GenerateProject_Should_Evaluate_Parameter_Expression()
+        {
+            // Arrange
+            var spec = new ProjectSpec { Dependencies = "Dep1,Dep2" };
+            var template = new ProjectTemplate
+            {
+                Manifest = new[]
+                {
+                    new FileEntry { Path = "f", Text = "{{#Or}}text{{/Or}}" },
+                },
+                Parameters = new[]
+                {
+                    new Parameter()
+                    {
+                        Name = "Or",
+                        Expression = "Dep1||Dep2",
+                    },
+                },
+            };
+            var generator = new StubbleProjectGeneratorBuilder().WithProjectTemplate(template).Build();
+
+            // Act
+            var project = generator.GenerateProject(spec);
+
+            // Assert
+            project.FileEntries[0].Text.Should().Be("text");
+        }
+
+        [Fact]
+        public void GenerateProject_Should_Give_Precedence_To_Parameter_Value()
+        {
+            // Arrange
+            var spec = new ProjectSpec { Dependencies = "Dep1" };
+            var template = new ProjectTemplate
+            {
+                Manifest = new[]
+                {
+                    new FileEntry { Path = "f", Text = "{{Which}}" },
+                },
+                Parameters = new[]
+                {
+                    new Parameter()
+                    {
+                        Name = "Which",
+                        Value = "text",
+                        Expression = "Dep",
+                    },
+                },
+            };
+            var generator = new StubbleProjectGeneratorBuilder().WithProjectTemplate(template).Build();
+
+            // Act
+            var project = generator.GenerateProject(spec);
+
+            // Assert
+            project.FileEntries[0].Text.Should().Be("text");
+        }
+
+        [Fact]
+        public void GenerateProject_Should_NoOp_Parameter_With_Value_Or_Expression()
+        {
+            // Arrange
+            var spec = new ProjectSpec { Dependencies = "Dep1" };
+            var template = new ProjectTemplate
+            {
+                Manifest = new[]
+                {
+                    new FileEntry { Path = "f", Text = "{{Which}}" },
+                },
+                Parameters = new[]
+                {
+                    new Parameter()
+                    {
+                        Name = "Which",
+                    },
+                },
+            };
+            var generator = new StubbleProjectGeneratorBuilder().WithProjectTemplate(template).Build();
+
+            // Act
+            var project = generator.GenerateProject(spec);
+
+            // Assert
+            project.FileEntries[0].Text.Should().Be(string.Empty);
         }
 
         /* ----------------------------------------------------------------- *

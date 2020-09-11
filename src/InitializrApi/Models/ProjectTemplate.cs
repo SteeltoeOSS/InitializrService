@@ -31,22 +31,6 @@ namespace Steeltoe.InitializrApi.Models
         /// <summary>
         /// Gets or sets the parameter expressions.
         /// </summary>
-        public ParameterExpression[] Parameters { get; set; }
-
-        /// <summary>
-        /// A model of a parameter expression.
-        /// </summary>
-        public class ParameterExpression
-        {
-            /// <summary>
-            /// Gets or sets the parameter name.
-            /// </summary>
-            public string Name { get; set; }
-
-            /// <summary>
-            /// Gets or sets the parameter expression.
-            /// </summary>
-            public string Expression { get; set; }
-        }
+        public Parameter[] Parameters { get; set; }
     }
 }

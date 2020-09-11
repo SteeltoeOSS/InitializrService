@@ -4,18 +4,17 @@
 
 using System;
 
-namespace Steeltoe.InitializrApi.Expressions
+namespace Steeltoe.InitializrApi.Parsers
 {
     /// <summary>
-    /// An exception representing an error in an expression.
+    /// The exception that is throw when an parser encounters an error.
     /// </summary>
-    public class ExpressionException : ArgumentException
+    public class ParserException : Exception
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExpressionException"/> class.
+        /// Initializes a new instance of the <see cref="ParserException"/> class.
         /// </summary>
-        /// <param name="message">The exception message.</param>
-        public ExpressionException(string message)
+        public ParserException(string message)
             : base(message)
         {
         }

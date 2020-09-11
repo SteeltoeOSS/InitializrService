@@ -3,8 +3,8 @@
 // See the LICENSE file in the project root for more information.
 
 using Microsoft.Extensions.Logging;
-using Steeltoe.InitializrApi.Expressions;
 using Steeltoe.InitializrApi.Models;
+using Steeltoe.InitializrApi.Parsers;
 using Steeltoe.InitializrApi.Services;
 using Stubble.Core;
 using Stubble.Core.Builders;
@@ -55,6 +55,7 @@ namespace Steeltoe.InitializrApi.Generators
             var template = _projectTemplateRegistry.Lookup(spec);
             if (template is null)
             {
+                Logger.LogDebug("No project template found for spec: {ProjectSpec}", spec);
                 return null;
             }
 
@@ -80,8 +81,15 @@ namespace Steeltoe.InitializrApi.Generators
             {
                 foreach (var templateParameter in template.Parameters)
                 {
-                    parameters[templateParameter.Name] =
-                        new Expression<bool>(templateParameter.Expression).Evaluate(parameters);
+                    if (templateParameter.Value != null)
+                    {
+                        parameters[templateParameter.Name] = templateParameter.Value;
+                    }
+                    else if (templateParameter.Expression != null)
+                    {
+                        parameters[templateParameter.Name] =
+                            new ExpressionParser(templateParameter.Expression).Evaluate(parameters);
+                    }
                 }
             }
 
@@ -93,10 +101,25 @@ namespace Steeltoe.InitializrApi.Generators
                     var dependencySatisfied = false;
                     foreach (var fileEntryDependency in fileEntry.Dependencies.Split(','))
                     {
-                        if (parameters.ContainsKey(fileEntryDependency))
+                        parameters.TryGetValue(fileEntryDependency, out var dependency);
+                        if (dependency != null)
                         {
-                            dependencySatisfied = true;
-                            break;
+                            if (dependency is bool)
+                            {
+                                if ((bool)dependency)
+                                {
+                                    dependencySatisfied = true;
+                                }
+                            }
+                            else
+                            {
+                                dependencySatisfied = true;
+                            }
+
+                            if (dependencySatisfied)
+                            {
+                                break;
+                            }
                         }
                     }
 

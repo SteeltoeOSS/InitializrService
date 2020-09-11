@@ -14,7 +14,9 @@
   <PropertyGroup>
     <!-- SA1101: Prefix local calls with this -->
     <!-- SA1309: Field '...' should not begin with an underscore -->
-    <NoWarn>SA1101;SA1309</NoWarn>
+    <!-- SA1402: File may only contain a single type -->
+    <!-- SA1649: File name should match first type name -->
+    <NoWarn>SA1101;SA1309;SA1402;SA1649</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup>

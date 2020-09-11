@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Steeltoe.InitializrApi.Controllers
 {
@@ -11,8 +12,25 @@ namespace Steeltoe.InitializrApi.Controllers
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
-    public class AboutController : ControllerBase
+    public class AboutController : InitializrApiControllerBase
     {
+        /* ----------------------------------------------------------------- *
+         * constructors                                                      *
+         * ----------------------------------------------------------------- */
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AboutController"/> class.
+        /// </summary>
+        /// <param name="logger">Injected logger.</param>
+        public AboutController(ILogger<AboutController> logger)
+            : base(logger)
+        {
+        }
+
+        /* ----------------------------------------------------------------- *
+         * methods                                                           *
+         * ----------------------------------------------------------------- */
+
         /// <summary>
         /// Implements <c>GET</c>.
         /// </summary>

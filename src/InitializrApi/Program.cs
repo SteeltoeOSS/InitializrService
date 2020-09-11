@@ -3,9 +3,11 @@
 // See the LICENSE file in the project root for more information.
 
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Steeltoe.Extensions.Configuration.ConfigServer;
 using Steeltoe.InitializrApi.Models;
+using Steeltoe.InitializrApi.Services;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
@@ -45,10 +47,13 @@ namespace Steeltoe.InitializrApi
         /// <summary>
         /// Program entrypoint.
         /// </summary>
-        public static int Main(string[] args)
+        public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
-            return 0;
+            var host = CreateHostBuilder(args).Build();
+            host.Services.GetRequiredService<IInitializrConfigService>().Initialize();
+            host.Services.GetRequiredService<IProjectTemplateRegistry>().Initialize();
+            host.Services.GetRequiredService<IArchiverRegistry>().Initialize();
+            host.Run();
         }
 
         /// <summary>

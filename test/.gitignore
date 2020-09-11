@@ -1,2 +1,2 @@
-# CodeCoverage
-coverage.opencover.xml
+# code coverage
+coverage*.*

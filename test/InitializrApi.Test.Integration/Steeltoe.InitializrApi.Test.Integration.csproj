@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <Content Include="..\Directory.Build.props">
+      <Link>Directory.Build.props</Link>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\InitializrApi\Steeltoe.InitializrApi.csproj" />
+    <ProjectReference Include="..\InitializrApi.Test.Utils\Steeltoe.InitializrApi.Test.Utils.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -2,14 +2,13 @@
 // The .NET Foundation licenses this file to you under the Apache 2.0 License.
 // See the LICENSE file in the project root for more information.
 
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Steeltoe.InitializrApi.Models;
 using Steeltoe.InitializrApi.Services;
-using System.IO;
-using System.Net;
-using System.Net.Mime;
-using System.Threading.Tasks;
+using System;
+using System.Collections.Generic;
 
 namespace Steeltoe.InitializrApi.Controllers
 {
@@ -18,22 +17,44 @@ namespace Steeltoe.InitializrApi.Controllers
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
-    public class ProjectController : ControllerBase
+    public class ProjectController : InitializrApiControllerBase
     {
+        /* ----------------------------------------------------------------- *
+         * fields                                                            *
+         * ----------------------------------------------------------------- */
+
+        private readonly InitializrConfig _config;
+
         private readonly IProjectGenerator _projectGenerator;
 
-        private readonly ILogger<ProjectController> _logger;
+        private readonly IArchiverRegistry _archiverRegistry;
+
+        /* ----------------------------------------------------------------- *
+         * constructors                                                      *
+         * ----------------------------------------------------------------- */
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ProjectController"/> class.
         /// </summary>
+        /// <param name="configService">Injected Initializr configuration service.</param>
         /// <param name="projectGenerator">Injected project generator.</param>
+        /// <param name="archiverRegistry">Injected archiver registry.</param>
         /// <param name="logger">Injected logger.</param>
-        public ProjectController(IProjectGenerator projectGenerator, ILogger<ProjectController> logger)
+        public ProjectController(
+            IInitializrConfigService configService,
+            IProjectGenerator projectGenerator,
+            IArchiverRegistry archiverRegistry,
+            ILogger<ProjectController> logger)
+            : base(logger)
         {
+            _config = configService.GetInitializrConfig();
             _projectGenerator = projectGenerator;
-            _logger = logger;
+            _archiverRegistry = archiverRegistry;
         }
+
+        /* ----------------------------------------------------------------- *
+         * methods                                                           *
+         * ----------------------------------------------------------------- */
 
         /// <summary>
         /// Implements <c>GET</c>.
@@ -41,18 +62,72 @@ namespace Steeltoe.InitializrApi.Controllers
         /// </summary>
         /// <returns>A task containing the <c>GET</c> result which, if is <see cref="FileContentResult"/>, contains a project bundle archive stream.</returns>
         [HttpGet]
-        public async Task<ActionResult> Get([FromQuery] ProjectSpecification spec)
+        public ActionResult GetProjectArchive([FromQuery] ProjectSpec spec)
         {
-            _logger.LogDebug($"Project specification: {spec}");
-            var stream = await _projectGenerator.GenerateProject(spec);
-            byte[] bytes;
-            await using (var buf = new MemoryStream())
+            var defaults = _config.ProjectMetadata;
+            var normalizedSpec = new ProjectSpec()
             {
-                await stream.CopyToAsync(buf);
-                bytes = buf.ToArray();
+                Name = spec.Name ?? defaults?.Name?.Default,
+                Description = spec.Description ?? defaults?.Description?.Default,
+                Namespace = spec.Namespace ?? defaults?.Namespace?.Default,
+                SteeltoeVersion = spec.SteeltoeVersion ?? defaults?.SteeltoeVersion?.Default,
+                DotNetFramework = spec.DotNetFramework ?? defaults?.DotNetFramework?.Default,
+                DotNetTemplate = spec.DotNetTemplate ?? defaults?.DotNetTemplate?.Default,
+                Language = spec.Language ?? defaults?.Language?.Default,
+                ArchiveMimeType = spec.ArchiveMimeType ?? defaults?.ArchiveMimeType?.Default,
+                Dependencies = spec.Dependencies ?? defaults?.Dependencies?.Default,
+            };
+            if (normalizedSpec.ArchiveMimeType is null)
+            {
+                return StatusCode(
+                    StatusCodes.Status500InternalServerError,
+                    "Default archive mime type not configured.");
             }
 
-            return File(bytes, MediaTypeNames.Application.Zip, $"{spec.Name}.zip");
+            var archiver = _archiverRegistry.Lookup(normalizedSpec.ArchiveMimeType);
+            if (archiver is null)
+            {
+                return NotFound($"Archive mime type '{normalizedSpec.ArchiveMimeType}' not found.");
+            }
+
+            if (normalizedSpec.Dependencies != null && _config.ProjectMetadata?.Dependencies?.Values != null)
+            {
+                var caseSensitiveDeps = new List<string>();
+                foreach (var group in _config.ProjectMetadata.Dependencies.Values)
+                {
+                    foreach (var dep in group.Values)
+                    {
+                        caseSensitiveDeps.Add(dep.Id);
+                    }
+                }
+
+                var deps = normalizedSpec.Dependencies.Split(',');
+                for (int i = 0; i < deps.Length; ++i)
+                {
+                    foreach (var caseSensitiveDep in caseSensitiveDeps)
+                    {
+                        if (caseSensitiveDep.Equals(deps[i], StringComparison.OrdinalIgnoreCase))
+                        {
+                            deps[i] = caseSensitiveDep;
+                        }
+                    }
+                }
+
+                normalizedSpec.Dependencies = string.Join(',', deps);
+            }
+
+            Logger.LogDebug("Project specification: {ProjectSpec}", normalizedSpec);
+            var project = _projectGenerator.GenerateProject(normalizedSpec);
+            if (project is null)
+            {
+                return NotFound($"No such project for spec: {normalizedSpec}");
+            }
+
+            var archiveBytes = archiver.ToBytes(project.FileEntries);
+            return File(
+                archiveBytes,
+                normalizedSpec.ArchiveMimeType,
+                $"{normalizedSpec.Name}{archiver.GetFileExtension()}");
         }
     }
 }

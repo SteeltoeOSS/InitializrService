@@ -1,4 +1,5 @@
-# InitializrApi
+# Steeltoe InitializrApi
+
 Steeltoe Initializr API reference implementation
 
 [![Build Status](https://dev.azure.com/SteeltoeOSS/Steeltoe/_apis/build/status/Initializr/SteeltoeOSS.InitializrApi?branchName=master)](https://dev.azure.com/SteeltoeOSS/Steeltoe/_build/latest?definitionId=31&branchName=master)

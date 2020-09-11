@@ -21,7 +21,7 @@ name: $(major).$(minor).$(micro)-$(Rev:r)
 jobs:
   - job: Build
     pool:
-      vmImage: windows-latest
+      vmImage: ubuntu-latest
     steps:
       - task: UseDotNet@2
         displayName: Install DotNet 3

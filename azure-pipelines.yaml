@@ -58,6 +58,7 @@ jobs:
         displayName: DotNet Pack
         inputs:
           command: pack
+          packagesToPack: src/InitializrApi.Models
           arguments: --no-build
         condition:
           and(succeeded(), not(eq(variables['build.reason'], 'PullRequest')))

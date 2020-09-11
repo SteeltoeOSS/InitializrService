@@ -87,6 +87,10 @@ jobs:
           zipAfterPublish: false
         condition:
           and(succeeded(), not(eq(variables['build.reason'], 'PullRequest')))
+      - task: CloudFoundryCLIInstall@0
+        displayName: Install Cloud Foundry CLI
+        inputs:
+          cfVersion: 6.51.0
       - task: CloudFoundry@1
         displayName: Deploy
         inputs:

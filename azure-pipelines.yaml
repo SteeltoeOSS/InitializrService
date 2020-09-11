@@ -65,7 +65,7 @@ jobs:
       - task: Powershell@2
         displayName: Sign Nugets
         inputs:
-          filePath: sign\SignPackages.ps1
+          filePath: sign/SignPackages.ps1
         env:
           ArtifactStagingDirectory: $(Build.ArtifactStagingDirectory)
           SignClientUser: $(SignClientUser)

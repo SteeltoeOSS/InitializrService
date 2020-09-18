@@ -16,17 +16,22 @@ namespace Steeltoe.InitializrApi.Models
         /// <summary>
         /// Gets or sets the project name.
         /// </summary>
-        public Text Name { get; set; }
-
-        /// <summary>
-        /// Gets or sets the project description.
-        /// </summary>
-        public Text Description { get; set; }
+        public Text Project { get; set; }
 
         /// <summary>
         /// Gets or sets the project namespace.
         /// </summary>
         public Text Namespace { get; set; }
+
+        /// <summary>
+        /// Gets or sets the project application name.
+        /// </summary>
+        public Text Application { get; set; }
+
+        /// <summary>
+        /// Gets or sets the project description.
+        /// </summary>
+        public Text Description { get; set; }
 
         /// <summary>
         /// Gets or sets the Steeltoe versions.

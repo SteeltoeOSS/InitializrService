@@ -55,7 +55,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
             {
                 ProjectMetadata = new ProjectMetadata
                 {
-                    Name = new ProjectMetadata.Text { Default = "my name" },
+                    Project = new ProjectMetadata.Text { Default = "my project" },
                     Description = new ProjectMetadata.Text { Default = "my description" },
                     Namespace = new ProjectMetadata.Text { Default = "my namespace" },
                     SteeltoeVersion = new ProjectMetadata.SingleSelectList { Default = "my steeltoe version" },
@@ -76,7 +76,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
             // Assert
             var result = Assert.IsType<FileContentResult>(unknown);
             using var reader = new StreamReader(new MemoryStream(result.FileContents));
-            reader.ReadLine().Should().Be("name=my name");
+            reader.ReadLine().Should().Be("project=my project");
             reader.ReadLine().Should().Be("description=my description");
             reader.ReadLine().Should().Be("namespace=my namespace");
             reader.ReadLine().Should().Be("steeltoe version=my steeltoe version");
@@ -264,7 +264,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
                 }
 
                 var project = new Project();
-                project.FileEntries.Add(new FileEntry { Path = "name", Text = spec.Name ?? "<na>" });
+                project.FileEntries.Add(new FileEntry { Path = "project", Text = spec.Name ?? "<na>" });
                 project.FileEntries.Add(new FileEntry { Path = "description", Text = spec.Description ?? "<na>" });
                 project.FileEntries.Add(new FileEntry { Path = "namespace", Text = spec.Namespace ?? "<na>" });
                 project.FileEntries.Add(new FileEntry

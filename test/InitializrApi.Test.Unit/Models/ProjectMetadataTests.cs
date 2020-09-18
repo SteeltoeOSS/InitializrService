@@ -23,9 +23,10 @@ namespace Steeltoe.InitializrApi.Test.Unit.Models
             // Act
 
             // Assert
-            metadata.Name.Should().BeNull();
-            metadata.Description.Should().BeNull();
+            metadata.Project.Should().BeNull();
             metadata.Namespace.Should().BeNull();
+            metadata.Application.Should().BeNull();
+            metadata.Description.Should().BeNull();
             metadata.SteeltoeVersion.Should().BeNull();
             metadata.DotNetFramework.Should().BeNull();
             metadata.DotNetTemplate.Should().BeNull();

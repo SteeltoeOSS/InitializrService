@@ -1,5 +1,5 @@
 trigger:
-  - master
+  - staging
 
 variables:
   - name: major
@@ -9,7 +9,7 @@ variables:
   - name: micro
     value: 0
   - name: DotNet3Version
-    value: 3.1.x
+    value: 3.1.402
   - name: DOTNET_SKIP_FIRST_TIME_EXPERIENCE
     value: true
   - name: DOTNET_CLI_TELEMETRY_OPTOUT
@@ -21,52 +21,51 @@ name: $(major).$(minor).$(micro)-$(Rev:r)
 jobs:
   - job: Build
     pool:
-      vmImage: windows-latest
+      vmImage: ubuntu-latest
     steps:
       - task: UseDotNet@2
-        displayName: Prep DotNet 3
+        displayName: Install DotNet 3
         inputs:
           packageType: sdk
           version: $(DotNet3Version)
-      - task: SonarSource.sonarcloud.14d9cde6-c1da-4d55-aa01-2965cd301255.SonarCloudPrepare@1
-        displayName: Prep SonarCloud
-        inputs:
-          SonarCloud: SonarCloud
-          organization: steeltoeoss
-          projectKey: InitializrApi
-          extraProperties: |
-              sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)\**\*opencover.xml
-              sonar.cs.vstest.reportsPaths=$(Agent.TempDirectory)\*.trx
-              sonar.coverage.exclusions=**\*Test*\**\*
-      - task: CloudFoundryCLIInstall@0
-        displayName: Prep Cloud Foundry CLI
-        inputs:
-          cfVersion: 6.51.0
+      # - task: SonarSource.sonarcloud.14d9cde6-c1da-4d55-aa01-2965cd301255.SonarCloudPrepare@1
+      #   displayName: Start SonarQube Analysis
+      #   inputs:
+      #     SonarCloud: SonarCloud
+      #     organization: steeltoeoss
+      #     projectKey: InitializrApi
+      #     extraProperties: |
+      #       sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)\**\*.opencover.xml
       - task: DotNetCoreCLI@2
-        displayName: Dotnet Build
+        displayName: DotNet Restore
+        inputs:
+          command: restore
+      - task: DotNetCoreCLI@2
+        displayName: DotNet Build
         inputs:
           command: build
-          arguments: /p:TreatWarningsAsErrors=True
+          arguments: --no-restore /p:TreatWarningsAsErrors=True
       - task: DotNetCoreCLI@2
-        displayName: Dotnet Test
+        displayName: DotNet Test
         inputs:
           command: test
-          arguments: --no-build /p:CollectCoverage=true /p:CoverletOutputFormat="opencover"
-      - task: SonarSource.sonarcloud.ce096e50-6155-4de8-8800-4221aaeed4a1.SonarCloudAnalyze@1
-        displayName: Sonar Analyze
-      - task: SonarSource.sonarcloud.38b27399-a642-40af-bb7d-9971f69712e8.SonarCloudPublish@1
-        displayName: Sonar Publish
+          arguments: --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+      # - task: SonarSource.sonarcloud.ce096e50-6155-4de8-8800-4221aaeed4a1.SonarCloudAnalyze@1
+      #   displayName: Stop SonarQube Analysis
+      # - task: SonarSource.sonarcloud.38b27399-a642-40af-bb7d-9971f69712e8.SonarCloudPublish@1
+      #   displayName: Publish SonarQube Analysis
       - task: DotNetCoreCLI@2
-        displayName: Dotnet Pack
+        displayName: DotNet Pack
         inputs:
           command: pack
+          packagesToPack: src/InitializrApi.Models
           arguments: --no-build
         condition:
           and(succeeded(), not(eq(variables['build.reason'], 'PullRequest')))
       - task: Powershell@2
         displayName: Sign Nugets
         inputs:
-          filePath: sign\SignPackages.ps1
+          filePath: sign/SignPackages.ps1
         env:
           ArtifactStagingDirectory: $(Build.ArtifactStagingDirectory)
           SignClientUser: $(SignClientUser)
@@ -82,21 +81,24 @@ jobs:
         condition:
           and(succeeded(), not(eq(variables['build.reason'], 'PullRequest')))
       - task: DotNetCoreCLI@2
-        displayName: Dotnet Publish
+        displayName: DotNet Publish
         inputs:
           command: publish
           arguments: --no-build
           zipAfterPublish: false
         condition:
           and(succeeded(), not(eq(variables['build.reason'], 'PullRequest')))
+      - task: CloudFoundryCLIInstall@0
+        displayName: Install Cloud Foundry CLI
+        inputs:
+          cfVersion: 6.51.0
       - task: CloudFoundry@1
-        displayName: Deploy Staging
+        displayName: Deploy
         inputs:
           cfEndpoint: PCFone
-          skipSSLValidation: true
           org: group-steeltoe
-          space: staging
+          space: initializr
           deploymentOptions: manifest
-          cfManifest: deploy/cloud-foundry/manifest-Staging.yaml
+          cfManifest: deploy/cloud-foundry/manifest.yaml
         condition:
-          and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'), not(eq(variables['build.reason'], 'PullRequest')))
+          and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/staging'), not(eq(variables['build.reason'], 'PullRequest')))

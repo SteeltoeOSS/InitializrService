@@ -3,8 +3,11 @@
 // See the LICENSE file in the project root for more information.
 
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Steeltoe.Extensions.Configuration.ConfigServer;
+using Steeltoe.InitializrApi.Models;
+using Steeltoe.InitializrApi.Services;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
@@ -16,6 +19,19 @@ namespace Steeltoe.InitializrApi
     [ExcludeFromCodeCoverage]
     public class Program
     {
+        static Program()
+        {
+            About = new About();
+            About.Name = typeof(Program).Namespace ?? "unknown";
+            About.Vendor = "SteeltoeOSS/VMware";
+            About.Url = "https://github.com/SteeltoeOSS/InitializrApi/";
+            var versionAttr =
+                typeof(Program).Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
+            var fields = versionAttr?.InformationalVersion.Split('+');
+            About.Version = fields?[0];
+            About.Commit = fields?[1];
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Program"/> class.
         /// </summary>
@@ -24,12 +40,20 @@ namespace Steeltoe.InitializrApi
         }
 
         /// <summary>
+        /// Gets or sets "About" details, such as version.
+        /// </summary>
+        public static About About { get; set; }
+
+        /// <summary>
         /// Program entrypoint.
         /// </summary>
-        public static int Main(string[] args)
+        public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
-            return 0;
+            var host = CreateHostBuilder(args).Build();
+            host.Services.GetRequiredService<IInitializrConfigService>().Initialize();
+            host.Services.GetRequiredService<IProjectTemplateRegistry>().Initialize();
+            host.Services.GetRequiredService<IArchiverRegistry>().Initialize();
+            host.Run();
         }
 
         /// <summary>
@@ -41,53 +65,5 @@ namespace Steeltoe.InitializrApi
             Host.CreateDefaultBuilder(args)
                 .AddConfigServer()
                 .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
-
-        /// <summary>
-        /// Program "About" details, such as version.
-        /// </summary>
-        public class About
-        {
-            /// <summary>
-            /// Initializes a new instance of the <see cref="About"/> class.
-            /// </summary>
-            public About()
-            {
-                Name = typeof(Program).Namespace ?? "unknown";
-                Vendor = "SteeltoeOSS/VMware";
-                ProductUrl = "https://github.com/SteeltoeOSS/InitializrApi/";
-                var versionAttr = typeof(Program).Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
-                if (versionAttr != null)
-                {
-                    var fields = versionAttr.InformationalVersion.Split('+');
-                    Version = fields[0];
-                    Commit = fields.Length > 1 ? fields[1] : "unknown";
-                }
-            }
-
-            /// <summary>
-            /// Gets the program name.
-            /// </summary>
-            public string Name { get; }
-
-            /// <summary>
-            /// Gets the program vendor.
-            /// </summary>
-            public string Vendor { get; }
-
-            /// <summary>
-            /// Gets the program product URL.
-            /// </summary>
-            public string ProductUrl { get; }
-
-            /// <summary>
-            /// Gets the program version.
-            /// </summary>
-            public string Version { get; }
-
-            /// <summary>
-            /// Gets the program build source control commit ID.
-            /// </summary>
-            public string Commit { get; }
-        }
     }
 }

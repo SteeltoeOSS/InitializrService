@@ -21,15 +21,17 @@ namespace Steeltoe.InitializrApi
     {
         static Program()
         {
-            About = new About();
-            About.Name = typeof(Program).Namespace ?? "unknown";
-            About.Vendor = "SteeltoeOSS/VMware";
-            About.Url = "https://github.com/SteeltoeOSS/InitializrApi/";
             var versionAttr =
                 typeof(Program).Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
             var fields = versionAttr?.InformationalVersion.Split('+');
-            About.Version = fields?[0];
-            About.Commit = fields?[1];
+            About = new About
+            {
+                Name = typeof(Program).Namespace ?? "unknown",
+                Vendor = "SteeltoeOSS/VMware",
+                Url = "https://github.com/SteeltoeOSS/InitializrApi/",
+                Version = fields?[0],
+                Commit = fields?[1],
+            };
         }
 
         /// <summary>

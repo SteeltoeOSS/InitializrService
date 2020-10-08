@@ -64,10 +64,10 @@ namespace Steeltoe.InitializrApi.Test.Unit.Parsers
         }
 
         [Fact]
-        public void Scan_Should_Yield_ParameterToken()
+        public void Scan_Should_Yield_IntegerToken()
         {
             // Arrange
-            var expr = " MyParameter ";
+            var expr = "123";
             var tokenizer = new Tokenizer();
 
             // Act
@@ -76,25 +76,24 @@ namespace Steeltoe.InitializrApi.Test.Unit.Parsers
 
             // Assert
             tokens.Count.Should().Be(1);
-            var token = Assert.IsType<ParameterToken>(tokens[0]);
-            token.Name.Should().Be("MyParameter");
+            var token = Assert.IsType<IntegerToken>(tokens[0]);
+            token.Value.Should().Be(123);
         }
 
         [Fact]
-        public void Scan_Should_Yield_FunctionToken()
+        public void Scan_Should_Yield_NameToken()
         {
             // Arrange
-            var expr = " myfunction ";
+            var expr = " my-name ";
             var tokenizer = new Tokenizer();
 
             // Act
             var tokens = tokenizer.Scan(expr).ToList();
 
-
             // Assert
-            tokens.Count.Should().BeGreaterOrEqualTo(1);
-            var token = Assert.IsType<FunctionToken>(tokens[0]);
-            token.Name.Should().Be("myfunction");
+            tokens.Count.Should().Be(1);
+            var token = Assert.IsType<NameToken>(tokens[0]);
+            token.Name.Should().Be("my-name");
         }
 
         [Fact]
@@ -111,6 +110,22 @@ namespace Steeltoe.InitializrApi.Test.Unit.Parsers
             // Assert
             tokens.Count.Should().Be(1);
             Assert.IsType<OrOperatorToken>(tokens[0]);
+        }
+
+        [Fact]
+        public void Scan_Should_Yield_GreaterThanOperatorToken()
+        {
+            // Arrange
+            var expr = ">";
+            var tokenizer = new Tokenizer();
+
+            // Act
+            var tokens = tokenizer.Scan(expr).ToList();
+
+
+            // Assert
+            tokens.Count.Should().Be(1);
+            Assert.IsType<GreaterThanOperatorToken>(tokens[0]);
         }
 
         [Fact]
@@ -165,7 +180,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Parsers
         public void Scan_Should_Find_Multiple_Tokens()
         {
             // Arrange
-            var expr = "|| MyParameter";
+            var expr = "|| MyName";
             var tokenizer = new Tokenizer();
 
             // Act
@@ -175,7 +190,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Parsers
             // Assert
             tokens.Count.Should().Be(2);
             Assert.IsType<OrOperatorToken>(tokens[0]);
-            Assert.IsType<ParameterToken>(tokens[1]);
+            Assert.IsType<NameToken>(tokens[1]);
         }
 
         /* ----------------------------------------------------------------- *

@@ -27,127 +27,131 @@ namespace Steeltoe.InitializrApi.Parsers
         /// </summary>
         /// <param name="context"> Expression parameter context.</param>
         /// <returns>The evaluation.</returns>
-        public object Evaluate(Dictionary<string, object> context)
+        public object Evaluate(Dictionary<string, object> context = null)
         {
             if (!_tokens.MoveNext())
             {
                 return null;
             }
 
-            if (context is null)
-            {
-                context = new Dictionary<string, object>();
-            }
-
-            Expression result;
-
-            if (_tokens.Current is ParameterToken)
-            {
-                result = BuildParameterExpression((ParameterToken)_tokens.Current);
-            }
-            else if (_tokens.Current is FunctionToken)
-            {
-                result = BuildFunctionExpression((FunctionToken)_tokens.Current);
-            }
-            else
-            {
-                throw new ParserException($"Unexpected token: {_tokens.Current}");
-            }
-
-            return result?.Evaluate(context);
+            var expression = BuildExpression();
+            return expression.Evaluate(context);
         }
 
-        private Expression BuildParameterExpression(ParameterToken pToken)
+        private Expression BuildExpression()
         {
-            Expression result = new Parameter(pToken.Name);
-            if (!_tokens.MoveNext())
+            var operand = BuildOperand();
+
+            if (_tokens.Current is null)
             {
-                return result;
+                return operand;
             }
 
-            if (!(_tokens.Current is OrOperatorToken))
+            if (_tokens.Current is OrOperatorToken)
             {
-                throw new ParserException($"Expected operator; actual: {_tokens.Current}");
+                _tokens.MoveNext();
+                return new OrOperation(operand, BuildExpression());
             }
 
-            do
+            if (_tokens.Current is GreaterThanOperatorToken)
             {
-                if (!_tokens.MoveNext())
-                {
-                    throw new ParserException("Expected parameter; reached end of expression.");
-                }
-
-                if (!(_tokens.Current is ParameterToken))
-                {
-                    throw new ParserException($"Expected parameter; actual: {_tokens.Current}");
-                }
-
-                pToken = _tokens.Current as ParameterToken;
-                result = new OrOperation(result, new Parameter(pToken.Name));
+                _tokens.MoveNext();
+                return new GreaterThanOperation(operand, BuildExpression());
             }
-            while (_tokens.MoveNext());
 
-            return result;
+            throw new ParserException($"Expected operator; actual: {_tokens.Current}");
         }
 
-        private Expression BuildFunctionExpression(FunctionToken fToken)
+        private Expression BuildOperand()
         {
-            if (!_tokens.MoveNext())
+            if (_tokens.Current is null)
             {
-                throw new ParserException("Expected open parenthesis; reached end of expression.");
+                throw new ParserException($"Expected operand; reached end of expression.");
             }
 
-            if (!(_tokens.Current is ParenOpenToken))
+            if (!(_tokens.Current is OperandToken))
             {
-                throw new ParserException($"Expected open parenthesis; actual: {_tokens.Current}");
+                throw new ParserException($"Expected operand; actual: {_tokens.Current}");
             }
 
-            if (!_tokens.MoveNext())
+            if (_tokens.Current is IntegerToken)
             {
-                throw new ParserException("Expected parameter or close parenthesis; reached end of expression.");
+                var iToken = _tokens.Current as IntegerToken;
+                _tokens.MoveNext();
+                return BuildInteger(iToken);
             }
 
-            var parameters = new List<Parameter>();
-            if (_tokens.Current is ParameterToken)
+            var nToken = _tokens.Current as NameToken;
+            _tokens.MoveNext();
+            if (_tokens.Current is ParenOpenToken)
             {
-                parameters.Add(new Parameter(((ParameterToken)_tokens.Current).Name));
-                if (!_tokens.MoveNext())
+                _tokens.MoveNext();
+                return BuildFunction(nToken);
+            }
+
+            return BuildParameter(nToken);
+        }
+
+        private Expression BuildInteger(IntegerToken iToken)
+        {
+            return new Integer(iToken.Value);
+        }
+
+        private Expression BuildParameter(NameToken nToken)
+        {
+            return new Parameter(nToken.Name);
+        }
+
+        private Expression BuildFunction(NameToken nToken)
+        {
+            if (_tokens.Current is null)
+            {
+                throw new ParserException("Expected operand or close parenthesis; reached end of expression.");
+            }
+
+            if (!(_tokens.Current is NameToken || _tokens.Current is ParenCloseToken))
+            {
+                throw new ParserException($"Expected operand or close parenthesis; actual: {_tokens.Current}");
+            }
+
+            var parameters = new List<Expression>();
+            while (!(_tokens.Current is ParenCloseToken))
+            {
+                if (parameters.Count > 0)
                 {
-                    throw new ParserException("Expected comma or close parenthesis; reached end of expression.");
-                }
-
-                while (_tokens.Current is CommaToken)
-                {
-                    if (!_tokens.MoveNext())
-                    {
-                        throw new ParserException(
-                            "Expected parameter or close parenthesis; reached end of expression.");
-                    }
-
-                    if (!(_tokens.Current is ParameterToken))
-                    {
-                        throw new ParserException($"Expected comma or close parenthesis; actual: {_tokens.Current}");
-                    }
-
-                    parameters.Add(new Parameter(((ParameterToken)_tokens.Current).Name));
-                    if (!_tokens.MoveNext())
+                    if (!(_tokens.Current is CommaToken))
                     {
                         throw new ParserException("Expected comma or close parenthesis; reached end of expression.");
                     }
+
+                    _tokens.MoveNext();
                 }
+
+                if (_tokens.Current is null)
+                {
+                    throw new ParserException("Expected operand or close parenthesis; reached end of expression.");
+                }
+
+                if (!(_tokens.Current is NameToken || _tokens.Current is ParenCloseToken))
+                {
+                    throw new ParserException($"Expected operand or close parenthesis; actual: {_tokens.Current}");
+                }
+
+                parameters.Add(BuildOperand());
             }
 
             if (!(_tokens.Current is ParenCloseToken))
             {
-                throw new ParserException($"Expected parameter or close parenthesis; actual: {_tokens.Current}");
+                throw new ParserException($"Expected operand or close parenthesis; actual: {_tokens.Current}");
             }
 
-            if (fToken.Name.Equals("moreThan1"))
+            _tokens.MoveNext();
+            if (nToken.Name.Equals("count"))
             {
-                return new MoreThan1(parameters);
+                return new Count(parameters);
             }
 
-            throw new ParserException($"Unknown function: '{fToken.Name}'");
+            throw new ParserException($"Unknown function: {nToken}");
         }
     }
 }

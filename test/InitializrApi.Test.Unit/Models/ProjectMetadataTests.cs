@@ -35,8 +35,29 @@ namespace Steeltoe.InitializrApi.Test.Unit.Models
             metadata.Dependencies.Should().BeNull();
         }
 
+        [Fact]
+        public void Item_Name_Should_Default_To_Id()
+        {
+            // Arrange
+            var item = new ConcreteItem();
+
+            // Act
+            item.Id = "joe";
+
+            // Assert
+            item.Name.Should().Be("joe");
+        }
+
         /* ----------------------------------------------------------------- *
          * negative tests                                                    *
          * ----------------------------------------------------------------- */
+
+        /* ----------------------------------------------------------------- *
+         * helpers                                                           *
+         * ----------------------------------------------------------------- */
+
+        class ConcreteItem : ProjectMetadata.Item
+        {
+        }
     }
 }

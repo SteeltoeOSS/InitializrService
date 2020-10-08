@@ -28,15 +28,15 @@ namespace Steeltoe.InitializrApi.Parsers
                 {
                     reader.Read();
                 }
-                else if (char.IsUpper(ch))
+                else if (char.IsDigit(ch))
                 {
-                    var name = ReadLettersAndDigits(reader);
-                    tokens.Add(new ParameterToken(name));
+                    var i = ReadInteger(reader);
+                    tokens.Add(new IntegerToken(i));
                 }
-                else if (char.IsLower(ch))
+                else if (char.IsLetter(ch))
                 {
-                    var name = ReadLettersAndDigits(reader);
-                    tokens.Add(new FunctionToken(name));
+                    var name = ReadName(reader);
+                    tokens.Add(new NameToken(name));
                 }
                 else if (ch.Equals(','))
                 {
@@ -64,6 +64,11 @@ namespace Steeltoe.InitializrApi.Parsers
 
                     tokens.Add(new OrOperatorToken());
                 }
+                else if (ch.Equals('>'))
+                {
+                    reader.Read();
+                    tokens.Add(new GreaterThanOperatorToken());
+                }
                 else
                 {
                     tokens.Add(new UnknownToken(ch));
@@ -74,14 +79,36 @@ namespace Steeltoe.InitializrApi.Parsers
             return tokens;
         }
 
-        private string ReadLettersAndDigits(StringReader reader)
+        private int ReadInteger(StringReader reader)
         {
             var buf = new StringBuilder();
-            do
+            while (true)
             {
+                var ch = (char)reader.Peek();
+                if (!char.IsDigit(ch))
+                {
+                    break;
+                }
+
                 buf.Append((char)reader.Read());
             }
-            while (char.IsLetterOrDigit((char)reader.Peek()));
+
+            return int.Parse(buf.ToString());
+        }
+
+        private string ReadName(StringReader reader)
+        {
+            var buf = new StringBuilder();
+            while (true)
+            {
+                var ch = (char)reader.Peek();
+                if (!(char.IsLetterOrDigit(ch) || ch == '-'))
+                {
+                    break;
+                }
+
+                buf.Append((char)reader.Read());
+            }
 
             return buf.ToString();
         }

@@ -11,6 +11,21 @@ namespace Steeltoe.InitializrApi.Parsers
         internal abstract object Evaluate(Dictionary<string, object> context);
     }
 
+    internal class Integer : Expression
+    {
+        internal Integer(int i)
+        {
+            Value = i;
+        }
+
+        private int Value { get; }
+
+        internal override object Evaluate(Dictionary<string, object> context)
+        {
+            return Value;
+        }
+    }
+
     internal class Parameter : Expression
     {
         internal Parameter(string name)
@@ -62,9 +77,29 @@ namespace Steeltoe.InitializrApi.Parsers
         }
     }
 
-    internal class MoreThan1 : Expression
+    internal class GreaterThanOperation : Expression
     {
-        internal MoreThan1(IEnumerable<Expression> expressions)
+        internal GreaterThanOperation(Expression left, Expression right)
+        {
+            Left = left;
+            Right = right;
+        }
+
+        private Expression Left { get; }
+
+        private Expression Right { get; }
+
+        internal override object Evaluate(Dictionary<string, object> context)
+        {
+            var left = (int)Left.Evaluate(context);
+            var right = (int)Right.Evaluate(context);
+            return left > right;
+        }
+    }
+
+    internal class Count : Expression
+    {
+        internal Count(IEnumerable<Expression> expressions)
         {
             Expressions = expressions;
         }
@@ -93,7 +128,7 @@ namespace Steeltoe.InitializrApi.Parsers
                 }
             }
 
-            return count > 1;
+            return count;
         }
     }
 }

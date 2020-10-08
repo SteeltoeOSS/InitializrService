@@ -3,17 +3,19 @@
 ## Expression
 
 ```
-<expression>        := <operand> | <operand> <operator> <operand>
-<operator>          := "||"
-<operand>           := <parameter> | <function>
-<parameter          := <upper> | <upper> <letters-or-digits>
-<function>          := <fname> "(" <parameter-list> ")"
-<fname>             := <lower> | <lower> <letters-or-digits>
+<expression>        := <operand> | <operand> <operator> <expression>
+<operand>           := <parameter> | <function> | <integer>
+<parameter          := <name>
 <parameter-list>    := <parameter> | <parameter> "," <parameter-list>
-<letters-or-digits> := <letter-or-digit> | <letter-or-digit> <letters-or-digits>
-<letter-or-digit>   := <letter> | <digit>
+<function>          := <name> "(" ")" | <name> "(" <parameter-list> ")"
+<name>              := <letter> | <letter> <char-list>
+<char-list>         := <char> | <char> <char-list>
+<char>              := <letter> | <digit> | <special>
 <letter>            :=  <upper> | <lower>
 <upper>             := "A" | "B" | ... | "Z"
 <lower>             := "a" | "b" | ... | "z"
+<integer>           := <digit> | <digit> <integer>
 <digit>             := "0" | "1" | ... | "9"
+<special>           := "-"
+<operator>          := "||"
 ```

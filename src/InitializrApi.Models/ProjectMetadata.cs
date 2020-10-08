@@ -84,6 +84,8 @@ namespace Steeltoe.InitializrApi.Models
         /// </summary>
         public abstract class Item
         {
+            private string _name;
+
             /// <summary>
             /// Gets or sets the item ID.
             /// </summary>
@@ -92,7 +94,11 @@ namespace Steeltoe.InitializrApi.Models
             /// <summary>
             /// Gets or sets the item name.
             /// </summary>
-            public string Name { get; set; }
+            public string Name
+            {
+                get => _name ?? Id;
+                set => _name = value;
+            }
         }
 
         /// <summary>

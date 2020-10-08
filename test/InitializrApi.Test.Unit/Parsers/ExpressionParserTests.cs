@@ -23,20 +23,33 @@ namespace Steeltoe.InitializrApi.Test.Unit.Parsers
             var expression = new ExpressionParser(String.Empty);
 
             // Act
-            var result = expression.Evaluate(null);
+            var result = expression.Evaluate();
 
             // Assert
             result.Should().BeNull();
         }
 
         [Fact]
+        public void Integer_Should_Evaluate_To_Integer()
+        {
+            // Arrange
+            var expression = new ExpressionParser("725");
+
+            // Act
+            var result = expression.Evaluate();
+
+            // Assert
+            result.Should().Be(725);
+        }
+
+        [Fact]
         public void True_Parameter_Should_Evaluate_To_True()
         {
             // Arrange
-            var expression = new ExpressionParser("MyVar");
+            var expression = new ExpressionParser("my-var");
             var context = new Dictionary<string, object>
             {
-                { "MyVar", true },
+                { "my-var", true },
             };
 
             // Act
@@ -50,10 +63,10 @@ namespace Steeltoe.InitializrApi.Test.Unit.Parsers
         public void False_Parameter_Should_Evaluate_To_False()
         {
             // Arrange
-            var expression = new ExpressionParser("MyVar");
+            var expression = new ExpressionParser("my-var");
             var context = new Dictionary<string, object>
             {
-                { "MyVar", false },
+                { "my-var", false },
             };
 
             // Act
@@ -67,7 +80,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Parsers
         public void Null_Parameter_Should_Evaluate_To_Null()
         {
             // Arrange
-            var expression = new ExpressionParser("MyVar");
+            var expression = new ExpressionParser("my-var");
             var context = new Dictionary<string, object>();
 
             // Act
@@ -122,6 +135,36 @@ namespace Steeltoe.InitializrApi.Test.Unit.Parsers
         }
 
         [Fact]
+        public void GreaterThan_Operand_Should_Should_Evaluate_Any_Operand()
+        {
+            // Arrange
+            var expression1 = new ExpressionParser("1 > 0");
+            var expression2 = new ExpressionParser("1 > 1");
+            var expression3 = new ExpressionParser("1 > 2");
+            var expression4 = new ExpressionParser("count(T1,T2) > 1");
+            var expression5 = new ExpressionParser("count(T1,T2) > 3");
+            var context = new Dictionary<string, object>
+            {
+                { "T1", true },
+                { "T2", true },
+            };
+
+            // Act
+            var result1 = expression1.Evaluate(context);
+            var result2 = expression2.Evaluate(context);
+            var result3 = expression3.Evaluate(context);
+            var result4 = expression4.Evaluate(context);
+            var result5 = expression5.Evaluate(context);
+
+            // Assert
+            result1.Should().Be(true);
+            result2.Should().Be(false);
+            result3.Should().Be(false);
+            result4.Should().Be(true);
+            result5.Should().Be(false);
+        }
+
+        [Fact]
         public void Complex_Or_Operand_Should_Should_Evaluate_Per_Boolean_Rules()
         {
             // Arrange
@@ -173,15 +216,14 @@ namespace Steeltoe.InitializrApi.Test.Unit.Parsers
         }
 
         [Fact]
-        public void GreaterThan1_Should_Be_True_If_More_Than_1_True_Or_NonNull_Values()
+        public void Count_Should_Count_True_And_NonNull_Values()
         {
             // Arrange
-            var expression1 = new ExpressionParser("moreThan1(F1)");
-            var expression2 = new ExpressionParser("moreThan1(T1)");
-            var expression3 = new ExpressionParser("moreThan1(N1)");
-            var expression4 = new ExpressionParser("moreThan1(V1)");
-            var expression5 = new ExpressionParser("moreThan1(T1,V1)");
-            var expression6 = new ExpressionParser("moreThan1(V1,T1,N1,F1,V2,N2,F2)");
+            var expression1 = new ExpressionParser("count(F1)");
+            var expression2 = new ExpressionParser("count(T1)");
+            var expression3 = new ExpressionParser("count(N1)");
+            var expression4 = new ExpressionParser("count(V1)");
+            var expression5 = new ExpressionParser("count(V1,T1,N1,F1,V2,N2,F2)");
             var context = new Dictionary<string, object>
             {
                 { "T1", true },
@@ -195,20 +237,37 @@ namespace Steeltoe.InitializrApi.Test.Unit.Parsers
             var result3 = expression3.Evaluate(context);
             var result4 = expression4.Evaluate(context);
             var result5 = expression5.Evaluate(context);
-            var result6 = expression6.Evaluate(context);
 
             // Assert
-            result1.Should().Be(false);
-            result2.Should().Be(false);
-            result3.Should().Be(false);
-            result4.Should().Be(false);
-            result5.Should().Be(true);
-            result6.Should().Be(true);
+            result1.Should().Be(0);
+            result2.Should().Be(1);
+            result3.Should().Be(0);
+            result4.Should().Be(1);
+            result5.Should().Be(3);
         }
 
         /* ----------------------------------------------------------------- *
          * negative tests                                                    *
          * ----------------------------------------------------------------- */
+
+        [Fact]
+        public void Malformed_Expression_Should_Throw_Exception()
+        {
+            // Arrange
+            var expression1 = new ExpressionParser("-");
+            var expression2 = new ExpressionParser("(");
+            var expression3 = new ExpressionParser(")");
+
+            // Act
+            Action act1 = () => expression1.Evaluate();
+            Action act2 = () => expression2.Evaluate();
+            Action act3 = () => expression3.Evaluate();
+
+            // Assert
+            act1.Should().Throw<ParserException>().WithMessage("Expected operand; actual: '-' (unknown)");
+            act2.Should().Throw<ParserException>().WithMessage("Expected operand; actual: '(' (paren open)");
+            act3.Should().Throw<ParserException>().WithMessage("Expected operand; actual: ')' (paren close)");
+        }
 
         [Fact]
         public void Missing_Operand_Should_Throw_Exception()
@@ -219,14 +278,14 @@ namespace Steeltoe.InitializrApi.Test.Unit.Parsers
             var expression3 = new ExpressionParser("V || ||");
 
             // Act
-            Action act1 = () => expression1.Evaluate(null);
-            Action act2 = () => expression2.Evaluate(null);
-            Action act3 = () => expression3.Evaluate(null);
+            Action act1 = () => expression1.Evaluate();
+            Action act2 = () => expression2.Evaluate();
+            Action act3 = () => expression3.Evaluate();
 
             // Assert
-            act1.Should().Throw<ParserException>().WithMessage("Unexpected token: '||' (or)");
-            act2.Should().Throw<ParserException>().WithMessage("Expected parameter; reached end of expression.");
-            act3.Should().Throw<ParserException>().WithMessage("Expected parameter; actual: '||' (or)");
+            act1.Should().Throw<ParserException>().WithMessage("Expected operand; actual: '||' (or)");
+            act2.Should().Throw<ParserException>().WithMessage("Expected operand; reached end of expression.");
+            act3.Should().Throw<ParserException>().WithMessage("Expected operand; actual: '||' (or)");
         }
 
         [Fact]
@@ -236,75 +295,53 @@ namespace Steeltoe.InitializrApi.Test.Unit.Parsers
             var expression = new ExpressionParser("V V");
 
             // Act
-            Action act = () => expression.Evaluate(null);
+            Action act = () => expression.Evaluate();
 
             // Assert
-            act.Should().Throw<ParserException>().WithMessage("Expected operator; actual: 'V' (parameter)");
-        }
-
-        [Fact]
-        public void Function_Missing_Paren_Open_Should_Throw_Exception()
-        {
-            // Arrange
-            var expression1 = new ExpressionParser("myfunc");
-            var expression2 = new ExpressionParser("myfunc V");
-
-            // Act
-            Action act1 = () => expression1.Evaluate(null);
-            Action act2 = () => expression2.Evaluate(null);
-
-            // Assert
-            act1.Should().Throw<ParserException>().WithMessage("Expected open parenthesis; reached end of expression.");
-            act2.Should().Throw<ParserException>().WithMessage("Expected open parenthesis; actual: 'V' (parameter)");
+            act.Should().Throw<ParserException>().WithMessage("Expected operator; actual: 'V' (name)");
         }
 
         [Fact]
         public void Function_Missing_Paren_Close_Should_Throw_Exception()
         {
             // Arrange
-            var expression1 = new ExpressionParser("myfunc");
-            var expression2 = new ExpressionParser("myfunc@");
-            var expression3 = new ExpressionParser("myfunc(");
-            var expression4 = new ExpressionParser("myfunc(@");
-            var expression5 = new ExpressionParser("myfunc(,");
-            var expression6 = new ExpressionParser("myfunc(V");
-            var expression7 = new ExpressionParser("myfunc(V,");
-            var expression8 = new ExpressionParser("myfunc(V,@");
-            var expression9 = new ExpressionParser("myfunc(V0,V1");
-            var expressionA = new ExpressionParser("myfunc(V0,V1,");
-            var expressionB = new ExpressionParser("myfunc(V0,V1,@");
+            var expression1 = new ExpressionParser("myfunc(");
+            var expression2 = new ExpressionParser("myfunc(@");
+            var expression3 = new ExpressionParser("myfunc(,");
+            var expression4 = new ExpressionParser("myfunc(V");
+            var expression5 = new ExpressionParser("myfunc(V,");
+            var expression6 = new ExpressionParser("myfunc(V,@");
+            var expression7 = new ExpressionParser("myfunc(V0,V1");
+            var expression8 = new ExpressionParser("myfunc(V0,V1,");
+            var expression9 = new ExpressionParser("myfunc(V0,V1,@");
 
             // Act
-            Action act1 = () => expression1.Evaluate(null);
-            Action act2 = () => expression2.Evaluate(null);
-            Action act3 = () => expression3.Evaluate(null);
-            Action act4 = () => expression4.Evaluate(null);
-            Action act5 = () => expression5.Evaluate(null);
-            Action act6 = () => expression6.Evaluate(null);
-            Action act7 = () => expression7.Evaluate(null);
-            Action act8 = () => expression8.Evaluate(null);
-            Action act9 = () => expression9.Evaluate(null);
-            Action actA = () => expressionA.Evaluate(null);
-            Action actB = () => expressionB.Evaluate(null);
+            Action act1 = () => expression1.Evaluate();
+            Action act2 = () => expression2.Evaluate();
+            Action act3 = () => expression3.Evaluate();
+            Action act4 = () => expression4.Evaluate();
+            Action act5 = () => expression5.Evaluate();
+            Action act6 = () => expression6.Evaluate();
+            Action act7 = () => expression7.Evaluate();
+            Action act8 = () => expression8.Evaluate();
+            Action act9 = () => expression9.Evaluate();
 
             // Assert
-            act1.Should().Throw<ParserException>().WithMessage("Expected open parenthesis; reached end of expression.");
-            act2.Should().Throw<ParserException>().WithMessage("Expected open parenthesis; actual: '@'");
+            act1.Should().Throw<ParserException>()
+                .WithMessage("Expected operand or close parenthesis; reached end of expression.");
+            act2.Should().Throw<ParserException>().WithMessage("Expected operand or close parenthesis; actual: '@' (unknown)");
             act3.Should().Throw<ParserException>()
-                .WithMessage("Expected parameter or close parenthesis; reached end of expression.");
-            act4.Should().Throw<ParserException>().WithMessage("Expected parameter or close parenthesis; actual: '@'");
+                .WithMessage("Expected operand or close parenthesis; actual: ',' (comma)");
+            act4.Should().Throw<ParserException>()
+                .WithMessage("Expected comma or close parenthesis; reached end of expression.");
             act5.Should().Throw<ParserException>()
-                .WithMessage("Expected parameter or close parenthesis; actual: ',' (comma)");
-            act6.Should().Throw<ParserException>()
-                .WithMessage("Expected comma or close parenthesis; reached end of expression.");
+                .WithMessage("Expected operand or close parenthesis; reached end of expression.");
+            act6.Should().Throw<ParserException>().WithMessage("Expected operand or close parenthesis; actual: '@' (unknown)");
             act7.Should().Throw<ParserException>()
-                .WithMessage("Expected parameter or close parenthesis; reached end of expression.");
-            act8.Should().Throw<ParserException>().WithMessage("Expected comma or close parenthesis; actual: '@'");
-            act9.Should().Throw<ParserException>()
                 .WithMessage("Expected comma or close parenthesis; reached end of expression.");
-            actA.Should().Throw<ParserException>()
-                .WithMessage("Expected parameter or close parenthesis; reached end of expression.");
-            actB.Should().Throw<ParserException>().WithMessage("Expected comma or close parenthesis; actual: '@'");
+            act8.Should().Throw<ParserException>()
+                .WithMessage("Expected operand or close parenthesis; reached end of expression.");
+            act9.Should().Throw<ParserException>().WithMessage("Expected operand or close parenthesis; actual: '@' (unknown)");
         }
 
         [Fact]
@@ -314,10 +351,10 @@ namespace Steeltoe.InitializrApi.Test.Unit.Parsers
             var expression = new ExpressionParser("unknownF()");
 
             // Act
-            Action act = () => expression.Evaluate(null);
+            Action act = () => expression.Evaluate();
 
             // Assert
-            act.Should().Throw<ParserException>().WithMessage("Unknown function: 'unknownF'");
+            act.Should().Throw<ParserException>().WithMessage("Unknown function: 'unknownF' (name)");
         }
     }
 }

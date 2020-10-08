@@ -14,11 +14,23 @@ namespace Steeltoe.InitializrApi.Parsers
 
         internal char Value { get; }
 
-        public override string ToString() => $"'{Value}'";
+        public override string ToString() => $"'{Value}' (unknown)";
     }
 
     internal abstract class OperandToken : Token
     {
+    }
+
+    internal class IntegerToken : OperandToken
+    {
+        public IntegerToken(int i)
+        {
+            Value = i;
+        }
+
+        internal int Value { get; }
+
+        public override string ToString() => $"'{Value}' (integer)";
     }
 
     internal abstract class NamedToken : OperandToken
@@ -28,24 +40,14 @@ namespace Steeltoe.InitializrApi.Parsers
         internal string Name { get; }
     }
 
-    internal class ParameterToken : NamedToken
+    internal class NameToken : NamedToken
     {
-        internal ParameterToken(string name)
+        internal NameToken(string name)
             : base(name)
         {
         }
 
-        public override string ToString() => $"'{Name}' (parameter)";
-    }
-
-    internal class FunctionToken : NamedToken
-    {
-        internal FunctionToken(string name)
-            : base(name)
-        {
-        }
-
-        public override string ToString() => $"'{Name}' (function)";
+        public override string ToString() => $"'{Name}' (name)";
     }
 
     internal abstract class OperatorToken : Token
@@ -59,6 +61,11 @@ namespace Steeltoe.InitializrApi.Parsers
     internal class OrOperatorToken : BooleanOperatorToken
     {
         public override string ToString() => $"'||' (or)";
+    }
+
+    internal class GreaterThanOperatorToken : BooleanOperatorToken
+    {
+        public override string ToString() => $"'>' (greater than)";
     }
 
     internal class ParenOpenToken : Token

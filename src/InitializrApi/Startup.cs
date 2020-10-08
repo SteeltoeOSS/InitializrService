@@ -25,6 +25,8 @@ namespace Steeltoe.InitializrApi
     [ExcludeFromCodeCoverage]
     public class Startup
     {
+        private readonly string _allOrigins = "AllOrigins";
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Startup"/> class.
         /// </summary>
@@ -48,6 +50,13 @@ namespace Steeltoe.InitializrApi
             services.AddOptions();
             services.ConfigureConfigServerClientOptions(Configuration);
             services.Configure<InitializrConfig>(Configuration);
+            services.AddCors(options =>
+            {
+                options.AddPolicy(
+                    name: _allOrigins,
+                    builder => { builder.WithOrigins("*"); });
+            });
+            services.AddResponseCompression();
             services.AddSingleton<IInitializrConfigService, InitializrConfigService>();
             services.AddSingleton<IProjectTemplateRegistry, ProjectTemplateRegistry>();
             services.AddSingleton<IArchiverRegistry, ArchiverRegistry>();
@@ -75,6 +84,8 @@ namespace Steeltoe.InitializrApi
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseResponseCompression();
+            app.UseCors(_allOrigins);
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthorization();

@@ -4,6 +4,7 @@
 
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Steeltoe.Extensions.Configuration.ConfigServer;
 using Steeltoe.InitializrApi.Models;
 using Steeltoe.InitializrApi.Services;
 
@@ -28,13 +29,16 @@ namespace Steeltoe.InitializrApi.Configuration
         /// Initializes a new instance of the <see cref="InitializrConfigService"/> class.
         /// </summary>
         /// <param name="configuration">Injected configuration from Config Server.</param>
+        /// <param name="settings">Injected settings from Config Server.</param>
         /// <param name="logger">Injected logger.</param>
         public InitializrConfigService(
             IOptions<InitializrConfig> configuration,
+            IOptions<ConfigServerClientSettingsOptions> settings,
             ILogger<InitializrConfigService> logger)
             : base(logger)
         {
             _config = configuration.Value;
+            Logger.LogInformation($"Config Server: uri={settings.Value.Uri},env={settings.Value.Env},label={settings.Value.Label}");
         }
 
         /* ----------------------------------------------------------------- *

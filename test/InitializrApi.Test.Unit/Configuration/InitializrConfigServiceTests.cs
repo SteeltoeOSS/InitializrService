@@ -5,6 +5,7 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
+using Steeltoe.Extensions.Configuration.ConfigServer;
 using Steeltoe.InitializrApi.Configuration;
 using Steeltoe.InitializrApi.Models;
 using Steeltoe.InitializrApi.Test.Utils;
@@ -26,14 +27,17 @@ namespace Steeltoe.InitializrApi.Test.Unit.Configuration
         public void Null_Project_Metadata_Should_Log_An_Error()
         {
             // Arrange
-            var cfg = new InitializrConfig
+            var config = new InitializrConfig
             {
                 ProjectTemplates = new ProjectTemplateConfiguration[0],
             };
-            var configOptions = new Mock<IOptions<InitializrConfig>>();
-            configOptions.Setup(opts => opts.Value).Returns(cfg);
+            var cfgServerConfig = new Mock<IOptions<InitializrConfig>>();
+            cfgServerConfig.Setup(o => o.Value).Returns(config);
+            var settings = new ConfigServerClientSettingsOptions();
+            var cfgServerSettings = new Mock<IOptions<ConfigServerClientSettingsOptions>>();
+            cfgServerSettings.Setup(o => o.Value).Returns(settings);
             var logger = new Mock<ILogger<InitializrConfigService>>();
-            var service = new InitializrConfigService(configOptions.Object, logger.Object);
+            var service = new InitializrConfigService(cfgServerConfig.Object, cfgServerSettings.Object, logger.Object);
 
             // Act
             service.Initialize();
@@ -46,15 +50,18 @@ namespace Steeltoe.InitializrApi.Test.Unit.Configuration
         public void Null_Project_Templates_Configuration_Should_Log_An_Error()
         {
             // Arrange
-            var cfg = new InitializrConfig
+            var config = new InitializrConfig
             {
                 ProjectMetadata = new ProjectMetadata(),
             };
-            cfg.ProjectMetadata = new ProjectMetadata();
-            var configOptions = new Mock<IOptions<InitializrConfig>>();
-            configOptions.Setup(opts => opts.Value).Returns(cfg);
+            config.ProjectMetadata = new ProjectMetadata();
+            var cfgServerConfig = new Mock<IOptions<InitializrConfig>>();
+            cfgServerConfig.Setup(o => o.Value).Returns(config);
+            var settings = new ConfigServerClientSettingsOptions();
+            var cfgServerSettings = new Mock<IOptions<ConfigServerClientSettingsOptions>>();
+            cfgServerSettings.Setup(o => o.Value).Returns(settings);
             var logger = new Mock<ILogger<InitializrConfigService>>();
-            var service = new InitializrConfigService(configOptions.Object, logger.Object);
+            var service = new InitializrConfigService(cfgServerConfig.Object, cfgServerSettings.Object, logger.Object);
 
             // Act
             service.Initialize();

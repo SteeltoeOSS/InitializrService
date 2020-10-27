@@ -87,7 +87,6 @@ jobs:
           containerRegistry: SteeltoeContainerRegistry
           repository: initializr-api
           tags: |
-            latest
             $(Build.BuildId)
       - task: KubernetesManifest@0
         displayName: Deploy to Staging

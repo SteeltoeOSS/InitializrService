@@ -3,9 +3,10 @@
 // See the LICENSE file in the project root for more information.
 
 using FluentAssertions;
+using Steeltoe.InitializrApi.Utilities;
 using Xunit;
 
-namespace Steeltoe.InitializrApi.Test.Utils
+namespace Steeltoe.InitializrApi.Test.Unit.Utilities
 {
     public class SerializerTest
     {

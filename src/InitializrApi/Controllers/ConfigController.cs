@@ -65,6 +65,72 @@ namespace Steeltoe.InitializrApi.Controllers
         }
 
         /// <summary>
+        /// Implements <c>GET steeltoeVersions</c>.
+        /// </summary>
+        /// <returns>Returns a <c>GET</c> result which, if is <see cref="OkObjectResult"/>, contains Initializr Steeltoe versions.</returns>
+        [HttpGet]
+        [Route("steeltoeVersions")]
+        public IActionResult GetSteeltoeVersions()
+        {
+            return Ok(_config.ProjectMetadata.SteeltoeVersion.Values);
+        }
+
+        /// <summary>
+        /// Implements <c>GET dotNetFrameworks</c>.
+        /// </summary>
+        /// <returns>Returns a <c>GET</c> result which, if is <see cref="OkObjectResult"/>, contains Initializr .NET frameworks.</returns>
+        [HttpGet]
+        [Route("dotNetFrameworks")]
+        public IActionResult GetDotNetFrameworks()
+        {
+            return Ok(_config.ProjectMetadata.DotNetFramework.Values);
+        }
+
+        /// <summary>
+        /// Implements <c>GET dotNetTemplates</c>.
+        /// </summary>
+        /// <returns>Returns a <c>GET</c> result which, if is <see cref="OkObjectResult"/>, contains Initializr .NET templates.</returns>
+        [HttpGet]
+        [Route("dotNetTemplates")]
+        public IActionResult GetDotNetTemplates()
+        {
+            return Ok(_config.ProjectMetadata.DotNetTemplate.Values);
+        }
+
+        /// <summary>
+        /// Implements <c>GET languages</c>.
+        /// </summary>
+        /// <returns>Returns a <c>GET</c> result which, if is <see cref="OkObjectResult"/>, contains Initializr languages.</returns>
+        [HttpGet]
+        [Route("languages")]
+        public IActionResult GetLanguages()
+        {
+            return Ok(_config.ProjectMetadata.Language.Values);
+        }
+
+        /// <summary>
+        /// Implements <c>GET archive types</c>.
+        /// </summary>
+        /// <returns>Returns a <c>GET</c> result which, if is <see cref="OkObjectResult"/>, contains Initializr archive types.</returns>
+        [HttpGet]
+        [Route("archiveTypes")]
+        public IActionResult GetArchiveTypes()
+        {
+            return Ok(_config.ProjectMetadata.ArchiveMimeType.Values);
+        }
+
+        /// <summary>
+        /// Implements <c>GET dependencies</c>.
+        /// </summary>
+        /// <returns>Returns a <c>GET</c> result which, if is <see cref="OkObjectResult"/>, contains Initializr dependencies types.</returns>
+        [HttpGet]
+        [Route("dependencies")]
+        public IActionResult GetDependencies()
+        {
+            return Ok(_config.ProjectMetadata.Dependencies.Values);
+        }
+
+        /// <summary>
         /// Implements <c>GET projectTemplates</c>.
         /// </summary>
         /// <returns>Return a <c>GET</c> result which, if is <see cref="OkObjectResult"/>, contains InitializrApi project templates configuration.</returns>

@@ -6,7 +6,7 @@ using System;
 using System.Net;
 using FluentAssertions;
 using Steeltoe.InitializrApi.Models;
-using Steeltoe.InitializrApi.Test.Utils;
+using Steeltoe.InitializrApi.Utilities;
 using Xunit;
 
 namespace Steeltoe.InitializrApi.Test.Integration
@@ -16,6 +16,7 @@ namespace Steeltoe.InitializrApi.Test.Integration
         /* ----------------------------------------------------------------- *
          * positive tests                                                    *
          * ----------------------------------------------------------------- */
+
         [Fact]
         public void ProjectSpec_Should_Load_UI_Test_File()
         {

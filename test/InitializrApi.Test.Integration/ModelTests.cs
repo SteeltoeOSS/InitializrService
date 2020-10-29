@@ -6,7 +6,7 @@ using System;
 using System.Net;
 using FluentAssertions;
 using Steeltoe.InitializrApi.Models;
-using Steeltoe.InitializrApi.Test.Utils;
+using Steeltoe.InitializrApi.Utilities;
 using Xunit;
 
 namespace Steeltoe.InitializrApi.Test.Integration
@@ -16,10 +16,11 @@ namespace Steeltoe.InitializrApi.Test.Integration
         /* ----------------------------------------------------------------- *
          * positive tests                                                    *
          * ----------------------------------------------------------------- */
+
         [Fact]
         public void ProjectSpec_Should_Load_UI_Test_File()
         {
-            var testFile = new Uri("https://raw.githubusercontent.com/ccheetham/start.spring.io/steeltoe-mods/start-client/dev/api.json");
+            var testFile = new Uri("https://raw.githubusercontent.com/SteeltoeOSS/InitializrWeb/dev/start-client/dev/api.json");
             using var client = new WebClient();
             var bits = client.DownloadString(testFile);
             var metadata = Serializer.DeserializeJson<ProjectMetadata>(bits);

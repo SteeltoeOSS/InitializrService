@@ -198,7 +198,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Parsers
          * ----------------------------------------------------------------- */
 
         [Fact]
-        public void Incomplete_Or_Operator_Should_Throw_Exception()
+        public void Incomplete_Or_Operator_Should_Throw_ArgumentException()
         {
             // Arrange
             var expr = "|";

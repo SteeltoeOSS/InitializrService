@@ -48,8 +48,19 @@ namespace Steeltoe.InitializrApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddOptions();
-            services.ConfigureConfigServerClientOptions(Configuration);
-            services.Configure<InitializrConfig>(Configuration);
+            services.Configure<InitializrOptions>(Configuration.GetSection(InitializrOptions.Initializr));
+            var initializrOptions = Configuration.GetSection(InitializrOptions.Initializr).Get<InitializrOptions>();
+            if (initializrOptions?.Path is null)
+            {
+                services.ConfigureConfigServerClientOptions(Configuration);
+                services.Configure<InitializrConfig>(Configuration);
+                services.AddSingleton<IInitializrConfigService, InitializrConfigService>();
+            }
+            else
+            {
+                services.AddSingleton<IInitializrConfigService, InitializrConfigFile>();
+            }
+
             services.AddCors(options =>
             {
                 options.AddPolicy(
@@ -57,7 +68,6 @@ namespace Steeltoe.InitializrApi
                     builder => { builder.WithOrigins("*"); });
             });
             services.AddResponseCompression();
-            services.AddSingleton<IInitializrConfigService, InitializrConfigService>();
             services.AddSingleton<IProjectTemplateRegistry, ProjectTemplateRegistry>();
             services.AddSingleton<IArchiverRegistry, ArchiverRegistry>();
             services.AddTransient<IProjectGenerator, StubbleProjectGenerator>();

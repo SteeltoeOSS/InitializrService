@@ -206,7 +206,7 @@
             },
             {
               "description": "Target Microsoft Azure Spring Cloud hosting.",
-              "steeltoeVersionRange": "3.0.0",
+              "steeltoeCompatibilityRange": "3.0.0",
               "id": "azure-spring-cloud",
               "name": "Azure Spring Cloud"
             },
@@ -223,13 +223,13 @@
   },
   "projectTemplates": [
     {
-      "uri": "http://52.252.76.164/izrs/steeltoe-2.4.4--netcoreapp2.1--webapi--csharp.izr"
+      "uri": "http://localhost:8889/steeltoe-2.4.x--netcoreapp2.1--webapi--csharp.izr"
     },
     {
-      "uri": "http://52.252.76.164/izrs/steeltoe-2.4.4--netcoreapp3.1--webapi--csharp.izr"
+      "uri": "http://localhost:8889/steeltoe-2.4.x--netcoreapp3.1--webapi--csharp.izr"
     },
     {
-      "uri": "http://52.252.76.164/izrs/steeltoe-3.0.0--netcoreapp3.1--webapi--csharp.izr"
+      "uri": "http://localhost:8889/steeltoe-3.0.0--netcoreapp3.1--webapi--csharp.izr"
     }
   ]
 }

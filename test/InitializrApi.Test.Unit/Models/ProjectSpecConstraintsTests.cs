@@ -23,8 +23,8 @@ namespace Steeltoe.InitializrApi.Test.Unit.Models
             // Act
 
             // Assert
-            constraints.SteeltoeVersionRange.Should().BeNull();
-            constraints.DotNetFrameworkRange.Should().BeNull();
+            constraints.SteeltoeCompatibilityRange.Should().BeNull();
+            constraints.DotNetFrameworkCompatibilityRange.Should().BeNull();
             constraints.DotNetTemplate.Should().BeNull();
             constraints.Language.Should().BeNull();
         }
@@ -39,25 +39,27 @@ namespace Steeltoe.InitializrApi.Test.Unit.Models
             var s = constraints.ToString();
 
             // Assert
-            s.Should().Be("[steeltoeVersionRange=,dotNetFrameworkRange=,dotNetTemplate=,language=]");
+            s.Should().Be("[steeltoeCompatibilityRange=,dotNetFrameworkCompatibilityRange=,dotNetTemplate=,language=]");
 
             // Arrange
-            constraints.SteeltoeVersionRange = "myversion";
+            constraints.SteeltoeCompatibilityRange = new ReleaseRange("myversion1.0");
 
             // Act
             s = constraints.ToString();
 
             // Assert
-            s.Should().Be("[steeltoeVersionRange=myversion,dotNetFrameworkRange=,dotNetTemplate=,language=]");
+            s.Should().Be(
+                "[steeltoeCompatibilityRange=myversion1.0,dotNetFrameworkCompatibilityRange=,dotNetTemplate=,language=]");
 
             // Arrange
-            constraints.DotNetFrameworkRange = "myframework";
+            constraints.DotNetFrameworkCompatibilityRange = new ReleaseRange("myframework1.0");
 
             // Act
             s = constraints.ToString();
 
             // Assert
-            s.Should().Be("[steeltoeVersionRange=myversion,dotNetFrameworkRange=myframework,dotNetTemplate=,language=]");
+            s.Should().Be(
+                "[steeltoeCompatibilityRange=myversion1.0,dotNetFrameworkCompatibilityRange=myframework1.0,dotNetTemplate=,language=]");
 
             // Arrange
             constraints.DotNetTemplate = "mytemplate";
@@ -66,7 +68,8 @@ namespace Steeltoe.InitializrApi.Test.Unit.Models
             s = constraints.ToString();
 
             // Assert
-            s.Should().Be("[steeltoeVersionRange=myversion,dotNetFrameworkRange=myframework,dotNetTemplate=mytemplate,language=]");
+            s.Should().Be(
+                "[steeltoeCompatibilityRange=myversion1.0,dotNetFrameworkCompatibilityRange=myframework1.0,dotNetTemplate=mytemplate,language=]");
 
             // Arrange
             constraints.Language = "mylanguage";
@@ -75,7 +78,8 @@ namespace Steeltoe.InitializrApi.Test.Unit.Models
             s = constraints.ToString();
 
             // Assert
-            s.Should().Be("[steeltoeVersionRange=myversion,dotNetFrameworkRange=myframework,dotNetTemplate=mytemplate,language=mylanguage]");
+            s.Should().Be(
+                "[steeltoeCompatibilityRange=myversion1.0,dotNetFrameworkCompatibilityRange=myframework1.0,dotNetTemplate=mytemplate,language=mylanguage]");
         }
 
         /* ----------------------------------------------------------------- *

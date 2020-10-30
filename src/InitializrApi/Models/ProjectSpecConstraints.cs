@@ -18,12 +18,13 @@ namespace Steeltoe.InitializrApi.Models
         /// <summary>
         /// Gets or sets the Steeltoe version range.
         /// </summary>
-        public string SteeltoeVersionRange { get; set; }
+        ///
+        public ReleaseRange SteeltoeCompatibilityRange { get; set; }
 
         /// <summary>
         /// Gets or sets the DotNet framework range.
         /// </summary>
-        public string DotNetFrameworkRange { get; set; }
+        public ReleaseRange DotNetFrameworkCompatibilityRange { get; set; }
 
         /// <summary>
         /// Gets or sets the DotNet template.
@@ -43,10 +44,10 @@ namespace Steeltoe.InitializrApi.Models
         {
             var buf = new StringBuilder();
             buf.Append('[');
-            buf.Append("steeltoeVersionRange=");
-            buf.Append(SteeltoeVersionRange);
-            buf.Append(",dotNetFrameworkRange=");
-            buf.Append(DotNetFrameworkRange);
+            buf.Append("steeltoeCompatibilityRange=");
+            buf.Append(SteeltoeCompatibilityRange);
+            buf.Append(",dotNetFrameworkCompatibilityRange=");
+            buf.Append(DotNetFrameworkCompatibilityRange);
             buf.Append(",dotNetTemplate=");
             buf.Append(DotNetTemplate);
             buf.Append(",language=");

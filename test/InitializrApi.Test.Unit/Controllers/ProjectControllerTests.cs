@@ -98,11 +98,11 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
                 {
                     Dependencies = new ProjectMetadata.GroupList
                     {
-                        Values = new []
+                        Values = new[]
                         {
                             new ProjectMetadata.Group
                             {
-                                Values = new []
+                                Values = new[]
                                 {
                                     new ProjectMetadata.GroupItem
                                     {
@@ -150,7 +150,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
             // Assert
             var result = Assert.IsType<NotFoundObjectResult>(unknown);
             result.Value.ToString().Should()
-                .Be("No such project for spec: [name=nosuchtemplate,archiveMimeType=application/myarchive]");
+                .Be("No project template for spec: [name=nosuchtemplate,archiveMimeType=application/myarchive]");
         }
 
         [Fact]

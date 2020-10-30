@@ -120,7 +120,7 @@ namespace Steeltoe.InitializrApi.Controllers
             var project = _projectGenerator.GenerateProject(normalizedSpec);
             if (project is null)
             {
-                return NotFound($"No such project for spec: {normalizedSpec}");
+                return NotFound($"No project template for spec: {normalizedSpec}");
             }
 
             var archiveBytes = archiver.ToBytes(project.FileEntries);

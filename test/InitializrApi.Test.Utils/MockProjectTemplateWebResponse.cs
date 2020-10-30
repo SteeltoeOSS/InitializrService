@@ -52,13 +52,13 @@ namespace Steeltoe.InitializrApi.Test.Utils
             {
                 { "constraints", "yes" },
                 { "description", "project template description" },
-                { "dotNetFrameworkRange", "" },
+                { "dotNetFrameworkCompatibilityRange", "" },
                 { "dotNetTemplate", "" },
                 { "language", "" },
                 { "manifest", "yes" },
                 { "metadata", "yes" },
                 { "missingfile", "" },
-                { "steeltoeVersionRange", "" },
+                { "steeltoeCompatibilityRange", "" },
             };
             if (_uri.Query.StartsWith('?'))
             {
@@ -82,9 +82,10 @@ namespace Steeltoe.InitializrApi.Test.Utils
                     if (!queryParams["constraints"].Equals("no"))
                     {
                         metadata.Append("constraints:").Append(Environment.NewLine);
-                        metadata.Append($"  steeltoeVersionRange: {queryParams["steeltoeVersionRange"]}")
+                        metadata.Append($"  steeltoeCompatibilityRange: {queryParams["steeltoeCompatibilityRange"]}")
                             .Append(Environment.NewLine);
-                        metadata.Append($"  dotNetFrameworkRange: {queryParams["dotNetFrameworkRange"]}")
+                        metadata.Append(
+                                $"  dotNetFrameworkCompatibilityRange: {queryParams["dotNetFrameworkCompatibilityRange"]}")
                             .Append(Environment.NewLine);
                         metadata.Append($"  dotNetTemplate: {queryParams["dotNetTemplate"]}")
                             .Append(Environment.NewLine);

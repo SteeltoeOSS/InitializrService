@@ -50,7 +50,7 @@ namespace Steeltoe.InitializrApi
             services.AddOptions();
             services.Configure<InitializrOptions>(Configuration.GetSection(InitializrOptions.Initializr));
             var initializrOptions = Configuration.GetSection(InitializrOptions.Initializr).Get<InitializrOptions>();
-            if (initializrOptions?.Path is null)
+            if (initializrOptions?.ConfigurationPath is null)
             {
                 services.ConfigureConfigServerClientOptions(Configuration);
                 services.Configure<InitializrConfig>(Configuration);

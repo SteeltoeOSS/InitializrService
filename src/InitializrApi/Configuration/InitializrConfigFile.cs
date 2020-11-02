@@ -47,20 +47,20 @@ namespace Steeltoe.InitializrApi.Configuration
         /// <inheritdoc />
         public void Initialize()
         {
-            Logger.LogInformation("loading configuration: {Path}", _options.Path);
+            Logger.LogInformation("loading configuration: {Path}", _options.ConfigurationPath);
             try
             {
-                var configJson = File.ReadAllText(_options.Path);
+                var configJson = File.ReadAllText(_options.Configuration["Path"]);
                 _config = Serializer.DeserializeJson<InitializrConfig>(configJson);
             }
             catch (FileNotFoundException)
             {
-                throw new ArgumentException($"Configuration file path does not exist: {_options.Path}");
+                throw new ArgumentException($"Configuration file path does not exist: {_options.ConfigurationPath}");
             }
             catch (UnauthorizedAccessException)
             {
                 throw new ArgumentException(
-                    $"Configuration file path is not a file or cannot be read: {_options.Path}");
+                    $"Configuration file path is not a file or cannot be read: {_options.ConfigurationPath}");
             }
         }
 

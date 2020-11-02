@@ -22,11 +22,24 @@ namespace Steeltoe.InitializrApi
         public Dictionary<string, string> Configuration { get; set; }
 
         /// <summary>
+        /// Gets or sets the CORS dictionary.
+        /// </summary>
+        public Dictionary<string, string> Cors { get; set; }
+
+        /// <summary>
         /// Gets the path to the configuration file.
         /// </summary>
         public string ConfigurationPath
         {
-            get => Configuration["Path"];
+            get => Configuration?["Path"];
+        }
+
+        /// <summary>
+        /// Gets the CORS origin.
+        /// </summary>
+        public string CorsOrigin
+        {
+            get => Cors?["Origin"];
         }
     }
 }

@@ -40,9 +40,23 @@ _**Note**_: overrides Spring Cloud Config Server configuration
 `appsettings.json`
 ```json
   "Initializr": {
-    "Path": "Properties/initializr-config.json"
+    "Configuration" : {
+      "Path": "Properties/initializr-config.json"
+    }
   },
 ```
+
+### CORS
+`appsettings.json`
+```json
+  "Initializr": {
+    "CORS" : {
+      "Origin": "*"
+    }
+  },
+```
+
+## Endpoints
 
 ### `api/configuration`
 

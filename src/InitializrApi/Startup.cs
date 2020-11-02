@@ -25,7 +25,7 @@ namespace Steeltoe.InitializrApi
     [ExcludeFromCodeCoverage]
     public class Startup
     {
-        private readonly string _allOrigins = "AllOrigins";
+        private string _corsOrigin;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Startup"/> class.
@@ -50,7 +50,7 @@ namespace Steeltoe.InitializrApi
             services.AddOptions();
             services.Configure<InitializrOptions>(Configuration.GetSection(InitializrOptions.Initializr));
             var initializrOptions = Configuration.GetSection(InitializrOptions.Initializr).Get<InitializrOptions>();
-            if (initializrOptions?.Path is null)
+            if (initializrOptions?.ConfigurationPath is null)
             {
                 services.ConfigureConfigServerClientOptions(Configuration);
                 services.Configure<InitializrConfig>(Configuration);
@@ -61,12 +61,17 @@ namespace Steeltoe.InitializrApi
                 services.AddSingleton<IInitializrConfigService, InitializrConfigFile>();
             }
 
-            services.AddCors(options =>
+            if (!(initializrOptions?.CorsOrigin is null))
             {
-                options.AddPolicy(
-                    name: _allOrigins,
-                    builder => { builder.WithOrigins("*"); });
-            });
+                _corsOrigin = "ConfiguredOrigins";
+                services.AddCors(options =>
+                {
+                    options.AddPolicy(
+                        name: _corsOrigin,
+                        builder => { builder.WithOrigins(initializrOptions.CorsOrigin); });
+                });
+            }
+
             services.AddResponseCompression();
             services.AddSingleton<IProjectTemplateRegistry, ProjectTemplateRegistry>();
             services.AddSingleton<IArchiverRegistry, ArchiverRegistry>();
@@ -95,7 +100,11 @@ namespace Steeltoe.InitializrApi
             }
 
             app.UseResponseCompression();
-            app.UseCors(_allOrigins);
+            if (!(_corsOrigin is null))
+            {
+                app.UseCors(_corsOrigin);
+            }
+
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthorization();

@@ -229,7 +229,7 @@
       "uri": "http://localhost:8889/steeltoe-2.4.x--netcoreapp3.1--webapi--csharp.izr"
     },
     {
-      "uri": "http://localhost:8889/steeltoe-3.0.0--netcoreapp3.1--webapi--csharp.izr"
+      "uri": "http://localhost:8889/steeltoe-3.0.x--netcoreapp3.1--webapi--csharp.izr"
     }
   ]
 }

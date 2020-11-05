@@ -20,7 +20,8 @@ namespace Steeltoe.InitializrApi.Test.Integration
         [Fact]
         public void ProjectSpec_Should_Load_UI_Test_File()
         {
-            var testFile = new Uri("https://raw.githubusercontent.com/SteeltoeOSS/InitializrWeb/dev/start-client/dev/api.json");
+            var testFile =
+                new Uri("https://raw.githubusercontent.com/SteeltoeOSS/InitializrWeb/dev/start-client/dev/api.json");
             using var client = new WebClient();
             var bits = client.DownloadString(testFile);
             var metadata = Serializer.DeserializeJson<ProjectMetadata>(bits);
@@ -28,9 +29,9 @@ namespace Steeltoe.InitializrApi.Test.Integration
             metadata.DotNetFramework.Default.Should().Be("netcoreapp3.1");
             metadata.DotNetTemplate.Default.Should().Be("webapi");
             metadata.Language.Default.Should().Be("csharp");
-            metadata.Project.Default.Should().Be("Sample");
+            metadata.Name.Default.Should().Be("Sample");
             metadata.Namespace.Default.Should().Be("Sample");
-            metadata.Application.Default.Should().Be("SampleApplication");
+            metadata.ApplicationName.Default.Should().Be("SampleApplication");
             metadata.Description.Default.Should().Be("Sample project application");
         }
 

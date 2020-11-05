@@ -31,10 +31,10 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
         {
             // Arrange
             var archiverRegistry = new Mock<IArchiverRegistry>();
-            archiverRegistry.Setup(reg => reg.Lookup(It.Is<string>(s => s.Equals("application/zip"))))
+            archiverRegistry.Setup(reg => reg.Lookup(It.Is<string>(s => s.Equals("zip"))))
                 .Returns(new ZipArchiver());
             var controller = new ProjectControllerBuilder().WithArchiverRegistry(archiverRegistry.Object).Build();
-            var spec = new ProjectSpec { ArchiveMimeType = "application/zip" };
+            var spec = new ProjectSpec { Packaging = "zip" };
 
             // Act
             var unknown = controller.GetProjectArchive(spec);
@@ -55,14 +55,14 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
             {
                 ProjectMetadata = new ProjectMetadata
                 {
-                    Project = new ProjectMetadata.Text { Default = "my project" },
+                    Name = new ProjectMetadata.Text { Default = "my project name" },
                     Description = new ProjectMetadata.Text { Default = "my description" },
                     Namespace = new ProjectMetadata.Text { Default = "my namespace" },
                     SteeltoeVersion = new ProjectMetadata.SingleSelectList { Default = "my steeltoe version" },
                     DotNetFramework = new ProjectMetadata.SingleSelectList { Default = "my dotnet framework" },
                     DotNetTemplate = new ProjectMetadata.SingleSelectList { Default = "my dotnet template" },
                     Language = new ProjectMetadata.SingleSelectList { Default = "my language" },
-                    ArchiveMimeType = new ProjectMetadata.SingleSelectList { Default = "application/myarchive" },
+                    Packaging = new ProjectMetadata.SingleSelectList { Default = "myarchive" },
                     Dependencies = new ProjectMetadata.GroupList { Default = "dep1,dep2" },
                 },
             };
@@ -76,14 +76,14 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
             // Assert
             var result = Assert.IsType<FileContentResult>(unknown);
             using var reader = new StreamReader(new MemoryStream(result.FileContents));
-            reader.ReadLine().Should().Be("project=my project");
+            reader.ReadLine().Should().Be("project name=my project name");
             reader.ReadLine().Should().Be("description=my description");
             reader.ReadLine().Should().Be("namespace=my namespace");
             reader.ReadLine().Should().Be("steeltoe version=my steeltoe version");
             reader.ReadLine().Should().Be("dotnet framework=my dotnet framework");
             reader.ReadLine().Should().Be("dotnet template=my dotnet template");
             reader.ReadLine().Should().Be("language=my language");
-            reader.ReadLine().Should().Be("archive mime type=application/myarchive");
+            reader.ReadLine().Should().Be("packaging=myarchive");
             reader.ReadLine().Should().Be("dependencies=dep1,dep2");
             reader.ReadLine().Should().BeNull();
         }
@@ -116,7 +116,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
             };
             var spec = new ProjectSpec
             {
-                ArchiveMimeType = "application/myarchive",
+                Packaging = "myarchive",
                 Dependencies = "unknowndep,camelcasedep",
             };
             var controller = new ProjectControllerBuilder()
@@ -150,7 +150,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
             // Assert
             var result = Assert.IsType<NotFoundObjectResult>(unknown);
             result.Value.ToString().Should()
-                .Be("No project template for spec: [name=nosuchtemplate,archiveMimeType=application/myarchive]");
+                .Be("No project template for spec: [name=nosuchtemplate,packaging=myarchive]");
         }
 
         [Fact]
@@ -158,14 +158,14 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
         {
             // Arrange
             var controller = new ProjectControllerBuilder().Build();
-            var spec = new ProjectSpec { ArchiveMimeType = "application/nosuchformat" };
+            var spec = new ProjectSpec { Packaging = "nosuchformat" };
 
             // Act
             var unknown = controller.GetProjectArchive(spec);
 
             // Assert
             var result = Assert.IsType<NotFoundObjectResult>(unknown);
-            result.Value.ToString().Should().Be("Archive mime type 'application/nosuchformat' not found.");
+            result.Value.ToString().Should().Be("Packaging 'nosuchformat' not found.");
         }
 
         [Fact]
@@ -182,7 +182,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
             // Assert
             var result = Assert.IsType<ObjectResult>(unknown);
             result.StatusCode.Should().Be(StatusCodes.Status500InternalServerError);
-            result.Value.Should().Be("Default archive mime type not configured.");
+            result.Value.Should().Be("Default packaging not configured.");
         }
 
         /* ----------------------------------------------------------------- *
@@ -205,9 +205,9 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
                     {
                         ProjectMetadata = new ProjectMetadata
                         {
-                            ArchiveMimeType = new ProjectMetadata.SingleSelectList
+                            Packaging = new ProjectMetadata.SingleSelectList
                             {
-                                Default = "application/myarchive",
+                                Default = "myarchive",
                             },
                         },
                         ProjectTemplates = new ProjectTemplateConfiguration[0],
@@ -222,7 +222,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
                 if (_registry is null)
                 {
                     var mock = new Mock<IArchiverRegistry>();
-                    mock.Setup(reg => reg.Lookup(It.Is<string>(s => s.Equals("application/myarchive"))))
+                    mock.Setup(reg => reg.Lookup(It.Is<string>(s => s.Equals("myarchive"))))
                         .Returns(new TestArchiver());
                     _registry = mock.Object;
                 }
@@ -264,7 +264,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
                 }
 
                 var project = new Project();
-                project.FileEntries.Add(new FileEntry { Path = "project", Text = spec.Name ?? "<na>" });
+                project.FileEntries.Add(new FileEntry { Path = "project name", Text = spec.Name ?? "<na>" });
                 project.FileEntries.Add(new FileEntry { Path = "description", Text = spec.Description ?? "<na>" });
                 project.FileEntries.Add(new FileEntry { Path = "namespace", Text = spec.Namespace ?? "<na>" });
                 project.FileEntries.Add(new FileEntry
@@ -275,7 +275,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
                     new FileEntry { Path = "dotnet template", Text = spec.DotNetTemplate ?? "<na>" });
                 project.FileEntries.Add(new FileEntry { Path = "language", Text = spec.Language ?? "<na>" });
                 project.FileEntries.Add(new FileEntry
-                    { Path = "archive mime type", Text = spec.ArchiveMimeType ?? "<na>" });
+                    { Path = "packaging", Text = spec.Packaging ?? "<na>" });
                 project.FileEntries.Add(new FileEntry { Path = "dependencies", Text = spec.Dependencies ?? "<na>" });
                 return project;
             }
@@ -297,7 +297,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
                 return Encoding.UTF8.GetBytes(buf.ToString());
             }
 
-            public string GetMimeType()
+            public string GetPackaging()
             {
                 return "application/myarchive";
             }

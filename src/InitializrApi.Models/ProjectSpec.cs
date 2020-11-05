@@ -12,12 +12,6 @@ namespace Steeltoe.InitializrApi.Models
     public sealed class ProjectSpec
     {
         /* ----------------------------------------------------------------- *
-         * fields                                                            *
-         * ----------------------------------------------------------------- */
-
-        private string _archiveMimeType;
-
-        /* ----------------------------------------------------------------- *
          * properties                                                        *
          * ----------------------------------------------------------------- */
 
@@ -52,18 +46,14 @@ namespace Steeltoe.InitializrApi.Models
         public string DotNetTemplate { get; set; }
 
         /// <summary>
-        /// Gets or sets the language ID.
+        /// Gets or sets the programming language ID.
         /// </summary>
         public string Language { get; set; }
 
         /// <summary>
         /// Gets or sets the project archive mime type.
         /// </summary>
-        public string ArchiveMimeType
-        {
-            get => _archiveMimeType;
-            set => _archiveMimeType = value is null ? null : (value.Contains('/') ? value : $"application/{value}");
-        }
+        public string Packaging { get; set; }
 
         /// <summary>
         /// Gets or sets the project dependencies.
@@ -121,9 +111,9 @@ namespace Steeltoe.InitializrApi.Models
                 delim = ",";
             }
 
-            if (ArchiveMimeType != null)
+            if (Packaging != null)
             {
-                buf.Append(delim).Append("archiveMimeType=").Append(ArchiveMimeType);
+                buf.Append(delim).Append("packaging=").Append(Packaging);
             }
 
             if (Dependencies != null)

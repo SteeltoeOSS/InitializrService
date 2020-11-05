@@ -31,6 +31,13 @@ namespace Steeltoe.InitializrApi.Models
         /// <summary>
         /// Initializes a new instance of the <see cref="ReleaseRange"/> class.
         /// </summary>
+        public ReleaseRange()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ReleaseRange"/> class.
+        /// </summary>
         /// <param name="range">Release version range expression.</param>
         /// <exception cref="ArgumentException">If the range expression or a release version is invalid.</exception>
         public ReleaseRange(string range)
@@ -135,7 +142,10 @@ namespace Steeltoe.InitializrApi.Models
                 $">{(_startInclusive ? "=" : string.Empty)}{_start} and <{(_stopInclusive ? "=" : string.Empty)}{_stop}";
         }
 
-        internal class ReleaseVersion
+        /// <summary>
+        /// Similar to <see cref="Version"/> but with added support for prefixes, e.g. netcoreapp2.1.
+        /// </summary>
+        public class ReleaseVersion
         {
             private readonly string _representation;
 
@@ -143,7 +153,10 @@ namespace Steeltoe.InitializrApi.Models
 
             private readonly Version _version;
 
-            internal ReleaseVersion(string version)
+            /// <summary>
+            /// Initializes a new instance of the <see cref="ReleaseVersion"/> class.
+            /// </summary>
+            public ReleaseVersion(string version)
             {
                 if (string.IsNullOrEmpty(version))
                 {
@@ -177,26 +190,68 @@ namespace Steeltoe.InitializrApi.Models
                 _representation = version;
             }
 
+            /// <summary>
+            /// Returns <see cref="CompareTo"/> &lt; 0.
+            /// </summary>
+            /// <param name="a">Left operand.</param>
+            /// <param name="b">Right operand.</param>
+            /// <returns>a &lt; b.</returns>
             public static bool operator <(ReleaseVersion a, ReleaseVersion b)
             {
                 return CompareTo(a, b) < 0;
             }
 
+            /// <summary>
+            /// Returns <see cref="CompareTo"/> &gt; 0.
+            /// </summary>
+            /// <param name="a">Left operand.</param>
+            /// <param name="b">Right operand.</param>
+            /// <returns>a &gt; b.</returns>
             public static bool operator >(ReleaseVersion a, ReleaseVersion b)
             {
                 return CompareTo(a, b) > 0;
             }
 
+            /// <summary>
+            /// Returns <see cref="CompareTo"/> == 0.
+            /// </summary>
+            /// <param name="a">Left operand.</param>
+            /// <param name="b">Right operand.</param>
+            /// <returns>a == b.</returns>
             public static bool operator ==(ReleaseVersion a, ReleaseVersion b)
             {
                 return CompareTo(a, b) == 0;
             }
 
+            /// <summary>
+            /// Returns <see cref="CompareTo"/> != 0.
+            /// </summary>
+            /// <param name="a">Left operand.</param>
+            /// <param name="b">Right operand.</param>
+            /// <returns>a != b.</returns>
             public static bool operator !=(ReleaseVersion a, ReleaseVersion b)
             {
                 return CompareTo(a, b) != 0;
             }
 
+            /// <summary>
+            /// Semantically compares 2 <see cref="ReleaseVersion"/>s.
+            /// </summary>
+            /// <param name="a">Left operand.</param>
+            /// <param name="b">Right operand.</param>
+            /// <returns>The semantic comparison.</returns>
+            /// <exception cref="ArgumentException">Thrown if versions have difference prefixes.</exception>
+            public static int CompareTo(ReleaseVersion a, ReleaseVersion b)
+            {
+                if (!a._prefix.Equals(b._prefix))
+                {
+                    throw new ArgumentException($"Cannot compare versions with different prefixes: '{a}', '{b}'");
+                }
+
+                return a._version.CompareTo(b._version);
+            }
+
+            /// <inheritdoc />
             public override bool Equals(object obj)
             {
                 if (ReferenceEquals(null, obj))
@@ -217,29 +272,23 @@ namespace Steeltoe.InitializrApi.Models
                 return Equals((ReleaseVersion)obj);
             }
 
+            /// <inheritdoc />
             public override int GetHashCode()
             {
                 return _representation != null ? _representation.GetHashCode() : 0;
             }
 
-            /// <summary>
             /// <inheritdoc />
-            /// </summary>
             public override string ToString()
             {
                 return _representation;
             }
 
-            internal static int CompareTo(ReleaseVersion a, ReleaseVersion b)
-            {
-                if (!a._prefix.Equals(b._prefix))
-                {
-                    throw new ArgumentException($"Cannot compare versions with different prefixes: '{a}', '{b}'");
-                }
-
-                return a._version.CompareTo(b._version);
-            }
-
+            /// <summary>
+            /// Return this == other.
+            /// </summary>
+            /// <param name="other">Other version.</param>
+            /// <returns>this == other.</returns>
             protected bool Equals(ReleaseVersion other)
             {
                 return _representation == other._representation;

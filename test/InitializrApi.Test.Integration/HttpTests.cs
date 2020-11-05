@@ -39,7 +39,7 @@ namespace Steeltoe.InitializrApi.Test.Integration
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             var metadata = await response.Content.ReadFromJsonAsync<ProjectMetadata>();
-            metadata.Project.Should().NotBeNull();
+            metadata.Name.Should().NotBeNull();
         }
 
         [Fact]
@@ -217,6 +217,5 @@ namespace Steeltoe.InitializrApi.Test.Integration
             fixture.Services.GetRequiredService<IInitializrConfigService>().Initialize();
             HttpClient = fixture.CreateClient();
         }
-
     }
 }

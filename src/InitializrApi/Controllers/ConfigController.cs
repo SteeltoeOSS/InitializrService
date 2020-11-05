@@ -4,7 +4,6 @@
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Steeltoe.InitializrApi.Models;
 using Steeltoe.InitializrApi.Services;
 
 namespace Steeltoe.InitializrApi.Controllers
@@ -20,7 +19,7 @@ namespace Steeltoe.InitializrApi.Controllers
          * fields                                                            *
          * ----------------------------------------------------------------- */
 
-        private readonly InitializrConfig _config;
+        private readonly IInitializrConfigService _configService;
 
         /* ----------------------------------------------------------------- *
          * constructors                                                      *
@@ -36,7 +35,7 @@ namespace Steeltoe.InitializrApi.Controllers
             ILogger<ConfigController> logger)
             : base(logger)
         {
-            _config = configService.GetInitializrConfig();
+            _configService = configService;
         }
 
         /* ----------------------------------------------------------------- *
@@ -50,7 +49,7 @@ namespace Steeltoe.InitializrApi.Controllers
         [HttpGet]
         public IActionResult GetInitializrConfiguration()
         {
-            return Ok(_config);
+            return Ok(_configService.GetInitializrConfig());
         }
 
         /// <summary>
@@ -61,7 +60,7 @@ namespace Steeltoe.InitializrApi.Controllers
         [Route("projectMetadata")]
         public IActionResult GetProjectMetadata()
         {
-            return Ok(_config.ProjectMetadata);
+            return Ok(_configService.GetInitializrConfig().ProjectMetadata);
         }
 
         /// <summary>
@@ -72,7 +71,7 @@ namespace Steeltoe.InitializrApi.Controllers
         [Route("steeltoeVersions")]
         public IActionResult GetSteeltoeVersions()
         {
-            return Ok(_config.ProjectMetadata.SteeltoeVersion.Values);
+            return Ok(_configService.GetInitializrConfig().ProjectMetadata.SteeltoeVersion.Values);
         }
 
         /// <summary>
@@ -83,7 +82,7 @@ namespace Steeltoe.InitializrApi.Controllers
         [Route("dotNetFrameworks")]
         public IActionResult GetDotNetFrameworks()
         {
-            return Ok(_config.ProjectMetadata.DotNetFramework.Values);
+            return Ok(_configService.GetInitializrConfig().ProjectMetadata.DotNetFramework.Values);
         }
 
         /// <summary>
@@ -94,7 +93,7 @@ namespace Steeltoe.InitializrApi.Controllers
         [Route("dotNetTemplates")]
         public IActionResult GetDotNetTemplates()
         {
-            return Ok(_config.ProjectMetadata.DotNetTemplate.Values);
+            return Ok(_configService.GetInitializrConfig().ProjectMetadata.DotNetTemplate.Values);
         }
 
         /// <summary>
@@ -105,7 +104,7 @@ namespace Steeltoe.InitializrApi.Controllers
         [Route("languages")]
         public IActionResult GetLanguages()
         {
-            return Ok(_config.ProjectMetadata.Language.Values);
+            return Ok(_configService.GetInitializrConfig().ProjectMetadata.Language.Values);
         }
 
         /// <summary>
@@ -116,7 +115,7 @@ namespace Steeltoe.InitializrApi.Controllers
         [Route("archiveTypes")]
         public IActionResult GetArchiveTypes()
         {
-            return Ok(_config.ProjectMetadata.ArchiveMimeType.Values);
+            return Ok(_configService.GetInitializrConfig().ProjectMetadata.Packaging.Values);
         }
 
         /// <summary>
@@ -127,7 +126,7 @@ namespace Steeltoe.InitializrApi.Controllers
         [Route("dependencies")]
         public IActionResult GetDependencies()
         {
-            return Ok(_config.ProjectMetadata.Dependencies.Values);
+            return Ok(_configService.GetInitializrConfig().ProjectMetadata.Dependencies.Values);
         }
 
         /// <summary>
@@ -138,7 +137,7 @@ namespace Steeltoe.InitializrApi.Controllers
         [Route("projectTemplates")]
         public IActionResult GetProjectTemplatesConfig()
         {
-            return Ok(_config.ProjectTemplates);
+            return Ok(_configService.GetInitializrConfig().ProjectTemplates);
         }
     }
 }

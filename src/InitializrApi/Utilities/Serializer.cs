@@ -20,6 +20,7 @@ namespace Steeltoe.InitializrApi.Utilities
         private static JsonSerializerOptions Options { get; } = new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true,
+            Converters = { new ReleaseRangeJsonConverter() },
         };
 
         /* ----------------------------------------------------------------- *

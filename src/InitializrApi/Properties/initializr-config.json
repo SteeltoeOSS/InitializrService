@@ -1,16 +1,16 @@
 {
   "projectMetadata": {
-    "project": {
+    "name": {
       "type": "text",
       "default": "Sample"
+    },
+    "applicationName": {
+      "type": "text",
+      "default": "SampleApplication"
     },
     "namespace": {
       "type": "text",
       "default": "Sample"
-    },
-    "application": {
-      "type": "text",
-      "default": "SampleApplication"
     },
     "description": {
       "type": "text",
@@ -64,7 +64,7 @@
       ],
       "type": "single-select"
     },
-    "archiveMimeType": {
+    "packaging": {
       "default": "zip",
       "values": [
         {
@@ -206,7 +206,7 @@
             },
             {
               "description": "Target Microsoft Azure Spring Cloud hosting.",
-              "steeltoeCompatibilityRange": "3.0.0",
+              "steeltoeCompatibilityRange": "[3.0.0,4.0.0)",
               "id": "azure-spring-cloud",
               "name": "Azure Spring Cloud"
             },

@@ -49,16 +49,16 @@ namespace Steeltoe.InitializrApi.Archivers
         public void Register(IArchiver archiver)
         {
             Logger.LogInformation(
-                "Registering archive mime type: {{MimeType}} [{{Archiver}}]",
-                archiver.GetMimeType(),
+                "Registering archiver: {Packaging} -> {Archiver}",
+                archiver.GetPackaging(),
                 archiver.GetType());
-            _archivers.Add(archiver.GetMimeType(), archiver);
+            _archivers.Add(archiver.GetPackaging(), archiver);
         }
 
         /// <inheritdoc />
-        public IArchiver Lookup(string mimeType)
+        public IArchiver Lookup(string packaging)
         {
-            _archivers.TryGetValue(mimeType, out var archiver);
+            _archivers.TryGetValue(packaging, out var archiver);
             return archiver;
         }
     }

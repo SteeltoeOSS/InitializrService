@@ -25,7 +25,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Archivers
             registry.Initialize();
 
             // Act
-            var archiver = registry.Lookup("application/zip");
+            var archiver = registry.Lookup("zip");
 
             // Assert
             archiver.Should().NotBeNull();
@@ -39,11 +39,11 @@ namespace Steeltoe.InitializrApi.Test.Unit.Archivers
             var registry = new ArchiverRegistry(new NullLogger<ArchiverRegistry>());
             registry.Initialize();
             var myArchiver = new Mock<IArchiver>();
-            myArchiver.Setup(a => a.GetMimeType()).Returns("mytype");
+            myArchiver.Setup(a => a.GetPackaging()).Returns("mypackaging");
             registry.Register(myArchiver.Object);
 
             // Act
-            var archiver = registry.Lookup("mytype");
+            var archiver = registry.Lookup("mypackaging");
 
             // Assert
             archiver.Should().NotBeNull();

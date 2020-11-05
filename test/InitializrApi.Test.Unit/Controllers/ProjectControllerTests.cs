@@ -297,7 +297,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
                 return Encoding.UTF8.GetBytes(buf.ToString());
             }
 
-            public string GetMimeType()
+            public string GetPackaging()
             {
                 return "application/myarchive";
             }

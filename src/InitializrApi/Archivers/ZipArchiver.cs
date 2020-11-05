@@ -21,7 +21,7 @@ namespace Steeltoe.InitializrApi.Archivers
          * constants                                                         *
          * ----------------------------------------------------------------- */
 
-        private const string MimeType = "application/zip";
+        private const string Packaging = "zip";
 
         private const string FileExtension = ".zip";
 
@@ -92,9 +92,9 @@ namespace Steeltoe.InitializrApi.Archivers
         }
 
         /// <inheritdoc/>
-        public string GetMimeType()
+        public string GetPackaging()
         {
-            return MimeType;
+            return Packaging;
         }
 
         /// <inheritdoc/>

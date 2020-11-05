@@ -20,10 +20,10 @@ namespace Steeltoe.InitializrApi.Services
         byte[] ToBytes(IEnumerable<FileEntry> fileEntries);
 
         /// <summary>
-        /// Gets the MIME type for the archive format.
+        /// Gets the packaging for the archive format.
         /// </summary>
-        /// <returns>The MIME type.</returns>
-        string GetMimeType();
+        /// <returns>The packaging.</returns>
+        string GetPackaging();
 
         /// <summary>
         /// Gets the file extension for the archive.

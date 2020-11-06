@@ -90,10 +90,10 @@ namespace Steeltoe.InitializrApi.Templates
                 foreach (var template in _templates)
                 {
                     var constraints = template.Constraints;
-                    if ((constraints.SteeltoeCompatibilityRange is null
-                         || constraints.SteeltoeCompatibilityRange.Accepts(spec.SteeltoeVersion))
-                        && (constraints.DotNetFrameworkCompatibilityRange is null
-                            || constraints.DotNetFrameworkCompatibilityRange.Accepts(spec.DotNetFramework))
+                    if ((constraints.SteeltoeVersionRange is null
+                         || constraints.SteeltoeVersionRange.Accepts(spec.SteeltoeVersion))
+                        && (constraints.DotNetFrameworkRange is null
+                            || constraints.DotNetFrameworkRange.Accepts(spec.DotNetFramework))
                         && (constraints.DotNetTemplate is null
                             || constraints.DotNetTemplate.Equals(spec.DotNetTemplate))
                         && (constraints.Language is null

@@ -4,6 +4,7 @@
 
 using System;
 using System.Linq;
+using System.Text;
 
 namespace Steeltoe.InitializrApi.Models
 {
@@ -52,6 +53,7 @@ namespace Steeltoe.InitializrApi.Models
             {
                 case 1:
                     _start = new ReleaseVersion(versions[0].Trim());
+                    _startInclusive = true;
                     break;
                 case 2:
                     switch (versions[0][0])
@@ -100,10 +102,6 @@ namespace Steeltoe.InitializrApi.Models
         public bool Accepts(string version)
         {
             var releaseVersion = new ReleaseVersion(version);
-            if (_stop is null)
-            {
-                return releaseVersion == _start;
-            }
 
             if (releaseVersion < _start)
             {
@@ -113,6 +111,11 @@ namespace Steeltoe.InitializrApi.Models
             if (releaseVersion == _start && !_startInclusive)
             {
                 return false;
+            }
+
+            if (_stop is null)
+            {
+                return true;
             }
 
             if (releaseVersion > _stop)
@@ -133,13 +136,18 @@ namespace Steeltoe.InitializrApi.Models
         /// </summary>
         public override string ToString()
         {
-            if (_stop is null)
+            var buf = new StringBuilder();
+            buf.Append(">")
+                .Append(_startInclusive ? "=" : string.Empty)
+                .Append(_start);
+            if (!(_stop is null))
             {
-                return _start.ToString();
+                buf.Append(" and <")
+                    .Append(_stopInclusive ? "=" : string.Empty)
+                    .Append(_stop);
             }
 
-            return
-                $">{(_startInclusive ? "=" : string.Empty)}{_start} and <{(_stopInclusive ? "=" : string.Empty)}{_stop}";
+            return buf.ToString();
         }
 
         /// <summary>

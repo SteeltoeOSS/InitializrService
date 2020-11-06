@@ -21,7 +21,7 @@ namespace Steeltoe.InitializrApi.Test.Integration
         public void ProjectSpec_Should_Load_UI_Test_File()
         {
             var testFile =
-                new Uri("https://raw.githubusercontent.com/SteeltoeOSS/InitializrWeb/dev/start-client/dev/api.json");
+                new Uri("https://raw.githubusercontent.com/ccheetham/InitializrWeb/11-version-compatibility/start-client/dev/api.json");
             using var client = new WebClient();
             var bits = client.DownloadString(testFile);
             var metadata = Serializer.DeserializeJson<ProjectMetadata>(bits);
@@ -29,10 +29,13 @@ namespace Steeltoe.InitializrApi.Test.Integration
             metadata.DotNetFramework.Default.Should().Be("netcoreapp3.1");
             metadata.DotNetTemplate.Default.Should().Be("webapi");
             metadata.Language.Default.Should().Be("csharp");
-            metadata.Name.Default.Should().Be("Sample");
-            metadata.Namespace.Default.Should().Be("Sample");
-            metadata.ApplicationName.Default.Should().Be("SampleApplication");
-            metadata.Description.Default.Should().Be("Sample project application");
+            metadata.Name.Default.Should().Be("Dev");
+            metadata.Namespace.Default.Should().Be("DevNamespace");
+            metadata.ApplicationName.Default.Should().Be("DevApplication");
+            metadata.Description.Default.Should().Be("Development project application");
+            metadata.Dependencies.Values[0].Name.Should().Be("Group One");
+            metadata.Dependencies.Values[0].Values[0].Name.Should().Be("Dependency 1.1");
+            metadata.Dependencies.Values[0].Values[0].SteeltoeVersionRange.ToString().Should().Be(">=2.4.0 and <3.0.0");
         }
 
         /* ----------------------------------------------------------------- *

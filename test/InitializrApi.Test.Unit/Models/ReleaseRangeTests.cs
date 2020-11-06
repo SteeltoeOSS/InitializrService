@@ -33,7 +33,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Models
             var s5 = r5.ToString();
 
             // Assert
-            s1.Should().Be("1.0");
+            s1.Should().Be(">=1.0");
             s2.Should().Be(">=1.0 and <=2.0");
             s3.Should().Be(">1.0 and <=2.0");
             s4.Should().Be(">=1.0 and <2.0");
@@ -76,7 +76,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Models
             r3.Accepts("prod9.5").Should().BeTrue();
             r4.Accepts("prod9.5").Should().BeTrue();
             r5.Accepts("prod9.5").Should().BeTrue();
-            r1.Accepts("prod10.0").Should().BeFalse();
+            r1.Accepts("prod10.0").Should().BeTrue();
             r2.Accepts("prod10.0").Should().BeTrue();
             r3.Accepts("prod10.0").Should().BeTrue();
             r4.Accepts("prod10.0").Should().BeFalse();

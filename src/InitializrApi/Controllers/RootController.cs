@@ -89,7 +89,7 @@ namespace Steeltoe.InitializrApi.Controllers
                     {
                         dependency.Id,
                         dependency.Description,
-                        dependency.SteeltoeCompatibilityRange?.ToString() ?? string.Empty,
+                        dependency.SteeltoeVersionRange?.ToString() ?? string.Empty,
                     });
                 }
             }

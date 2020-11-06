@@ -148,7 +148,7 @@ namespace Steeltoe.InitializrApi.Models
             /// <summary>
             /// Gets or sets the Steeltoe version constraints.
             /// </summary>
-            public ReleaseRange SteeltoeCompatibilityRange { get; set; }
+            public ReleaseRange SteeltoeVersionRange { get; set; }
         }
 
         /// <summary>

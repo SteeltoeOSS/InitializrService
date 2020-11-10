@@ -5,6 +5,7 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Extensions.Options;
 using Moq;
 using Steeltoe.InitializrApi.Controllers;
 using Steeltoe.InitializrApi.Models;
@@ -23,6 +24,9 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
         public void Get_Should_Return_Help()
         {
             // Arrange
+            var initializrCfg = new Mock<IOptions<InitializrOptions>>();
+            var initializrOpts = new InitializrOptions { Logo = "/no/such/logo" };
+            initializrCfg.Setup(cfg => cfg.Value).Returns(initializrOpts);
             var config = new InitializrConfig
             {
                 ProjectMetadata = new ProjectMetadata
@@ -103,7 +107,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
             };
             var configService = new Mock<IInitializrConfigService>();
             configService.Setup(repo => repo.GetInitializrConfig()).Returns(config);
-            var controller = new RootController(configService.Object, new NullLogger<RootController>());
+            var controller = new RootController(initializrCfg.Object, configService.Object, new NullLogger<RootController>());
 
             // Act
             var result = controller.GetHelp();
@@ -112,6 +116,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
             var indexResult = Assert.IsType<OkObjectResult>(result);
             indexResult.Value.Should().BeOfType<string>();
             var help = Assert.IsType<string>(indexResult.Value);
+            help.Should().MatchRegex("!!! failed to load logo:");
             help.Should().MatchRegex(":: Steeltoe Initializr ::  https://start.steeltoe.io");
             help.Should().MatchRegex("Examples:");
             help.Should().MatchRegex(@"\|\s+Parameter\s+\|\s+Description\s+\|\s+Default value\s+\|");
@@ -135,4 +140,5 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
          * negative tests                                                    *
          * ----------------------------------------------------------------- */
     }
+
 }

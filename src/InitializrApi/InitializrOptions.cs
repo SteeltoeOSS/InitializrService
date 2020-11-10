@@ -17,6 +17,11 @@ namespace Steeltoe.InitializrApi
         public const string Initializr = "Initializr";
 
         /// <summary>
+        /// Gets or sets the path to the logo used for doc header.
+        /// </summary>
+        public string Logo { get; set; }
+
+        /// <summary>
         /// Gets or sets the configuration dictionary.
         /// </summary>
         public Dictionary<string, string> Configuration { get; set; }

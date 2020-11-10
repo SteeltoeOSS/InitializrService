@@ -4,6 +4,7 @@
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Steeltoe.InitializrApi.Models;
 using Steeltoe.InitializrApi.Services;
 using System;
@@ -25,6 +26,8 @@ namespace Steeltoe.InitializrApi.Controllers
 
         private const string NewLine = "\n";
 
+        private readonly InitializrOptions _options;
+
         private readonly IInitializrConfigService _configService;
 
         /* ----------------------------------------------------------------- *
@@ -34,11 +37,16 @@ namespace Steeltoe.InitializrApi.Controllers
         /// <summary>
         /// Initializes a new instance of the <see cref="RootController"/> class.
         /// </summary>
+        /// <param name="options">Injected Initializr options.</param>
         /// <param name="configService">Injected Initializr configuration service.</param>
         /// <param name="logger">Injected logger.</param>
-        public RootController(IInitializrConfigService configService, ILogger<RootController> logger)
+        public RootController(
+            IOptions<InitializrOptions> options,
+            IInitializrConfigService configService,
+            ILogger<RootController> logger)
             : base(logger)
         {
+            _options = options.Value;
             _configService = configService;
         }
 
@@ -53,10 +61,26 @@ namespace Steeltoe.InitializrApi.Controllers
         [HttpGet]
         public IActionResult GetHelp()
         {
-            var metadata = _configService.GetInitializrConfig().ProjectMetadata;
             var help = new List<string>();
+            if (!(_options?.Logo is null))
+            {
+                try
+                {
+                    help.Add(string.Empty);
+                    var logoPath = _options.Logo;
+                    System.IO.File.ReadAllLines(logoPath).ToList().ForEach(l => help.Add(l));
+                    help.Add(string.Empty);
+                }
+                catch (Exception e)
+                {
+                    help.Add($"!!! failed to load logo: {e.Message}");
+                    help.Add(string.Empty);
+                }
+            }
+
             help.Add(" :: Steeltoe Initializr ::  https://start.steeltoe.io");
             help.Add(string.Empty);
+            var metadata = _configService.GetInitializrConfig().ProjectMetadata;
             help.Add("This service generates quickstart projects that can be easily customized.");
             help.Add("Possible customizations include a project's dependencies and .NET target framework.");
             help.Add(string.Empty);

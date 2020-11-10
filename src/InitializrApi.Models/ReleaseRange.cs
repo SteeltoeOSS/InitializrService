@@ -2,15 +2,18 @@
 // The .NET Foundation licenses this file to you under the Apache 2.0 License.
 // See the LICENSE file in the project root for more information.
 
+using Steeltoe.InitializrApi.Models.Utilities;
 using System;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Steeltoe.InitializrApi.Models
 {
     /// <summary>
     /// A model of a release range.
     /// </summary>
+    [JsonConverter(typeof(ReleaseRangeJsonConverter))]
     public sealed class ReleaseRange
     {
         /* ----------------------------------------------------------------- *
@@ -45,7 +48,7 @@ namespace Steeltoe.InitializrApi.Models
         {
             if (string.IsNullOrEmpty(range))
             {
-                throw new ArgumentException("Release range cannot be empty or null");
+                return;
             }
 
             var versions = range.Split(',').Select(v => v.Trim()).ToArray();
@@ -103,6 +106,11 @@ namespace Steeltoe.InitializrApi.Models
         {
             var releaseVersion = new ReleaseVersion(version);
 
+            if (_start is null)
+            {
+                return true;
+            }
+
             if (releaseVersion < _start)
             {
                 return false;
@@ -131,20 +139,44 @@ namespace Steeltoe.InitializrApi.Models
             return true;
         }
 
-        /// <summary>
         /// <inheritdoc />
-        /// </summary>
         public override string ToString()
         {
             var buf = new StringBuilder();
-            buf.Append(">")
-                .Append(_startInclusive ? "=" : string.Empty)
-                .Append(_start);
-            if (!(_stop is null))
+            if (_stop is null)
             {
-                buf.Append(" and <")
-                    .Append(_stopInclusive ? "=" : string.Empty)
-                    .Append(_stop);
+                buf.Append(_start);
+            }
+            else
+            {
+                buf.Append(_startInclusive ? '[' : '(')
+                    .Append(_start);
+                buf.Append(',')
+                    .Append(_stop)
+                    .Append(_stopInclusive ? ']' : ')');
+            }
+
+            return buf.ToString();
+        }
+
+        /// <summary>
+        /// Returns a human-readable representation.
+        /// </summary>
+        /// <returns>A pretty string.</returns>
+        public string ToPrettyString()
+        {
+            var buf = new StringBuilder();
+            if (!(_start is null))
+            {
+                buf.Append(">")
+                    .Append(_startInclusive ? "=" : string.Empty)
+                    .Append(_start);
+                if (!(_stop is null))
+                {
+                    buf.Append(" and <")
+                        .Append(_stopInclusive ? "=" : string.Empty)
+                        .Append(_stop);
+                }
             }
 
             return buf.ToString();

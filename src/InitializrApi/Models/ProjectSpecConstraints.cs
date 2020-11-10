@@ -45,9 +45,9 @@ namespace Steeltoe.InitializrApi.Models
             var buf = new StringBuilder();
             buf.Append('[');
             buf.Append("steeltoeVersionRange=");
-            buf.Append(SteeltoeVersionRange);
+            buf.Append(SteeltoeVersionRange?.ToPrettyString());
             buf.Append(",dotNetFrameworkRange=");
-            buf.Append(DotNetFrameworkRange);
+            buf.Append(DotNetFrameworkRange?.ToPrettyString());
             buf.Append(",dotNetTemplate=");
             buf.Append(DotNetTemplate);
             buf.Append(",language=");

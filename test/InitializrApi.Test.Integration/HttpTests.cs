@@ -143,7 +143,6 @@ namespace Steeltoe.InitializrApi.Test.Integration
         [Theory]
         [InlineData(AboutEndpoint)]
         [InlineData(ConfigurationEndpoint)]
-        [InlineData(ProjectEndpoint)]
         public async Task Post_Should_Return_405_Method_Not_Allowed(string path)
         {
             // Act

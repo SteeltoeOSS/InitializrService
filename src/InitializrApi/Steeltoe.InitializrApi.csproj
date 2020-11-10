@@ -3,7 +3,6 @@
   <ItemGroup>
     <PackageReference Include="Steeltoe.Extensions.Configuration.ConfigServerCore" Version="$(SteeltoeVersion)" />
     <PackageReference Include="Stubble.Core" Version="$(StubbleCoreVersion)" />
-    <PackageReference Include="YamlDotNet" Version="$(YamlDotNetVersion)" />
   </ItemGroup>
 
   <ItemGroup>

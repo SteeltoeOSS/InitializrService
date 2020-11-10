@@ -4,6 +4,7 @@
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Steeltoe.InitializrApi.Models;
 using Steeltoe.InitializrApi.Services;
 using System;
 using System.Collections.Generic;
@@ -89,7 +90,7 @@ namespace Steeltoe.InitializrApi.Controllers
                     {
                         dependency.Id,
                         dependency.Description,
-                        dependency.SteeltoeVersionRange?.ToString() ?? string.Empty,
+                        new ReleaseRange(dependency.SteeltoeVersionRange).ToPrettyString(),
                     });
                 }
             }

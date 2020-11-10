@@ -2,12 +2,11 @@
 // The .NET Foundation licenses this file to you under the Apache 2.0 License.
 // See the LICENSE file in the project root for more information.
 
-using Steeltoe.InitializrApi.Models;
 using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Steeltoe.InitializrApi.Utilities
+namespace Steeltoe.InitializrApi.Models.Utilities
 {
     /// <summary>
     /// Deserializes a <see cref="ReleaseRange"/> in JSON expressions.
@@ -23,7 +22,7 @@ namespace Steeltoe.InitializrApi.Utilities
         /// <inheritdoc />
         public override void Write(Utf8JsonWriter writer, ReleaseRange value, JsonSerializerOptions options)
         {
-            throw new NotImplementedException();
+            writer.WriteStringValue(value.ToString());
         }
     }
 }

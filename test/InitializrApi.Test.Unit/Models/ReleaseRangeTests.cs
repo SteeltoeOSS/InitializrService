@@ -16,14 +16,32 @@ namespace Steeltoe.InitializrApi.Test.Unit.Models
          * ----------------------------------------------------------------- */
 
         [Fact]
-        public void ToString_Should_Represent_Range()
+        public void Empty_Or_Null_Range_Accepts_All_Versions()
+        {
+            // Arrange
+            var rr1 = new ReleaseRange(null);
+            var rr2 = new ReleaseRange(string.Empty);
+
+            // Act
+            var s1 = rr1.ToString();
+            var s2 = rr1.ToString();
+
+            // Assert
+            s1.Should().BeEmpty();
+            s2.Should().BeEmpty();
+            rr1.Accepts("v1.2").Should().BeTrue();
+            rr2.Accepts("v1.2").Should().BeTrue();
+        }
+
+        [Fact]
+        public void ToString_Should_Be_Similar_To_Original_String()
         {
             // Arrange
             var r1 = new ReleaseRange("1.0");
             var r2 = new ReleaseRange("[1.0,2.0]");
-            var r3 = new ReleaseRange("(1.0,2.0]");
+            var r3 = new ReleaseRange("(1.0, 2.0]");
             var r4 = new ReleaseRange("[1.0,2.0)");
-            var r5 = new ReleaseRange("(1.0,2.0)");
+            var r5 = new ReleaseRange("(1.0, 2.0)");
 
             // Act
             var s1 = r1.ToString();
@@ -33,6 +51,34 @@ namespace Steeltoe.InitializrApi.Test.Unit.Models
             var s5 = r5.ToString();
 
             // Assert
+            s1.Should().Be("1.0");
+            s2.Should().Be("[1.0,2.0]");
+            s3.Should().Be("(1.0,2.0]");
+            s4.Should().Be("[1.0,2.0)");
+            s5.Should().Be("(1.0,2.0)");
+        }
+
+        [Fact]
+        public void ToPrettyString_Should_Represent_Range()
+        {
+            // Arrange
+            var r0 = new ReleaseRange();
+            var r1 = new ReleaseRange("1.0");
+            var r2 = new ReleaseRange("[1.0,2.0]");
+            var r3 = new ReleaseRange("(1.0,2.0]");
+            var r4 = new ReleaseRange("[1.0,2.0)");
+            var r5 = new ReleaseRange("(1.0,2.0)");
+
+            // Act
+            var s0 = r0.ToPrettyString();
+            var s1 = r1.ToPrettyString();
+            var s2 = r2.ToPrettyString();
+            var s3 = r3.ToPrettyString();
+            var s4 = r4.ToPrettyString();
+            var s5 = r5.ToPrettyString();
+
+            // Assert
+            s0.Should().BeEmpty();
             s1.Should().Be(">=1.0");
             s2.Should().Be(">=1.0 and <=2.0");
             s3.Should().Be(">1.0 and <=2.0");
@@ -50,7 +96,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Models
             var s = r.ToString();
 
             // Assert
-            s.Should().Be(">=1.0 and <=2.0");
+            s.Should().Be("[1.0,2.0]");
         }
 
         [Fact]
@@ -186,26 +232,6 @@ namespace Steeltoe.InitializrApi.Test.Unit.Models
         /* ----------------------------------------------------------------- *
          * negative tests                                                    *
          * ----------------------------------------------------------------- */
-
-        [Fact]
-        public void Range_Cannot_Be_Empty_Or_Null()
-        {
-            // Arrange
-
-            // Act
-            Action a1 = () =>
-            {
-                var _ = new ReleaseRange(null);
-            };
-            Action a2 = () =>
-            {
-                var _ = new ReleaseRange("");
-            };
-
-            // Assert
-            a1.Should().Throw<ArgumentException>().WithMessage("Release range cannot be empty or null");
-            a2.Should().Throw<ArgumentException>().WithMessage("Release range cannot be empty or null");
-        }
 
         [Fact]
         public void Range_Must_Follow_Format()

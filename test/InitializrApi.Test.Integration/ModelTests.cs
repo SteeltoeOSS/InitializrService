@@ -35,7 +35,7 @@ namespace Steeltoe.InitializrApi.Test.Integration
             metadata.Description.Default.Should().Be("Development project application");
             metadata.Dependencies.Values[0].Name.Should().Be("Group One");
             metadata.Dependencies.Values[0].Values[0].Name.Should().Be("Dependency 1.1");
-            metadata.Dependencies.Values[0].Values[0].SteeltoeVersionRange.ToString().Should().Be(">=2.4.0 and <3.0.0");
+            metadata.Dependencies.Values[0].Values[0].SteeltoeVersionRange.Should().Be("[2.4.0,3.0.0)");
         }
 
         /* ----------------------------------------------------------------- *

@@ -93,7 +93,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
                                     {
                                         Id = "anotherdep",
                                         Description = "AnotherDependency",
-                                        SteeltoeVersionRange = new ReleaseRange("[1.0,1.9)"),
+                                        SteeltoeVersionRange = "[1.0,1.9)",
                                     }
                                 }
                             }

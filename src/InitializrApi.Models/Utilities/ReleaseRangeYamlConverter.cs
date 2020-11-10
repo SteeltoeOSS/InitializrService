@@ -3,14 +3,13 @@
 // See the LICENSE file in the project root for more information.
 
 #nullable enable
-using Steeltoe.InitializrApi.Models;
 using System;
 using System.IO;
 using YamlDotNet.Core;
 using YamlDotNet.Core.Events;
 using YamlDotNet.Serialization;
 
-namespace Steeltoe.InitializrApi.Utilities
+namespace Steeltoe.InitializrApi.Models.Utilities
 {
     /// <summary>
     /// Deserializes a <see cref="ReleaseRange"/> in YAML expressions.

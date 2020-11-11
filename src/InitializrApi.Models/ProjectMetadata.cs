@@ -149,6 +149,11 @@ namespace Steeltoe.InitializrApi.Models
             /// Gets or sets the Steeltoe version constraints.
             /// </summary>
             public string SteeltoeVersionRange { get; set; }
+
+            /// <summary>
+            /// Gets or sets the .NET Framework constraints.
+            /// </summary>
+            public string DotNetFrameworkRange { get; set; }
         }
 
         /// <summary>

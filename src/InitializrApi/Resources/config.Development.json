@@ -206,7 +206,8 @@
             },
             {
               "description": "Target Microsoft Azure Spring Cloud hosting.",
-              "steeltoeVersionRange": "[3.0.0,4.0.0)",
+              "steeltoeVersionRange": "[2.4.0,3.0.0)",
+              "dotNetFrameworkRange": "netcoreapp3.1",
               "id": "azure-spring-cloud",
               "name": "Azure Spring Cloud"
             },

@@ -33,19 +33,10 @@ namespace Steeltoe.InitializrApi.Test.Integration
             metadata.Namespace.Default.Should().Be("DevNamespace");
             metadata.ApplicationName.Default.Should().Be("DevApplication");
             metadata.Description.Default.Should().Be("Development project application");
-            metadata.Dependencies.Values[0].Name.Should().Be("A Group");
-            metadata.Dependencies.Values[0].Values[0].Name.Should().Be("Dependency 0.0");
-            metadata.Dependencies.Values[0].Values[0].SteeltoeVersionRange.Should().BeNull();
-            metadata.Dependencies.Values[0].Values[0].DotNetFrameworkRange.Should().BeNull();
-            metadata.Dependencies.Values[0].Values[1].Name.Should().Be("Dependency 1.0");
-            metadata.Dependencies.Values[0].Values[1].SteeltoeVersionRange.Should().Be("3.0.0");
-            metadata.Dependencies.Values[0].Values[1].DotNetFrameworkRange.Should().BeNull();
-            metadata.Dependencies.Values[0].Values[2].Name.Should().Be("Dependency 0.1");
-            metadata.Dependencies.Values[0].Values[2].SteeltoeVersionRange.Should().BeNull();
-            metadata.Dependencies.Values[0].Values[2].DotNetFrameworkRange.Should().Be("netcoreapp3.0");
-            metadata.Dependencies.Values[0].Values[3].Name.Should().Be("Dependency 1.1");
-            metadata.Dependencies.Values[0].Values[3].SteeltoeVersionRange.Should().Be("[2.4.0,3.0.0)");
-            metadata.Dependencies.Values[0].Values[3].DotNetFrameworkRange.Should().Be("[netcoreapp2.1,netcoreapp3.0)");
+            metadata.Dependencies.Values[0].Name.Should().Be("Focus Group");
+            metadata.Dependencies.Values[0].Values[0].Name.Should().Be("Focus Dependency");
+            metadata.Dependencies.Values[0].Values[0].SteeltoeVersionRange.Should().Be("[2.4.0,3.0.0)");
+            metadata.Dependencies.Values[0].Values[0].DotNetFrameworkRange.Should().Be("netcoreapp3.1");
         }
 
         /* ----------------------------------------------------------------- *

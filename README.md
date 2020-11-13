@@ -12,6 +12,52 @@ Steeltoe Initializr API reference implementation
 * `api/configuration`
 * `api/project`
 
+## Configuration
+
+### Server
+
+#### Spring Cloud Config Server
+
+`appsettings.json`
+```json
+  "spring": {
+    "application": {
+      "name": "SteeltoeInitializr"
+    },
+    "cloud": {
+      "config": {
+        "uri": "https://start.steeltoe.io/config"",
+        "label": "prod"
+      }
+    }
+  }
+```
+
+#### local file
+
+_**Note**_: overrides Spring Cloud Config Server configuration
+
+`appsettings.json`
+```json
+  "Initializr": {
+    "Configuration" : {
+      "Path": "Properties/initializr-config.json"
+    }
+  },
+```
+
+### CORS
+`appsettings.json`
+```json
+  "Initializr": {
+    "CORS" : {
+      "Origin": "*"
+    }
+  },
+```
+
+## Endpoints
+
 ### `api/configuration`
 
 This endpoint provides configuration metadata for client UIs.  The metadata includes:

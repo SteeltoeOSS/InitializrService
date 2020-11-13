@@ -42,22 +42,24 @@ namespace Steeltoe.InitializrApi.Test.Unit.Models
             s.Should().Be("[steeltoeVersionRange=,dotNetFrameworkRange=,dotNetTemplate=,language=]");
 
             // Arrange
-            constraints.SteeltoeVersionRange = "myversion";
+            constraints.SteeltoeVersionRange = new ReleaseRange("myversion1.0");
 
             // Act
             s = constraints.ToString();
 
             // Assert
-            s.Should().Be("[steeltoeVersionRange=myversion,dotNetFrameworkRange=,dotNetTemplate=,language=]");
+            s.Should().Be(
+                "[steeltoeVersionRange=>=myversion1.0,dotNetFrameworkRange=,dotNetTemplate=,language=]");
 
             // Arrange
-            constraints.DotNetFrameworkRange = "myframework";
+            constraints.DotNetFrameworkRange = new ReleaseRange("myframework1.0");
 
             // Act
             s = constraints.ToString();
 
             // Assert
-            s.Should().Be("[steeltoeVersionRange=myversion,dotNetFrameworkRange=myframework,dotNetTemplate=,language=]");
+            s.Should().Be(
+                "[steeltoeVersionRange=>=myversion1.0,dotNetFrameworkRange=>=myframework1.0,dotNetTemplate=,language=]");
 
             // Arrange
             constraints.DotNetTemplate = "mytemplate";
@@ -66,7 +68,8 @@ namespace Steeltoe.InitializrApi.Test.Unit.Models
             s = constraints.ToString();
 
             // Assert
-            s.Should().Be("[steeltoeVersionRange=myversion,dotNetFrameworkRange=myframework,dotNetTemplate=mytemplate,language=]");
+            s.Should().Be(
+                "[steeltoeVersionRange=>=myversion1.0,dotNetFrameworkRange=>=myframework1.0,dotNetTemplate=mytemplate,language=]");
 
             // Arrange
             constraints.Language = "mylanguage";
@@ -75,7 +78,8 @@ namespace Steeltoe.InitializrApi.Test.Unit.Models
             s = constraints.ToString();
 
             // Assert
-            s.Should().Be("[steeltoeVersionRange=myversion,dotNetFrameworkRange=myframework,dotNetTemplate=mytemplate,language=mylanguage]");
+            s.Should().Be(
+                "[steeltoeVersionRange=>=myversion1.0,dotNetFrameworkRange=>=myframework1.0,dotNetTemplate=mytemplate,language=mylanguage]");
         }
 
         /* ----------------------------------------------------------------- *

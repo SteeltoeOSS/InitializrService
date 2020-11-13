@@ -68,27 +68,12 @@ namespace Steeltoe.InitializrApi.Test.Unit.Templates
                     new ProjectTemplateConfiguration
                     {
                         Uri = new Uri(
-                            "pt:///izr?description=pt1&steeltoeVersionRange=st1&dotNetFrameworkRange=df1&dotNetTemplate=dt1&language=l1"),
+                            "pt:///izr?description=pt1&steeltoeVersionRange=st2.0&dotNetFrameworkRange=df1.0&dotNetTemplate=dt1&language=l1"),
                     },
                     new ProjectTemplateConfiguration
                     {
                         Uri = new Uri(
-                            "pt:///izr?description=pt2&steeltoeVersionRange=st2&dotNetFrameworkRange=df1&dotNetTemplate=dt1&language=l1"),
-                    },
-                    new ProjectTemplateConfiguration
-                    {
-                        Uri = new Uri(
-                            "pt:///izr?description=pt3&steeltoeVersionRange=st2&dotNetFrameworkRange=df2&dotNetTemplate=dt1&language=l1"),
-                    },
-                    new ProjectTemplateConfiguration
-                    {
-                        Uri = new Uri(
-                            "pt:///izr?description=pt4&steeltoeVersionRange=st2&dotNetFrameworkRange=df2&dotNetTemplate=dt2&language=l1"),
-                    },
-                    new ProjectTemplateConfiguration
-                    {
-                        Uri = new Uri(
-                            "pt:///izr?description=pt5&steeltoeVersionRange=st2&dotNetFrameworkRange=df2&dotNetTemplate=dt2&language=l2"),
+                            "pt:///izr?description=pt2&steeltoeVersionRange=st1.0&dotNetFrameworkRange=df1.0&dotNetTemplate=dt1&language=l1"),
                     },
                 },
             };
@@ -96,7 +81,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Templates
 
             // Act
             var template = registry.Lookup(new ProjectSpec
-                { SteeltoeVersion = "st1", DotNetFramework = "df1", DotNetTemplate = "dt1", Language = "l1" });
+                { SteeltoeVersion = "st2.0", DotNetFramework = "df1.0", DotNetTemplate = "dt1", Language = "l1" });
 
             // Assert
             Assert.NotNull(template);
@@ -104,35 +89,11 @@ namespace Steeltoe.InitializrApi.Test.Unit.Templates
 
             // Act
             template = registry.Lookup(new ProjectSpec
-                { SteeltoeVersion = "st2", DotNetFramework = "df1", DotNetTemplate = "dt1", Language = "l1" });
+                { SteeltoeVersion = "st1.0", DotNetFramework = "df1.0", DotNetTemplate = "dt1", Language = "l1" });
 
             // Assert
             Assert.NotNull(template);
             template.Description.Should().Be("pt2");
-
-            // Act
-            template = registry.Lookup(new ProjectSpec
-                { SteeltoeVersion = "st2", DotNetFramework = "df2", DotNetTemplate = "dt1", Language = "l1" });
-
-            // Assert
-            Assert.NotNull(template);
-            template.Description.Should().Be("pt3");
-
-            // Act
-            template = registry.Lookup(new ProjectSpec
-                { SteeltoeVersion = "st2", DotNetFramework = "df2", DotNetTemplate = "dt2", Language = "l1" });
-
-            // Assert
-            Assert.NotNull(template);
-            template.Description.Should().Be("pt4");
-
-            // Act
-            template = registry.Lookup(new ProjectSpec
-                { SteeltoeVersion = "st2", DotNetFramework = "df2", DotNetTemplate = "dt2", Language = "l2" });
-
-            // Assert
-            Assert.NotNull(template);
-            template.Description.Should().Be("pt5");
         }
 
         [Fact]
@@ -418,6 +379,33 @@ namespace Steeltoe.InitializrApi.Test.Unit.Templates
 
             // Assert
             logger.VerifyLog(LogLevel.Error, "Project template missing file: 'f1' pt:///izr?missingfile=yes");
+        }
+
+        [Fact]
+        public void Invalid_Version_Should_Log_An_Error()
+        {
+            // Arrange
+            var config = new InitializrConfig
+            {
+                ProjectTemplates = new[]
+                {
+                    new ProjectTemplateConfiguration
+                    {
+                        Uri = new Uri("pt:///izr?steeltoeVersionRange=1.0"),
+                    },
+                },
+            };
+            var logger = new Mock<ILogger<ProjectTemplateRegistry>>();
+            var registry = new TemplateRegistryBuilder().WithConfig(config).WithLogger(logger.Object).Build();
+            var spec = new ProjectSpec { SteeltoeVersion = "1..1" };
+
+            // Act
+            var template = registry.Lookup(spec);
+
+            // Assert
+            template.Should().BeNull();
+            logger.VerifyLog(LogLevel.Error,
+                "Error looking up project template: Version not in correct format: '1..1'");
         }
 
         /* ----------------------------------------------------------------- *

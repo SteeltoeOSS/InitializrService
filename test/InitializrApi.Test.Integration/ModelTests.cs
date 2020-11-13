@@ -6,7 +6,7 @@ using System;
 using System.Net;
 using FluentAssertions;
 using Steeltoe.InitializrApi.Models;
-using Steeltoe.InitializrApi.Test.Utils;
+using Steeltoe.InitializrApi.Utilities;
 using Xunit;
 
 namespace Steeltoe.InitializrApi.Test.Integration
@@ -16,21 +16,27 @@ namespace Steeltoe.InitializrApi.Test.Integration
         /* ----------------------------------------------------------------- *
          * positive tests                                                    *
          * ----------------------------------------------------------------- */
+
         [Fact]
         public void ProjectSpec_Should_Load_UI_Test_File()
         {
-            var testFile = new Uri("https://raw.githubusercontent.com/ccheetham/start.spring.io/steeltoe-mods/start-client/dev/api.json");
+            var testFile =
+                new Uri("https://raw.githubusercontent.com/SteeltoeOSS/InitializrWeb/staging/start-client/dev/api.json");
             using var client = new WebClient();
             var bits = client.DownloadString(testFile);
             var metadata = Serializer.DeserializeJson<ProjectMetadata>(bits);
-            metadata.SteeltoeVersion.Default.Should().Be("3.0.0");
+            metadata.SteeltoeVersion.Default.Should().Be("3.0.1");
             metadata.DotNetFramework.Default.Should().Be("netcoreapp3.1");
             metadata.DotNetTemplate.Default.Should().Be("webapi");
             metadata.Language.Default.Should().Be("csharp");
-            metadata.Project.Default.Should().Be("Sample");
-            metadata.Namespace.Default.Should().Be("Sample");
-            metadata.Application.Default.Should().Be("SampleApplication");
-            metadata.Description.Default.Should().Be("Sample application project");
+            metadata.Name.Default.Should().Be("Dev");
+            metadata.Namespace.Default.Should().Be("DevNamespace");
+            metadata.ApplicationName.Default.Should().Be("DevApplication");
+            metadata.Description.Default.Should().Be("Development project application");
+            metadata.Dependencies.Values[0].Name.Should().Be("Focus Group");
+            metadata.Dependencies.Values[0].Values[0].Name.Should().Be("Focus Dependency");
+            metadata.Dependencies.Values[0].Values[0].SteeltoeVersionRange.Should().Be("[2.4.0,3.0.0)");
+            metadata.Dependencies.Values[0].Values[0].DotNetFrameworkRange.Should().Be("netcoreapp3.1");
         }
 
         /* ----------------------------------------------------------------- *

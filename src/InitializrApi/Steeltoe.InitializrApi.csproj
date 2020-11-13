@@ -3,7 +3,6 @@
   <ItemGroup>
     <PackageReference Include="Steeltoe.Extensions.Configuration.ConfigServerCore" Version="$(SteeltoeVersion)" />
     <PackageReference Include="Stubble.Core" Version="$(StubbleCoreVersion)" />
-    <PackageReference Include="YamlDotNet" Version="$(YamlDotNetVersion)" />
   </ItemGroup>
 
   <ItemGroup>
@@ -16,6 +15,17 @@
     </Content>
     <Content Include="..\Directory.Build.props">
       <Link>Directory.Build.props</Link>
+    </Content>
+    <Content Update="Resources\Development-config.json">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources/**/*.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 

@@ -1,0 +1,25 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: initializr-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: initializr-api
+  template:
+    metadata:
+      labels:
+        app: initializr-api
+    spec:
+      nodeSelector:
+        "beta.kubernetes.io/os": linux
+      containers:
+      - name: initializr-api
+        image: steeltoe.azurecr.io/initializr-api
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: Staging
+        ports:
+        - containerPort: 80

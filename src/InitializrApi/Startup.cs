@@ -25,6 +25,8 @@ namespace Steeltoe.InitializrApi
     [ExcludeFromCodeCoverage]
     public class Startup
     {
+        private string _corsOrigin;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Startup"/> class.
         /// </summary>
@@ -46,9 +48,31 @@ namespace Steeltoe.InitializrApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddOptions();
-            services.ConfigureConfigServerClientOptions(Configuration);
-            services.Configure<InitializrConfig>(Configuration);
-            services.AddSingleton<IInitializrConfigService, InitializrConfigService>();
+            services.Configure<InitializrOptions>(Configuration.GetSection(InitializrOptions.Initializr));
+            var initializrOptions = Configuration.GetSection(InitializrOptions.Initializr).Get<InitializrOptions>();
+            if (initializrOptions?.ConfigurationPath is null)
+            {
+                services.ConfigureConfigServerClientOptions(Configuration);
+                services.Configure<InitializrConfig>(Configuration);
+                services.AddSingleton<IInitializrConfigService, InitializrConfigService>();
+            }
+            else
+            {
+                services.AddSingleton<IInitializrConfigService, InitializrConfigFile>();
+            }
+
+            if (!(initializrOptions?.CorsOrigin is null))
+            {
+                _corsOrigin = "ConfiguredOrigins";
+                services.AddCors(options =>
+                {
+                    options.AddPolicy(
+                        name: _corsOrigin,
+                        builder => { builder.WithOrigins(initializrOptions.CorsOrigin); });
+                });
+            }
+
+            services.AddResponseCompression();
             services.AddSingleton<IProjectTemplateRegistry, ProjectTemplateRegistry>();
             services.AddSingleton<IArchiverRegistry, ArchiverRegistry>();
             services.AddTransient<IProjectGenerator, StubbleProjectGenerator>();
@@ -73,6 +97,12 @@ namespace Steeltoe.InitializrApi
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+            }
+
+            app.UseResponseCompression();
+            if (!(_corsOrigin is null))
+            {
+                app.UseCors(_corsOrigin);
             }
 
             app.UseHttpsRedirection();

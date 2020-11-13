@@ -85,16 +85,16 @@ namespace Steeltoe.InitializrApi.Test.Unit.Archivers
         }
 
         [Fact]
-        public void GetMimeType_Should_Be_application_zip()
+        public void GetPackaging_Should_Be_application_zip()
         {
             // Arrange
             var archiver = new ZipArchiver();
 
             // Act
-            var mimeType = archiver.GetMimeType();
+            var packaging = archiver.GetPackaging();
 
             // Assert
-            mimeType.Should().Be("application/zip");
+            packaging.Should().Be("zip");
         }
 
         [Fact]

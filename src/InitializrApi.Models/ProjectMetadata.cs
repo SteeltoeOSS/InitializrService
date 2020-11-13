@@ -16,17 +16,17 @@ namespace Steeltoe.InitializrApi.Models
         /// <summary>
         /// Gets or sets the project name.
         /// </summary>
-        public Text Project { get; set; }
+        public Text Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets the project application name.
+        /// </summary>
+        public Text ApplicationName { get; set; }
 
         /// <summary>
         /// Gets or sets the project namespace.
         /// </summary>
         public Text Namespace { get; set; }
-
-        /// <summary>
-        /// Gets or sets the project application name.
-        /// </summary>
-        public Text Application { get; set; }
 
         /// <summary>
         /// Gets or sets the project description.
@@ -44,19 +44,19 @@ namespace Steeltoe.InitializrApi.Models
         public SingleSelectList DotNetFramework { get; set; }
 
         /// <summary>
-        /// Gets or sets the DotNet template types.
+        /// Gets or sets the DotNet template.
         /// </summary>
         public SingleSelectList DotNetTemplate { get; set; }
 
         /// <summary>
-        /// Gets or sets the languages.
+        /// Gets or sets the programming language.
         /// </summary>
         public SingleSelectList Language { get; set; }
 
         /// <summary>
-        /// Gets or sets the project archive mime type.
+        /// Gets or sets the project packaging format.
         /// </summary>
-        public SingleSelectList ArchiveMimeType { get; set; }
+        public SingleSelectList Packaging { get; set; }
 
         /// <summary>
         /// Gets or sets the project dependencies.
@@ -84,6 +84,8 @@ namespace Steeltoe.InitializrApi.Models
         /// </summary>
         public abstract class Item
         {
+            private string _name;
+
             /// <summary>
             /// Gets or sets the item ID.
             /// </summary>
@@ -92,7 +94,11 @@ namespace Steeltoe.InitializrApi.Models
             /// <summary>
             /// Gets or sets the item name.
             /// </summary>
-            public string Name { get; set; }
+            public string Name
+            {
+                get => _name ?? Id;
+                set => _name = value;
+            }
         }
 
         /// <summary>
@@ -143,6 +149,11 @@ namespace Steeltoe.InitializrApi.Models
             /// Gets or sets the Steeltoe version constraints.
             /// </summary>
             public string SteeltoeVersionRange { get; set; }
+
+            /// <summary>
+            /// Gets or sets the .NET Framework constraints.
+            /// </summary>
+            public string DotNetFrameworkRange { get; set; }
         }
 
         /// <summary>

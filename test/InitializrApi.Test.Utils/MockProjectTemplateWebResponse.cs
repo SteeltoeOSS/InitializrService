@@ -84,7 +84,8 @@ namespace Steeltoe.InitializrApi.Test.Utils
                         metadata.Append("constraints:").Append(Environment.NewLine);
                         metadata.Append($"  steeltoeVersionRange: {queryParams["steeltoeVersionRange"]}")
                             .Append(Environment.NewLine);
-                        metadata.Append($"  dotNetFrameworkRange: {queryParams["dotNetFrameworkRange"]}")
+                        metadata.Append(
+                                $"  dotNetFrameworkRange: {queryParams["dotNetFrameworkRange"]}")
                             .Append(Environment.NewLine);
                         metadata.Append($"  dotNetTemplate: {queryParams["dotNetTemplate"]}")
                             .Append(Environment.NewLine);

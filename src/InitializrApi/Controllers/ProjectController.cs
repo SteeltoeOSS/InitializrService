@@ -23,7 +23,7 @@ namespace Steeltoe.InitializrApi.Controllers
          * fields                                                            *
          * ----------------------------------------------------------------- */
 
-        private readonly InitializrConfig _config;
+        private readonly IInitializrConfigService _configService;
 
         private readonly IProjectGenerator _projectGenerator;
 
@@ -47,7 +47,7 @@ namespace Steeltoe.InitializrApi.Controllers
             ILogger<ProjectController> logger)
             : base(logger)
         {
-            _config = configService.GetInitializrConfig();
+            _configService = configService;
             _projectGenerator = projectGenerator;
             _archiverRegistry = archiverRegistry;
         }
@@ -61,39 +61,40 @@ namespace Steeltoe.InitializrApi.Controllers
         /// Generated project is bundled in a ZIP archive.
         /// </summary>
         /// <returns>A task containing the <c>GET</c> result which, if is <see cref="FileContentResult"/>, contains a project bundle archive stream.</returns>
-        [HttpGet]
+        [AcceptVerbs("GET", "POST")]
         public ActionResult GetProjectArchive([FromQuery] ProjectSpec spec)
         {
-            var defaults = _config.ProjectMetadata;
+            var config = _configService.GetInitializrConfig();
+            var defaults = config.ProjectMetadata;
             var normalizedSpec = new ProjectSpec()
             {
-                Name = spec.Name ?? defaults?.Project?.Default,
+                Name = spec.Name ?? defaults?.Name?.Default,
                 Description = spec.Description ?? defaults?.Description?.Default,
                 Namespace = spec.Namespace ?? defaults?.Namespace?.Default,
                 SteeltoeVersion = spec.SteeltoeVersion ?? defaults?.SteeltoeVersion?.Default,
                 DotNetFramework = spec.DotNetFramework ?? defaults?.DotNetFramework?.Default,
                 DotNetTemplate = spec.DotNetTemplate ?? defaults?.DotNetTemplate?.Default,
                 Language = spec.Language ?? defaults?.Language?.Default,
-                ArchiveMimeType = spec.ArchiveMimeType ?? defaults?.ArchiveMimeType?.Default,
+                Packaging = spec.Packaging ?? defaults?.Packaging?.Default,
                 Dependencies = spec.Dependencies ?? defaults?.Dependencies?.Default,
             };
-            if (normalizedSpec.ArchiveMimeType is null)
+            if (normalizedSpec.Packaging is null)
             {
                 return StatusCode(
                     StatusCodes.Status500InternalServerError,
-                    "Default archive mime type not configured.");
+                    "Default packaging not configured.");
             }
 
-            var archiver = _archiverRegistry.Lookup(normalizedSpec.ArchiveMimeType);
+            var archiver = _archiverRegistry.Lookup(normalizedSpec.Packaging);
             if (archiver is null)
             {
-                return NotFound($"Archive mime type '{normalizedSpec.ArchiveMimeType}' not found.");
+                return NotFound($"Packaging '{normalizedSpec.Packaging}' not found.");
             }
 
-            if (normalizedSpec.Dependencies != null && _config.ProjectMetadata?.Dependencies?.Values != null)
+            if (normalizedSpec.Dependencies != null && config.ProjectMetadata?.Dependencies?.Values != null)
             {
                 var caseSensitiveDeps = new List<string>();
-                foreach (var group in _config.ProjectMetadata.Dependencies.Values)
+                foreach (var group in config.ProjectMetadata.Dependencies.Values)
                 {
                     foreach (var dep in group.Values)
                     {
@@ -120,13 +121,13 @@ namespace Steeltoe.InitializrApi.Controllers
             var project = _projectGenerator.GenerateProject(normalizedSpec);
             if (project is null)
             {
-                return NotFound($"No such project for spec: {normalizedSpec}");
+                return NotFound($"No project template for spec: {normalizedSpec}");
             }
 
             var archiveBytes = archiver.ToBytes(project.FileEntries);
             return File(
                 archiveBytes,
-                normalizedSpec.ArchiveMimeType,
+                $"application/{normalizedSpec.Packaging}",
                 $"{normalizedSpec.Name}{archiver.GetFileExtension()}");
         }
     }

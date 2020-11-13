@@ -35,6 +35,21 @@ namespace Steeltoe.InitializrApi.Test.Unit.Generators
         }
 
         [Fact]
+        public void GenerateProject_Should_Contain_Top_Level_Directory()
+        {
+            // Arrange
+            var spec = new ProjectSpec { Name = "tld", };
+            var template = new ProjectTemplate { Manifest = new FileEntry[0] };
+            var generator = new StubbleProjectGeneratorBuilder().WithProjectTemplate(template).Build();
+
+            // Act
+            var project = generator.GenerateProject(spec);
+
+            // Assert
+            project.FileEntries[0].Path.Should().Be("tld/");
+        }
+
+        [Fact]
         public void GenerateProject_Should_Render_Files()
         {
             // Arrange
@@ -67,8 +82,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Generators
             var project = generator.GenerateProject(spec);
 
             // Assert
-            project.Should().NotBeNull();
-            var i = 0;
+            var i = 1;
             project.FileEntries[i++].Text.Should().Be("my name");
             project.FileEntries[i++].Text.Should().Be("my description");
             project.FileEntries[i++].Text.Should().Be("my namespace");
@@ -97,23 +111,22 @@ namespace Steeltoe.InitializrApi.Test.Unit.Generators
             var project = generator.GenerateProject(spec);
 
             // Assert
-            project.Should().NotBeNull();
-            project.FileEntries[0].Path.Should().Be("d1/");
-            project.FileEntries[0].Text.Should().BeNull();
-            project.FileEntries[1].Path.Should().Be("d1/d2/");
+            project.FileEntries[1].Path.Should().Be("d1/");
             project.FileEntries[1].Text.Should().BeNull();
+            project.FileEntries[2].Path.Should().Be("d1/d2/");
+            project.FileEntries[2].Text.Should().BeNull();
         }
 
         [Fact]
         public void GenerateProject_Should_Rename_Files()
         {
             // Arrange
-            var spec = new ProjectSpec { Name = "newName" };
+            var spec = new ProjectSpec { Namespace = "My.Namespace" };
             var template = new ProjectTemplate
             {
                 Manifest = new[]
                 {
-                    new FileEntry { Path = "oldName", Rename = "{{Name}}" },
+                    new FileEntry { Path = "oldName", Rename = "{{Namespace}}" },
                 },
             };
             var generator = new StubbleProjectGeneratorBuilder().WithProjectTemplate(template).Build();
@@ -122,8 +135,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Generators
             var project = generator.GenerateProject(spec);
 
             // Assert
-            project.Should().NotBeNull();
-            project.FileEntries[0].Path.Should().Be("newName");
+            project.FileEntries[1].Path.Should().Be("My.Namespace");
         }
 
         [Fact]
@@ -149,8 +161,8 @@ namespace Steeltoe.InitializrApi.Test.Unit.Generators
             var project = generator.GenerateProject(spec);
 
             // Assert
-            project.FileEntries.Count.Should().Be(5);
-            var i = 0;
+            project.FileEntries.Count.Should().Be(6);
+            var i = 1;
             project.FileEntries[i++].Path.Should().Be("f0");
             project.FileEntries[i++].Path.Should().Be("f1");
             project.FileEntries[i++].Path.Should().Be("f2");
@@ -184,7 +196,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Generators
             var project = generator.GenerateProject(spec);
 
             // Assert
-            project.FileEntries[0].Text.Should().Be("text");
+            project.FileEntries[1].Text.Should().Be("text");
         }
 
         [Fact]
@@ -213,7 +225,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Generators
             var project = generator.GenerateProject(spec);
 
             // Assert
-            project.FileEntries[0].Text.Should().Be("text");
+            project.FileEntries[1].Text.Should().Be("text");
         }
 
         [Fact]
@@ -243,7 +255,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Generators
             var project = generator.GenerateProject(spec);
 
             // Assert
-            project.FileEntries[0].Text.Should().Be("text");
+            project.FileEntries[1].Text.Should().Be("text");
         }
 
         [Fact]
@@ -271,7 +283,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Generators
             var project = generator.GenerateProject(spec);
 
             // Assert
-            project.FileEntries[0].Text.Should().Be(string.Empty);
+            project.FileEntries[1].Text.Should().Be(string.Empty);
         }
 
         /* ----------------------------------------------------------------- *

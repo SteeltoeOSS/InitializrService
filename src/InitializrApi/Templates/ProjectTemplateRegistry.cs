@@ -5,14 +5,13 @@
 using Microsoft.Extensions.Logging;
 using Steeltoe.InitializrApi.Models;
 using Steeltoe.InitializrApi.Services;
+using Steeltoe.InitializrApi.Utilities;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Net;
 using YamlDotNet.Core;
-using YamlDotNet.Serialization;
-using YamlDotNet.Serialization.NamingConventions;
 
 namespace Steeltoe.InitializrApi.Templates
 {
@@ -86,20 +85,27 @@ namespace Steeltoe.InitializrApi.Templates
         /// <inheritdoc/>
         public ProjectTemplate Lookup(ProjectSpec spec)
         {
-            foreach (var template in _templates)
+            try
             {
-                var constraints = template.Constraints;
-                if ((constraints.SteeltoeVersionRange is null
-                     || constraints.SteeltoeVersionRange.Equals(spec.SteeltoeVersion))
-                    && (constraints.DotNetFrameworkRange is null
-                        || constraints.DotNetFrameworkRange.Equals(spec.DotNetFramework))
-                    && (constraints.DotNetTemplate is null
-                        || constraints.DotNetTemplate.Equals(spec.DotNetTemplate))
-                    && (constraints.Language is null
-                        || constraints.Language.Equals(spec.Language)))
+                foreach (var template in _templates)
                 {
-                    return template.Template;
+                    var constraints = template.Constraints;
+                    if ((constraints.SteeltoeVersionRange is null
+                         || constraints.SteeltoeVersionRange.Accepts(spec.SteeltoeVersion))
+                        && (constraints.DotNetFrameworkRange is null
+                            || constraints.DotNetFrameworkRange.Accepts(spec.DotNetFramework))
+                        && (constraints.DotNetTemplate is null
+                            || constraints.DotNetTemplate.Equals(spec.DotNetTemplate))
+                        && (constraints.Language is null
+                            || constraints.Language.Equals(spec.Language)))
+                    {
+                        return template.Template;
+                    }
                 }
+            }
+            catch (ArgumentException e)
+            {
+                Logger.LogError("Error looking up project template: {Error}", e.Message);
             }
 
             return null;
@@ -207,8 +213,7 @@ namespace Steeltoe.InitializrApi.Templates
             using var reader = new StreamReader(entry.Open());
             var text = reader.ReadToEnd();
             Logger.LogDebug("{Path}:\n{Text}", entry.FullName, text);
-            return new DeserializerBuilder().WithNamingConvention(CamelCaseNamingConvention.Instance)
-                .Build().Deserialize<T>(text);
+            return Serializer.DeserializeYaml<T>(text);
         }
     }
 }

@@ -4,41 +4,40 @@
 
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Steeltoe.Extensions.Configuration.ConfigServer;
 using Steeltoe.InitializrApi.Models;
 using Steeltoe.InitializrApi.Services;
+using Steeltoe.InitializrApi.Utilities;
+using System;
+using System.IO;
 
 namespace Steeltoe.InitializrApi.Configuration
 {
     /// <summary>
-    /// An <see cref="IInitializrConfigService"/> using a <a href="https://cloud.spring.io/spring-cloud-config/reference/html/#_spring_cloud_config_server">Spring Cloud Config Server</a> backend.
+    /// An <see cref="IInitializrConfigService"/> using a local configuration file backend.
     /// </summary>
-    public class InitializrConfigService : InitializrApiServiceBase, IInitializrConfigService
+    public class InitializrConfigFile : InitializrApiServiceBase, IInitializrConfigService
     {
         /* ----------------------------------------------------------------- *
          * fields                                                            *
          * ----------------------------------------------------------------- */
 
-        private readonly InitializrConfig _config;
+        private readonly InitializrOptions _options;
+
+        private InitializrConfig _config;
 
         /* ----------------------------------------------------------------- *
          * constructors                                                      *
          * ----------------------------------------------------------------- */
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InitializrConfigService"/> class.
+        /// Initializes a new instance of the <see cref="InitializrConfigFile"/> class.
         /// </summary>
-        /// <param name="configuration">Injected configuration from Config Server.</param>
-        /// <param name="settings">Injected settings from Config Server.</param>
+        /// <param name="options">Injected options from appsettings.</param>
         /// <param name="logger">Injected logger.</param>
-        public InitializrConfigService(
-            IOptions<InitializrConfig> configuration,
-            IOptions<ConfigServerClientSettingsOptions> settings,
-            ILogger<InitializrConfigService> logger)
+        public InitializrConfigFile(IOptions<InitializrOptions> options, ILogger<InitializrConfigFile> logger)
             : base(logger)
         {
-            _config = configuration.Value;
-            Logger.LogInformation($"Config Server: uri={settings.Value.Uri},env={settings.Value.Env},label={settings.Value.Label}");
+            _options = options.Value;
         }
 
         /* ----------------------------------------------------------------- *
@@ -48,19 +47,24 @@ namespace Steeltoe.InitializrApi.Configuration
         /// <inheritdoc />
         public void Initialize()
         {
-            Logger.LogInformation("Initializing Initializr configuration.");
-            if (_config.ProjectMetadata is null)
+            Logger.LogInformation("loading configuration: {Path}", _options.ConfigurationPath);
+            try
             {
-                Logger.LogError("Project metadata missing.");
+                var configJson = File.ReadAllText(_options.Configuration["Path"]);
+                _config = Serializer.DeserializeJson<InitializrConfig>(configJson);
             }
-
-            if (_config.ProjectTemplates is null)
+            catch (FileNotFoundException)
             {
-                Logger.LogError("Project templates configuration missing.");
+                throw new ArgumentException($"Configuration file path does not exist: {_options.ConfigurationPath}");
+            }
+            catch (UnauthorizedAccessException)
+            {
+                throw new ArgumentException(
+                    $"Configuration file path is not a file or cannot be read: {_options.ConfigurationPath}");
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public InitializrConfig GetInitializrConfig()
         {
             return _config;

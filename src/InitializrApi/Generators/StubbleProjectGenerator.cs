@@ -9,6 +9,7 @@ using Steeltoe.InitializrApi.Services;
 using Stubble.Core;
 using Stubble.Core.Builders;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Steeltoe.InitializrApi.Generators
 {
@@ -94,6 +95,7 @@ namespace Steeltoe.InitializrApi.Generators
             }
 
             var project = new Project();
+            project.FileEntries.Add(new FileEntry { Path = $"{spec.Name}/" });
             foreach (var fileEntry in template.Manifest)
             {
                 if (fileEntry.Dependencies != null)
@@ -131,7 +133,7 @@ namespace Steeltoe.InitializrApi.Generators
 
                 var path = fileEntry.Rename is null ? fileEntry.Path : _renderer.Render(fileEntry.Rename, parameters);
                 var text = fileEntry.Text is null ? null : _renderer.Render(fileEntry.Text, parameters);
-                project.FileEntries.Add(new FileEntry { Path = path, Text = text });
+                project.FileEntries.Add(new FileEntry { Path = Path.Join(spec.Name, path), Text = text });
             }
 
             return project;

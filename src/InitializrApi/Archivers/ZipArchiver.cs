@@ -21,7 +21,7 @@ namespace Steeltoe.InitializrApi.Archivers
          * constants                                                         *
          * ----------------------------------------------------------------- */
 
-        private const string MimeType = "application/zip";
+        private const string Packaging = "zip";
 
         private const string FileExtension = ".zip";
 
@@ -32,7 +32,8 @@ namespace Steeltoe.InitializrApi.Archivers
          *                                                     Other         *
          *                                             r w r   r             *
          * ----------------------------------------------------------------- */
-        private const int UnixPermissions = 0b_0000_0001_1010_0100_0000_0000_0000_0000;
+        private const int UnixFilePermissions = 0b_0000_0001_1010_0100_0000_0000_0000_0000;
+        private const int UnixDirectoryPermissions = 0b_0000_0001_1110_1101_0000_0000_0000_0000;
 
         /* ----------------------------------------------------------------- *
          * fields                                                            *
@@ -67,12 +68,17 @@ namespace Steeltoe.InitializrApi.Archivers
                 var zipEntry = archive.CreateEntry(fileEntry.Path, _compression);
                 if (fileEntry.Text == null)
                 {
+                    if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                    {
+                        zipEntry.ExternalAttributes = UnixDirectoryPermissions;
+                    }
+
                     continue;
                 }
 
                 if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 {
-                    zipEntry.ExternalAttributes = UnixPermissions;
+                    zipEntry.ExternalAttributes = UnixFilePermissions;
                 }
 
                 using var textStream = new MemoryStream(Encoding.UTF8.GetBytes(fileEntry.Text));
@@ -86,9 +92,9 @@ namespace Steeltoe.InitializrApi.Archivers
         }
 
         /// <inheritdoc/>
-        public string GetMimeType()
+        public string GetPackaging()
         {
-            return MimeType;
+            return Packaging;
         }
 
         /// <inheritdoc/>

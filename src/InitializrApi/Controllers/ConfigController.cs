@@ -4,7 +4,6 @@
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Steeltoe.InitializrApi.Models;
 using Steeltoe.InitializrApi.Services;
 
 namespace Steeltoe.InitializrApi.Controllers
@@ -20,7 +19,7 @@ namespace Steeltoe.InitializrApi.Controllers
          * fields                                                            *
          * ----------------------------------------------------------------- */
 
-        private readonly InitializrConfig _config;
+        private readonly IInitializrConfigService _configService;
 
         /* ----------------------------------------------------------------- *
          * constructors                                                      *
@@ -36,7 +35,7 @@ namespace Steeltoe.InitializrApi.Controllers
             ILogger<ConfigController> logger)
             : base(logger)
         {
-            _config = configService.GetInitializrConfig();
+            _configService = configService;
         }
 
         /* ----------------------------------------------------------------- *
@@ -50,7 +49,7 @@ namespace Steeltoe.InitializrApi.Controllers
         [HttpGet]
         public IActionResult GetInitializrConfiguration()
         {
-            return Ok(_config);
+            return Ok(_configService.GetInitializrConfig());
         }
 
         /// <summary>
@@ -61,7 +60,73 @@ namespace Steeltoe.InitializrApi.Controllers
         [Route("projectMetadata")]
         public IActionResult GetProjectMetadata()
         {
-            return Ok(_config.ProjectMetadata);
+            return Ok(_configService.GetInitializrConfig().ProjectMetadata);
+        }
+
+        /// <summary>
+        /// Implements <c>GET steeltoeVersions</c>.
+        /// </summary>
+        /// <returns>Returns a <c>GET</c> result which, if is <see cref="OkObjectResult"/>, contains Initializr Steeltoe versions.</returns>
+        [HttpGet]
+        [Route("steeltoeVersions")]
+        public IActionResult GetSteeltoeVersions()
+        {
+            return Ok(_configService.GetInitializrConfig().ProjectMetadata.SteeltoeVersion.Values);
+        }
+
+        /// <summary>
+        /// Implements <c>GET dotNetFrameworks</c>.
+        /// </summary>
+        /// <returns>Returns a <c>GET</c> result which, if is <see cref="OkObjectResult"/>, contains Initializr .NET frameworks.</returns>
+        [HttpGet]
+        [Route("dotNetFrameworks")]
+        public IActionResult GetDotNetFrameworks()
+        {
+            return Ok(_configService.GetInitializrConfig().ProjectMetadata.DotNetFramework.Values);
+        }
+
+        /// <summary>
+        /// Implements <c>GET dotNetTemplates</c>.
+        /// </summary>
+        /// <returns>Returns a <c>GET</c> result which, if is <see cref="OkObjectResult"/>, contains Initializr .NET templates.</returns>
+        [HttpGet]
+        [Route("dotNetTemplates")]
+        public IActionResult GetDotNetTemplates()
+        {
+            return Ok(_configService.GetInitializrConfig().ProjectMetadata.DotNetTemplate.Values);
+        }
+
+        /// <summary>
+        /// Implements <c>GET languages</c>.
+        /// </summary>
+        /// <returns>Returns a <c>GET</c> result which, if is <see cref="OkObjectResult"/>, contains Initializr languages.</returns>
+        [HttpGet]
+        [Route("languages")]
+        public IActionResult GetLanguages()
+        {
+            return Ok(_configService.GetInitializrConfig().ProjectMetadata.Language.Values);
+        }
+
+        /// <summary>
+        /// Implements <c>GET archive types</c>.
+        /// </summary>
+        /// <returns>Returns a <c>GET</c> result which, if is <see cref="OkObjectResult"/>, contains Initializr archive types.</returns>
+        [HttpGet]
+        [Route("archiveTypes")]
+        public IActionResult GetArchiveTypes()
+        {
+            return Ok(_configService.GetInitializrConfig().ProjectMetadata.Packaging.Values);
+        }
+
+        /// <summary>
+        /// Implements <c>GET dependencies</c>.
+        /// </summary>
+        /// <returns>Returns a <c>GET</c> result which, if is <see cref="OkObjectResult"/>, contains Initializr dependencies types.</returns>
+        [HttpGet]
+        [Route("dependencies")]
+        public IActionResult GetDependencies()
+        {
+            return Ok(_configService.GetInitializrConfig().ProjectMetadata.Dependencies.Values);
         }
 
         /// <summary>
@@ -72,7 +137,7 @@ namespace Steeltoe.InitializrApi.Controllers
         [Route("projectTemplates")]
         public IActionResult GetProjectTemplatesConfig()
         {
-            return Ok(_config.ProjectTemplates);
+            return Ok(_configService.GetInitializrConfig().ProjectTemplates);
         }
     }
 }

@@ -4,15 +4,23 @@
     "Development": {
       "commandName": "Project",
       "launchBrowser": false,
-      "applicationUrl": "http://0.0.0.0:19200",
+      "applicationUrl": "http://127.0.0.1:1920",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "Local": {
+      "commandName": "Project",
+      "launchBrowser": false,
+      "applicationUrl": "http://127.0.0.1:1920",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Local"
       }
     },
     "Staging": {
       "commandName": "Project",
       "launchBrowser": false,
-      "applicationUrl": "https://0.0.0.0:19201;http://0.0.0.0:19200",
+      "applicationUrl": "http://0.0.0.0:1920",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Staging"
       }

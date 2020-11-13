@@ -20,6 +20,6 @@ spec:
         image: steeltoe.azurecr.io/initializr-api
         env:
         - name: ASPNETCORE_ENVIRONMENT
-          value: Staging
+          value: Production
         ports:
         - containerPort: 80

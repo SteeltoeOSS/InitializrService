@@ -3,9 +3,9 @@ trigger:
 
 variables:
   - name: major
-    value: 1
-  - name: minor
     value: 0
+  - name: minor
+    value: 9
   - name: micro
     value: 0
   - name: DotNet3Version

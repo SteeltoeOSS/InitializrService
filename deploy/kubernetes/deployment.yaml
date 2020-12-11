@@ -17,9 +17,9 @@ spec:
         "beta.kubernetes.io/os": linux
       containers:
       - name: initializr-api
-        image: steeltoe.azurecr.io/initializr-api
+        image: localhost:5000/initializr-api
         env:
         - name: ASPNETCORE_ENVIRONMENT
-          value: Staging
+          value: Local
         ports:
         - containerPort: 80

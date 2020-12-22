@@ -209,24 +209,22 @@ namespace Steeltoe.InitializrApi.Test.Unit.Models
         }
 
         [Fact]
-        public void Prefixed_Release_Versions_Should_Be_Comparable()
+        public void Release_Version_Prefixes_Should_Be_Ignored()
         {
             // Arrange
-            var v1 = new ReleaseRange.ReleaseVersion("v1.0");
-            var v2 = new ReleaseRange.ReleaseVersion("v2.0");
-            var v2Same = new ReleaseRange.ReleaseVersion("v2.0");
+            var v1 = new ReleaseRange.ReleaseVersion("netcoreapp2.1");
+            var v2 = new ReleaseRange.ReleaseVersion("netcoreapp3.1");
+            var v3 = new ReleaseRange.ReleaseVersion("net5.0");
 
             // Act
 
             // Assert
-            (v1 == v2).Should().Be(false);
-            (v1 != v2).Should().Be(true);
             (v1 < v2).Should().Be(true);
             (v1 > v2).Should().Be(false);
-            (v2 == v2Same).Should().Be(true);
-            (v2 != v2Same).Should().Be(false);
-            (v2 < v2Same).Should().Be(false);
-            (v2 > v2Same).Should().Be(false);
+            (v1 < v3).Should().Be(true);
+            (v1 > v3).Should().Be(false);
+            (v2 < v3).Should().Be(true);
+            (v2 > v3).Should().Be(false);
         }
 
         /* ----------------------------------------------------------------- *
@@ -310,21 +308,6 @@ namespace Steeltoe.InitializrApi.Test.Unit.Models
 
             // Assert
             a1.Should().Throw<ArgumentException>().WithMessage("Version not in correct format: '1..2'");
-        }
-
-        [Fact]
-        public void Release_Versions_With_Different_Prefixes_Should_Not_Be_Comparable()
-        {
-            // Arrange
-            var v1 = new ReleaseRange.ReleaseVersion("a1.0");
-            var v2 = new ReleaseRange.ReleaseVersion("b1.0");
-
-            // Act
-            Action a = () => ReleaseRange.ReleaseVersion.CompareTo(v1, v2);
-
-            // Assert
-            a.Should().Throw<ArgumentException>()
-                .WithMessage("Cannot compare versions with different prefixes: 'a1.0', 'b1.0'");
         }
     }
 }

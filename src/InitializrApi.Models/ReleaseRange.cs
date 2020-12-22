@@ -189,6 +189,7 @@ namespace Steeltoe.InitializrApi.Models
         {
             private readonly string _representation;
 
+            // ReSharper disable once NotAccessedField.Local
             private readonly string _prefix;
 
             private readonly Version _version;
@@ -283,10 +284,13 @@ namespace Steeltoe.InitializrApi.Models
             /// <exception cref="ArgumentException">Thrown if versions have difference prefixes.</exception>
             public static int CompareTo(ReleaseVersion a, ReleaseVersion b)
             {
+                // following commented out after Microsoft changed their naming scheme starting with .NET 5
+                /*
                 if (!a._prefix.Equals(b._prefix))
                 {
                     throw new ArgumentException($"Cannot compare versions with different prefixes: '{a}', '{b}'");
                 }
+                */
 
                 return a._version.CompareTo(b._version);
             }

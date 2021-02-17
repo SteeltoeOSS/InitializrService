@@ -25,7 +25,7 @@ namespace Steeltoe.InitializrApi.Test.Integration
             using var client = new WebClient();
             var bits = client.DownloadString(testFile);
             var metadata = Serializer.DeserializeJson<ProjectMetadata>(bits);
-            metadata.SteeltoeVersion.Default.Should().Be("3.0.1");
+            metadata.SteeltoeVersion.Default.Should().Be("3.0.2");
             metadata.DotNetFramework.Default.Should().Be("netcoreapp3.1");
             metadata.DotNetTemplate.Default.Should().Be("webapi");
             metadata.Language.Default.Should().Be("csharp");

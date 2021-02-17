@@ -1,7 +1,7 @@
 <Project>
 
   <PropertyGroup>
-    <SteeltoeInitializrApiVersion>0.9.0</SteeltoeInitializrApiVersion>
+    <SteeltoeInitializrApiVersion>0.9.1</SteeltoeInitializrApiVersion>
     <SteeltoeVersion>3.0.1</SteeltoeVersion>
     <StubbleCoreVersion>1.9.3</StubbleCoreVersion>
     <YamlDotNetVersion>8.1.2</YamlDotNetVersion>

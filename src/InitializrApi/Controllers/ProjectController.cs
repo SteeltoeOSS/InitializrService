@@ -91,26 +91,36 @@ namespace Steeltoe.InitializrApi.Controllers
                 return NotFound($"Packaging '{normalizedSpec.Packaging}' not found.");
             }
 
-            if (normalizedSpec.Dependencies != null && config.ProjectMetadata?.Dependencies?.Values != null)
+            if (normalizedSpec.Dependencies != null)
             {
                 var caseSensitiveDeps = new List<string>();
-                foreach (var group in config.ProjectMetadata.Dependencies.Values)
+                if (config.ProjectMetadata?.Dependencies?.Values != null)
                 {
-                    foreach (var dep in group.Values)
+                    foreach (var group in config.ProjectMetadata.Dependencies.Values)
                     {
-                        caseSensitiveDeps.Add(dep.Id);
+                        foreach (var dep in group.Values)
+                        {
+                            caseSensitiveDeps.Add(dep.Id);
+                        }
                     }
                 }
 
                 var deps = normalizedSpec.Dependencies.Split(',');
                 for (int i = 0; i < deps.Length; ++i)
                 {
+                    var found = false;
                     foreach (var caseSensitiveDep in caseSensitiveDeps)
                     {
                         if (caseSensitiveDep.Equals(deps[i], StringComparison.OrdinalIgnoreCase))
                         {
                             deps[i] = caseSensitiveDep;
+                            found = true;
                         }
+                    }
+
+                    if (!found)
+                    {
+                        return NotFound($"Dependency '{deps[i]}' not found.");
                     }
                 }
 

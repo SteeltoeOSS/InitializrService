@@ -5,9 +5,9 @@ variables:
   - name: major
     value: 0
   - name: minor
-    value: 9
+    value: 10
   - name: micro
-    value: 1
+    value: 0
   - name: DotNet3Version
     value: 3.1.402
   - name: DotNet2Version

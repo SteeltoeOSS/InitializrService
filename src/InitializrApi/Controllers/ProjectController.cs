@@ -61,7 +61,7 @@ namespace Steeltoe.InitializrApi.Controllers
         /// Generated project is bundled in a ZIP archive.
         /// </summary>
         /// <returns>A task containing the <c>GET</c> result which, if is <see cref="FileContentResult"/>, contains a project bundle archive stream.</returns>
-        [AcceptVerbs("GET", "POST")]
+        [AcceptVerbs("GET")]
         public ActionResult GetProjectArchive([FromQuery] ProjectSpec spec)
         {
             var config = _configService.GetInitializrConfig();

@@ -224,13 +224,16 @@
   },
   "projectTemplates": [
     {
-      "uri": "http://localhost:8889/steeltoe-2.4.x--netcoreapp2.1--webapi--csharp.izr"
-    },
-    {
-      "uri": "http://localhost:8889/steeltoe-2.4.x--netcoreapp3.1--webapi--csharp.izr"
+      "uri": "http://localhost:8889/steeltoe-3.0.x--net5.0--webapi--csharp.izr"
     },
     {
       "uri": "http://localhost:8889/steeltoe-3.0.x--netcoreapp3.1--webapi--csharp.izr"
+    },
+    {
+      "uri": "http://localhost:8889/steeltoe-2.5.x--netcoreapp3.1--webapi--csharp.izr"
+    },
+    {
+      "uri": "http://localhost:8889/steeltoe-2.5.x--netcoreapp2.1--webapi--csharp.izr"
     }
   ]
 }

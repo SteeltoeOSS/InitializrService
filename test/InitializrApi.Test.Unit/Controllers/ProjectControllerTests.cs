@@ -63,7 +63,6 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
                     DotNetTemplate = new ProjectMetadata.SingleSelectList { Default = "my dotnet template" },
                     Language = new ProjectMetadata.SingleSelectList { Default = "my language" },
                     Packaging = new ProjectMetadata.SingleSelectList { Default = "myarchive" },
-                    Dependencies = new ProjectMetadata.GroupList { Default = "dep1,dep2" },
                 },
             };
             var controller = new ProjectControllerBuilder()
@@ -84,7 +83,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
             reader.ReadLine().Should().Be("dotnet template=my dotnet template");
             reader.ReadLine().Should().Be("language=my language");
             reader.ReadLine().Should().Be("packaging=myarchive");
-            reader.ReadLine().Should().Be("dependencies=dep1,dep2");
+            reader.ReadLine().Should().Be("dependencies=<na>");
             reader.ReadLine().Should().BeNull();
         }
 
@@ -117,7 +116,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
             var spec = new ProjectSpec
             {
                 Packaging = "myarchive",
-                Dependencies = "unknowndep,camelcasedep",
+                Dependencies = "camelcasedep",
             };
             var controller = new ProjectControllerBuilder()
                 .WithInitializrConfiguration(config)
@@ -130,7 +129,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
             var result = Assert.IsType<FileContentResult>(unknown);
             using var reader = new StreamReader(new MemoryStream(result.FileContents));
             var body = reader.ReadToEnd();
-            body.Should().Contain("dependencies=unknowndep,CamelCaseDep");
+            body.Should().Contain("dependencies=CamelCaseDep");
         }
 
         /* ----------------------------------------------------------------- *
@@ -166,6 +165,21 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
             // Assert
             var result = Assert.IsType<NotFoundObjectResult>(unknown);
             result.Value.ToString().Should().Be("Packaging 'nosuchformat' not found.");
+        }
+
+        [Fact]
+        public void Unknown_Dependency_Should_Return_404_Page_Not_found()
+        {
+            // Arrange
+            var controller = new ProjectControllerBuilder().Build();
+            var spec = new ProjectSpec { Dependencies = "nosuchdep" };
+
+            // Act
+            var unknown = controller.GetProjectArchive(spec);
+
+            // Assert
+            var result = Assert.IsType<NotFoundObjectResult>(unknown);
+            result.Value.ToString().Should().Be("Dependency 'nosuchdep' not found.");
         }
 
         [Fact]

@@ -61,16 +61,12 @@ stages:
               arguments: --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
           - task: SonarSource.sonarcloud.ce096e50-6155-4de8-8800-4221aaeed4a1.SonarCloudAnalyze@1
             displayName: Stop SonarQube Analysis
-          - task: SonarSource.sonarcloud.38b27399-a642-40af-bb7d-9971f69712e8.SonarCloudPublish@1
-            displayName: Publish SonarQube Analysis
           - task: DotNetCoreCLI@2
             displayName: DotNet Pack
             inputs:
               command: pack
               packagesToPack: src/InitializrApi.Models
               arguments: --no-build
-            condition:
-              and(succeeded(), not(eq(variables['build.reason'], 'PullRequest')))
           - task: Powershell@2
             displayName: Sign Nugets
             inputs:
@@ -79,21 +75,29 @@ stages:
               ArtifactStagingDirectory: $(Build.ArtifactStagingDirectory)
               SignClientUser: $(SignClientUser)
               SignClientSecret: $(SignClientSecret)
-            condition:
-              and(succeeded(), not(eq(variables['build.reason'], 'PullRequest')))
-          - task: PublishBuildArtifacts@1
-            displayName: Publish NuGets
-            inputs:
-              pathToPublish: $(Build.ArtifactStagingDirectory)
-              artifactName: Packages
-              publishLocation: Container
-            condition:
-              and(succeeded(), not(eq(variables['build.reason'], 'PullRequest')))
           - task: DotNetCoreCLI@2
             displayName: DotNet Publish
             inputs:
               command: publish
               arguments: --no-build
               zipAfterPublish: false
-            condition:
-              and(succeeded(), not(eq(variables['build.reason'], 'PullRequest')))
+  - stage: Publish
+    dependsOn: Build
+    condition:
+      and(not(eq(variables['build.reason'], 'PullRequest')))
+    jobs:
+      - job: NuGets
+        displayName: Publish NuGets
+        pool:
+          vmImage: ubuntu-latest
+          - task: PublishBuildArtifacts@1
+            displayName: Publish NuGets
+            inputs:
+              pathToPublish: $(Build.ArtifactStagingDirectory)
+              artifactName: Packages
+              publishLocation: Container
+      - job: SonarQube
+        displayName: Publish SonarQube
+        pool:
+          - task: SonarSource.sonarcloud.38b27399-a642-40af-bb7d-9971f69712e8.SonarCloudPublish@1
+            displayName: Publish SonarQube Analysis

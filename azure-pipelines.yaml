@@ -84,7 +84,7 @@ stages:
   - stage: Publish
     dependsOn: Build
     condition:
-      and(not(eq(variables['build.reason'], 'PullRequest')))
+      not(eq(variables['build.reason'], 'PullRequest'))
     jobs:
       - job: NuGets
         displayName: Publish NuGets

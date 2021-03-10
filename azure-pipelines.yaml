@@ -94,8 +94,4 @@ stages:
           vmImage: ubuntu-latest
         steps:
           - task: PublishBuildArtifacts@1
-            displayName: Publish NuGets
-            inputs:
-              pathToPublish: $(Build.ArtifactStagingDirectory)
-              artifactName: Packages
-              publishLocation: Container
+            displayName: Publish Build Artifacts

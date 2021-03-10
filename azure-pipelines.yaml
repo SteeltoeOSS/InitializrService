@@ -61,11 +61,6 @@ jobs:
         displayName: Stop SonarQube Analysis
       - task: SonarSource.sonarcloud.38b27399-a642-40af-bb7d-9971f69712e8.SonarCloudPublish@1
         displayName: Publish SonarQube Analysis
-  - job: Publish
-    dependsOn: Build
-    pool:
-      vmImage: ubuntu-latest
-    steps:
       - task: DotNetCoreCLI@2
         displayName: DotNet Pack
         inputs:

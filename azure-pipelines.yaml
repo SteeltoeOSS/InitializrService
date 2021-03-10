@@ -81,6 +81,8 @@ stages:
               command: publish
               arguments: --no-build
               zipAfterPublish: false
+          - task: SonarSource.sonarcloud.38b27399-a642-40af-bb7d-9971f69712e8.SonarCloudPublish@1
+            displayName: Publish SonarQube Analysis
   - stage: Publish
     dependsOn: Build
     condition:
@@ -97,10 +99,3 @@ stages:
               pathToPublish: $(Build.ArtifactStagingDirectory)
               artifactName: Packages
               publishLocation: Container
-      - job: SonarQube
-        displayName: Publish SonarQube
-        pool:
-          vmImage: ubuntu-latest
-        steps:
-          - task: SonarSource.sonarcloud.38b27399-a642-40af-bb7d-9971f69712e8.SonarCloudPublish@1
-            displayName: Publish SonarQube Analysis

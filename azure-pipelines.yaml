@@ -83,6 +83,5 @@ stages:
               zipAfterPublish: false
           - task: SonarSource.sonarcloud.38b27399-a642-40af-bb7d-9971f69712e8.SonarCloudPublish@1
             displayName: Publish SonarQube Analysis
-          - publish: $(Build.ArtifactStagingDirectory)
-            artifact: Api
+          - task: PublishBuildArtifacts@1
             displayName: Publish Build Artifacts

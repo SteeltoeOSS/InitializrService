@@ -154,6 +154,11 @@ namespace Steeltoe.InitializrApi.Models
             /// Gets or sets the .NET Framework constraints.
             /// </summary>
             public string DotNetFrameworkRange { get; set; }
+
+            /// <summary>
+            /// Gets or sets the whether this item is active.
+            /// </summary>
+            public string Active { get; set; }
         }
 
         /// <summary>

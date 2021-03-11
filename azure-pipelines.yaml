@@ -44,25 +44,27 @@ stages:
               extraProperties: |
                 sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)/**/*.opencover.xml
           - task: DotNetCoreCLI@2
-            displayName: DotNet Restore
+            displayName: dotnet restore
             inputs:
               command: restore
           - task: DotNetCoreCLI@2
-            displayName: DotNet Build
+            displayName: dotnet build
             inputs:
               command: build
               arguments: --no-restore /p:TreatWarningsAsErrors=True
           - task: DotNetCoreCLI@2
-            displayName: DotNet Test
+            displayName: dotnet test
             inputs:
               command: test
               arguments: --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
-          - task: SonarSource.sonarcloud.ce096e50-6155-4de8-8800-4221aaeed4a1.SonarCloudAnalyze@1
-            displayName: Stop SonarQube Analysis
-          - task: SonarSource.sonarcloud.38b27399-a642-40af-bb7d-9971f69712e8.SonarCloudPublish@1
-            displayName: Publish SonarQube Analysis
           - task: DotNetCoreCLI@2
-            displayName: DotNet Pack
+            displayName: dotNet publish
+            inputs:
+              command: publish
+              arguments: --no-build
+              zipAfterPublish: false
+          - task: DotNetCoreCLI@2
+            displayName: dotnet pack
             inputs:
               command: pack
               packagesToPack: src/InitializrApi.Models
@@ -75,11 +77,9 @@ stages:
               ArtifactStagingDirectory: $(Build.ArtifactStagingDirectory)
               SignClientUser: $(SignClientUser)
               SignClientSecret: $(SignClientSecret)
-          - task: DotNetCoreCLI@2
-            displayName: DotNet Publish
-            inputs:
-              command: publish
-              arguments: --no-build
-              zipAfterPublish: false
+          - task: SonarSource.sonarcloud.ce096e50-6155-4de8-8800-4221aaeed4a1.SonarCloudAnalyze@1
+            displayName: Stop SonarQube Analysis
+          - task: SonarSource.sonarcloud.38b27399-a642-40af-bb7d-9971f69712e8.SonarCloudPublish@1
+            displayName: Publish SonarQube Analysis
           - task: PublishBuildArtifacts@1
             displayName: Publish Build Artifacts

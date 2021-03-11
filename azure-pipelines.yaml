@@ -26,12 +26,12 @@ stages:
           vmImage: ubuntu-latest
         steps:
           - task: UseDotNet@2
-            displayName: Install DotNet SDK 3.1
+            displayName: Install .NET SDK 3.1
             inputs:
               packageType: sdk
               version: 3.1.x
           - task: UseDotNet@2
-            displayName: Install DotNet SDK 2.1
+            displayName: Install .NET SDK 2.1
             inputs:
               packageType: sdk
               version: 2.1.x
@@ -58,7 +58,7 @@ stages:
               command: test
               arguments: --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
           - task: DotNetCoreCLI@2
-            displayName: dotNet publish
+            displayName: dotnet publish
             inputs:
               command: publish
               arguments: --no-build
@@ -70,7 +70,7 @@ stages:
               packagesToPack: src/InitializrApi.Models
               arguments: --no-build
           - task: Powershell@2
-            displayName: Sign Nugets
+            displayName: Sign NuGets
             inputs:
               filePath: sign/SignPackages.ps1
             env:

@@ -5,13 +5,9 @@ variables:
   - name: major
     value: 0
   - name: minor
-    value: 10
+    value: 12
   - name: micro
     value: 0
-  - name: DotNet3Version
-    value: 3.1.402
-  - name: DotNet2Version
-    value: 2.0.x
   - name: DOTNET_SKIP_FIRST_TIME_EXPERIENCE
     value: true
   - name: DOTNET_CLI_TELEMETRY_OPTOUT
@@ -20,99 +16,98 @@ variables:
 
 name: $(major).$(minor).$(micro)-$(Rev:r)
 
-jobs:
-  - job: Build
-    pool:
-      vmImage: ubuntu-latest
-    steps:
-      - task: UseDotNet@2
-        displayName: Install DotNet 3
-        inputs:
-          packageType: sdk
-          version: $(DotNet3Version)
-      - task: UseDotNet@2
-        displayName: Install DotNet 2
-        inputs:
-          packageType: sdk
-          version: $(DotNet2Version)
-      - task: SonarSource.sonarcloud.14d9cde6-c1da-4d55-aa01-2965cd301255.SonarCloudPrepare@1
-        displayName: Start SonarQube Analysis
-        inputs:
-          SonarCloud: SonarCloud
-          organization: steeltoeoss
-          projectKey: InitializrApi
-          extraProperties: |
-            sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)\**\*.opencover.xml
-      - task: DotNetCoreCLI@2
-        displayName: DotNet Restore
-        inputs:
-          command: restore
-      - task: DotNetCoreCLI@2
-        displayName: DotNet Build
-        inputs:
-          command: build
-          arguments: --no-restore /p:TreatWarningsAsErrors=True
-      - task: DotNetCoreCLI@2
-        displayName: DotNet Test
-        inputs:
-          command: test
-          arguments: --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
-      - task: SonarSource.sonarcloud.ce096e50-6155-4de8-8800-4221aaeed4a1.SonarCloudAnalyze@1
-        displayName: Stop SonarQube Analysis
-      - task: SonarSource.sonarcloud.38b27399-a642-40af-bb7d-9971f69712e8.SonarCloudPublish@1
-        displayName: Publish SonarQube Analysis
-      - task: DotNetCoreCLI@2
-        displayName: DotNet Pack
-        inputs:
-          command: pack
-          packagesToPack: src/InitializrApi.Models
-          arguments: --no-build
-        condition:
-          and(succeeded(), not(eq(variables['build.reason'], 'PullRequest')))
-      - task: Powershell@2
-        displayName: Sign Nugets
-        inputs:
-          filePath: sign/SignPackages.ps1
-        env:
-          ArtifactStagingDirectory: $(Build.ArtifactStagingDirectory)
-          SignClientUser: $(SignClientUser)
-          SignClientSecret: $(SignClientSecret)
-        condition:
-          and(succeeded(), not(eq(variables['build.reason'], 'PullRequest')))
-      - task: PublishBuildArtifacts@1
-        displayName: Publish NuGets
-        inputs:
-          pathToPublish: $(Build.ArtifactStagingDirectory)
-          artifactName: Packages
-          publishLocation: Container
-        condition:
-          and(succeeded(), not(eq(variables['build.reason'], 'PullRequest')))
-      - task: DotNetCoreCLI@2
-        displayName: DotNet Publish
-        inputs:
-          command: publish
-          arguments: --no-build
-          zipAfterPublish: false
-        condition:
-          and(succeeded(), not(eq(variables['build.reason'], 'PullRequest')))
-      - task: Docker@2
-        displayName: Push Docker Image
-        inputs:
-          command: buildAndPush
-          containerRegistry: SteeltoeContainerRegistry
-          repository: initializr-api
-          tags: |
-            $(Build.BuildId)
-            latest
-        condition:
-          and(succeeded(), not(eq(variables['build.reason'], 'PullRequest')))
-      - task: KubernetesManifest@0
-        displayName: Deploy to Production
-        inputs:
-          action: deploy
-          kubernetesServiceConnection: SteeltoeProductionAKS
-          namespace: initializr
-          manifests: deploy/kubernetes/*.yaml
-          containers: steeltoe.azurecr.io/initializr-api:$(Build.BuildId)
-        condition:
-          and(succeeded(), not(eq(variables['build.reason'], 'PullRequest')))
+stages:
+  - stage: assemble
+    displayName: Assemble
+    jobs:
+      - job: build
+        displayName: Build
+        pool:
+          vmImage: ubuntu-latest
+        steps:
+          - task: UseDotNet@2
+            displayName: Install .NET SDK 3.1
+            inputs:
+              packageType: sdk
+              version: 3.1.x
+          - task: UseDotNet@2
+            displayName: Install .NET SDK 2.1
+            inputs:
+              packageType: sdk
+              version: 2.1.x
+          - task: SonarSource.sonarcloud.14d9cde6-c1da-4d55-aa01-2965cd301255.SonarCloudPrepare@1
+            displayName: Start SonarQube Analysis
+            inputs:
+              SonarCloud: SonarCloud
+              organization: steeltoeoss
+              projectKey: InitializrApi
+              extraProperties: |
+                sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)/**/*.opencover.xml
+          - task: DotNetCoreCLI@2
+            displayName: dotnet restore
+            inputs:
+              command: restore
+          - task: DotNetCoreCLI@2
+            displayName: dotnet build
+            inputs:
+              command: build
+              arguments: --no-restore /p:TreatWarningsAsErrors=True
+          - task: DotNetCoreCLI@2
+            displayName: dotnet test
+            inputs:
+              command: test
+              arguments: --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+          - task: DotNetCoreCLI@2
+            displayName: dotnet publish
+            inputs:
+              command: publish
+              arguments: --no-build
+              zipAfterPublish: false
+          - task: DotNetCoreCLI@2
+            displayName: dotnet pack
+            inputs:
+              command: pack
+              packagesToPack: src/InitializrApi.Models
+              arguments: --no-build
+          - task: Powershell@2
+            displayName: Sign NuGets
+            inputs:
+              filePath: sign/SignPackages.ps1
+            env:
+              ArtifactStagingDirectory: $(Build.ArtifactStagingDirectory)
+              SignClientUser: $(SignClientUser)
+              SignClientSecret: $(SignClientSecret)
+          - task: SonarSource.sonarcloud.ce096e50-6155-4de8-8800-4221aaeed4a1.SonarCloudAnalyze@1
+            displayName: Stop SonarQube Analysis
+          - task: SonarSource.sonarcloud.38b27399-a642-40af-bb7d-9971f69712e8.SonarCloudPublish@1
+            displayName: Publish SonarQube Analysis
+          - task: PublishBuildArtifacts@1
+            displayName: Publish Build Artifacts
+  - stage: deploy
+    displayName: Deploy
+    dependsOn: assemble
+    condition:
+      not(eq(variables['build.reason'], 'PullRequest'))
+    jobs:
+      - job: deployToKubernetes
+        displayName: Deploy To Kubernetes
+        pool:
+          vmImage: ubuntu-latest
+        steps:
+          - task: Docker@2
+            displayName: Push Docker Image
+            inputs:
+              command: buildAndPush
+              containerRegistry: SteeltoeContainerRegistry
+              repository: initializr-api
+              tags: |
+                $(Build.BuildId)
+                latest
+          - task: KubernetesManifest@0
+            displayName: Deploy to Staging Cluster
+            inputs:
+              action: deploy
+              kubernetesServiceConnection: SteeltoeProductionAKS
+              namespace: initializr
+              manifests: deploy/kubernetes/*.yaml
+              containers: steeltoe.azurecr.io/initializr-api:$(Build.BuildId)

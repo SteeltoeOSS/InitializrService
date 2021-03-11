@@ -83,7 +83,6 @@ stages:
             displayName: Publish SonarQube Analysis
           - task: PublishBuildArtifacts@1
             displayName: Publish Build Artifacts
-
   - stage: deploy
     displayName: Deploy
     dependsOn: assemble

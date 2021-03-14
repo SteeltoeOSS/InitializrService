@@ -33,7 +33,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
             about.Name.Should().Be("Steeltoe.InitializrApi");
             about.Vendor.Should().Be("SteeltoeOSS/VMware");
             about.Url.Should().Be("https://github.com/SteeltoeOSS/InitializrApi/");
-            about.Version.Should().StartWith("0.12.0");
+            about.Version.Should().StartWith("0.13.0");
             about.Commit.Should().NotBeNullOrWhiteSpace();
         }
 

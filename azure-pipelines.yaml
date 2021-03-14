@@ -6,7 +6,7 @@ variables:
     value: 0
   - name: minor
     value: 13
-  - name: micro
+  - name: patch
     value: 0
   - name: DOTNET_SKIP_FIRST_TIME_EXPERIENCE
     value: true
@@ -14,7 +14,7 @@ variables:
     value: 1
   - group: PackageSigningSecrets
 
-name: $(major).$(minor).$(micro)-$(Rev:r)
+name: $(major).$(minor).$(patch)-$(Rev:r)
 
 stages:
   - stage: assemble

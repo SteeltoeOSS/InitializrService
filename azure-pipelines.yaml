@@ -5,7 +5,7 @@ variables:
   - name: major
     value: 0
   - name: minor
-    value: 12
+    value: 13
   - name: micro
     value: 0
   - name: DOTNET_SKIP_FIRST_TIME_EXPERIENCE

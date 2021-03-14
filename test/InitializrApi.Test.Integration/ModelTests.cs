@@ -21,7 +21,7 @@ namespace Steeltoe.InitializrApi.Test.Integration
         public void ProjectSpec_Should_Load_UI_Test_File()
         {
             var testFile =
-                new Uri("https://raw.githubusercontent.com/SteeltoeOSS/InitializrWeb/dev/start-client/dev/api.json");
+                new Uri("https://raw.githubusercontent.com/SteeltoeOSS/InitializrWeb/dev/start-client/dev/api.mock.json");
             using var client = new WebClient();
             var bits = client.DownloadString(testFile);
             var metadata = Serializer.DeserializeJson<ProjectMetadata>(bits);

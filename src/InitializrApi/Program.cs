@@ -24,13 +24,23 @@ namespace Steeltoe.InitializrApi
             var versionAttr =
                 typeof(Program).Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
             var fields = versionAttr?.InformationalVersion.Split('+');
+            if (fields is null)
+            {
+                fields = new[] { "unknown" };
+            }
+
+            if (fields.Length == 1)
+            {
+                fields = new[] { fields[0], "unknown" };
+            }
+
             About = new About
             {
                 Name = typeof(Program).Namespace ?? "unknown",
                 Vendor = "SteeltoeOSS/VMware",
                 Url = "https://github.com/SteeltoeOSS/InitializrApi/",
-                Version = fields?[0],
-                Commit = fields?[1],
+                Version = fields[0],
+                Commit = fields[1],
             };
         }
 

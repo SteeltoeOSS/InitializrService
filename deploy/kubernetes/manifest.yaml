@@ -52,6 +52,7 @@ spec:
     http:
       paths:
       - path: /(api/.*)
+        pathType: ImplementationSpecific
         backend:
           service:
             name: initializr-api

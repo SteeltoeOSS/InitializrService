@@ -5,8 +5,8 @@ variables:
   - name: major
     value: 0
   - name: minor
-    value: 12
-  - name: micro
+    value: 13
+  - name: patch
     value: 0
   - name: DOTNET_SKIP_FIRST_TIME_EXPERIENCE
     value: true
@@ -14,7 +14,7 @@ variables:
     value: 1
   - group: PackageSigningSecrets
 
-name: $(major).$(minor).$(micro)-$(Rev:r)
+name: $(major).$(minor).$(patch)-$(Rev:r)
 
 stages:
   - stage: assemble
@@ -89,8 +89,8 @@ stages:
     condition:
       not(eq(variables['build.reason'], 'PullRequest'))
     jobs:
-      - job: deployToKubernetes
-        displayName: Deploy To Kubernetes
+      - job: deployToProduction
+        displayName: Deploy to Production
         pool:
           vmImage: ubuntu-latest
         steps:
@@ -104,10 +104,10 @@ stages:
                 $(Build.BuildId)
                 latest
           - task: KubernetesManifest@0
-            displayName: Deploy to Staging Cluster
+            displayName: Deploy to Production Cluster
             inputs:
               action: deploy
               kubernetesServiceConnection: SteeltoeProductionAKS
-              namespace: initializr
-              manifests: deploy/kubernetes/*.yaml
+              manifests: deploy/kubernetes/manifest.yaml
               containers: steeltoe.azurecr.io/initializr-api:$(Build.BuildId)
+              namespace: initializr

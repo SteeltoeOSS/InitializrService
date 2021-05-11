@@ -194,6 +194,8 @@ namespace Steeltoe.InitializrApi.Models
 
             private readonly Version _version;
 
+            private readonly int _releaseCandidate;
+
             /// <summary>
             /// Initializes a new instance of the <see cref="ReleaseVersion"/> class.
             /// </summary>
@@ -204,31 +206,43 @@ namespace Steeltoe.InitializrApi.Models
                     throw new ArgumentException("Release version cannot be empty or null");
                 }
 
+                _representation = version;
                 try
                 {
                     if (char.IsLetter(version[0]))
                     {
-                        int prefixEnd = version.IndexOfAny("0123456789".ToCharArray());
+                        var prefixEnd = version.IndexOfAny("0123456789".ToCharArray());
                         if (prefixEnd < 0)
                         {
                             throw new ArgumentException($"Release range must contain 1 or 2 versions: '{version}'");
                         }
 
                         _prefix = version.Substring(0, prefixEnd);
-                        _version = new Version(version.Substring(prefixEnd));
+                        version = version.Substring(prefixEnd);
                     }
                     else
                     {
                         _prefix = string.Empty;
-                        _version = new Version(version);
                     }
+
+                    const string rcDelimeter = "-rc";
+                    var rcIdx = version.IndexOf(rcDelimeter, StringComparison.InvariantCultureIgnoreCase);
+                    if (rcIdx >= 0)
+                    {
+                        _releaseCandidate = int.Parse(version.Substring(rcIdx + rcDelimeter.Length));
+                        version = version.Substring(0, rcIdx);
+                    }
+                    else
+                    {
+                        _releaseCandidate = int.MaxValue;
+                    }
+
+                    _version = new Version(version);
                 }
                 catch (FormatException)
                 {
                     throw new ArgumentException($"Version not in correct format: '{version}'");
                 }
-
-                _representation = version;
             }
 
             /// <summary>
@@ -284,15 +298,8 @@ namespace Steeltoe.InitializrApi.Models
             /// <exception cref="ArgumentException">Thrown if versions have difference prefixes.</exception>
             public static int CompareTo(ReleaseVersion a, ReleaseVersion b)
             {
-                // following commented out after Microsoft changed their naming scheme starting with .NET 5
-                /*
-                if (!a._prefix.Equals(b._prefix))
-                {
-                    throw new ArgumentException($"Cannot compare versions with different prefixes: '{a}', '{b}'");
-                }
-                */
-
-                return a._version.CompareTo(b._version);
+                var comparison = a._version.CompareTo(b._version);
+                return comparison != 0 ? comparison : a._releaseCandidate.CompareTo(b._releaseCandidate);
             }
 
             /// <inheritdoc />

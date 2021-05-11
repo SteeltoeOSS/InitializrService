@@ -227,6 +227,25 @@ namespace Steeltoe.InitializrApi.Test.Unit.Models
             (v2 > v3).Should().Be(false);
         }
 
+        [Fact]
+        public void Release_Candidate_Version_Should_Be_Less_Than_Release_Version()
+        {
+            // Arrange
+            var v1 = new ReleaseRange.ReleaseVersion("1.0-rc1");
+            var v2 = new ReleaseRange.ReleaseVersion("1.0-rc2");
+            var v3 = new ReleaseRange.ReleaseVersion("1.0");
+
+            // Act
+
+            // Assert
+            (v1 < v2).Should().Be(true);
+            (v1 > v2).Should().Be(false);
+            (v1 < v3).Should().Be(true);
+            (v1 > v3).Should().Be(false);
+            (v2 < v3).Should().Be(true);
+            (v2 > v3).Should().Be(false);
+        }
+
         /* ----------------------------------------------------------------- *
          * negative tests                                                    *
          * ----------------------------------------------------------------- */

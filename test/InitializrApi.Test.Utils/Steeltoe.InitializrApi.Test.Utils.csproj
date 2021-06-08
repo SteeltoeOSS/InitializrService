@@ -1,5 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+  <PropertyGroup>
+    <IsTestProject>false</IsTestProject>
+  </PropertyGroup>
+
   <ItemGroup>
     <Content Include="..\Directory.Build.props">
       <Link>Directory.Build.props</Link>

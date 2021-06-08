@@ -18,112 +18,87 @@ namespace Steeltoe.InitializrApi.Test.Integration
          * ----------------------------------------------------------------- */
 
         [Fact]
-        public async Task Get_Config_Should_Return_InitializrConfig()
+        public async Task Get_UiConfig_Should_Return_UiConfig()
         {
             // Act
-            var response = await HttpClient.GetAsync(ConfigurationEndpoint);
+            var response = await HttpClient.GetAsync(UiConfigEndpoint);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var config = await response.Content.ReadFromJsonAsync<InitializrConfig>();
-            config.ProjectMetadata.Should().NotBeNull();
-            config.ProjectTemplates.Should().NotBeNull();
+            var config = await response.Content.ReadFromJsonAsync<UiConfig>();
+            config.Should().NotBeNull();
         }
 
         [Fact]
-        public async Task Get_Config_ProjectMetadata_Should_Return_ProjectMetadata()
+        public async Task Get_UiConfig_Steeltoe_Versions_Should_Return_Steeltoe_Versions()
         {
             // Act
-            var response = await HttpClient.GetAsync(ConfigurationEndpoint + "/projectMetadata");
+            var response = await HttpClient.GetAsync(UiConfigEndpoint + "/steeltoeVersions");
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var metadata = await response.Content.ReadFromJsonAsync<ProjectMetadata>();
-            metadata.Name.Should().NotBeNull();
-        }
-
-        [Fact]
-        public async Task Get_Config_Steeltoe_Versions_Should_Return_Steeltoe_Versions()
-        {
-            // Act
-            var response = await HttpClient.GetAsync(ConfigurationEndpoint + "/steeltoeVersions");
-
-            // Assert
-            response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var versions = await response.Content.ReadFromJsonAsync<ProjectMetadata.SelectItem[]>();
-            versions.Length.Should().BeGreaterThan(0);
+            var steeltoes = await response.Content.ReadFromJsonAsync<UiConfig.SelectItem[]>();
+            steeltoes.Length.Should().BeGreaterThan(0);
         }
 
         [Fact]
         public async Task Get_Config_DotNet_Frameworks_Should_Return_DotNet_Frameworks()
         {
             // Act
-            var response = await HttpClient.GetAsync(ConfigurationEndpoint + "/dotNetFrameworks");
+            var response = await HttpClient.GetAsync(UiConfigEndpoint + "/dotNetFrameworks");
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var versions = await response.Content.ReadFromJsonAsync<ProjectMetadata.SelectItem[]>();
-            versions.Length.Should().BeGreaterThan(0);
+            var frameworks = await response.Content.ReadFromJsonAsync<UiConfig.SelectItem[]>();
+            frameworks.Length.Should().BeGreaterThan(0);
         }
 
         [Fact]
         public async Task Get_Config_DotNet_Templates_Should_Return_DotNet_Templates()
         {
             // Act
-            var response = await HttpClient.GetAsync(ConfigurationEndpoint + "/dotNetTemplates");
+            var response = await HttpClient.GetAsync(UiConfigEndpoint + "/dotNetTemplates");
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var versions = await response.Content.ReadFromJsonAsync<ProjectMetadata.SelectItem[]>();
-            versions.Length.Should().BeGreaterThan(0);
+            var templates = await response.Content.ReadFromJsonAsync<UiConfig.SelectItem[]>();
+            templates.Length.Should().BeGreaterThan(0);
         }
 
         [Fact]
         public async Task Get_Config_Languages_Should_Return_Languages()
         {
             // Act
-            var response = await HttpClient.GetAsync(ConfigurationEndpoint + "/languages");
+            var response = await HttpClient.GetAsync(UiConfigEndpoint + "/languages");
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var versions = await response.Content.ReadFromJsonAsync<ProjectMetadata.SelectItem[]>();
-            versions.Length.Should().BeGreaterThan(0);
+            var languages = await response.Content.ReadFromJsonAsync<UiConfig.SelectItem[]>();
+            languages.Length.Should().BeGreaterThan(0);
         }
 
         [Fact]
         public async Task Get_Config_Archive_Types_Should_Return_Archive_Types()
         {
             // Act
-            var response = await HttpClient.GetAsync(ConfigurationEndpoint + "/archiveTypes");
+            var response = await HttpClient.GetAsync(UiConfigEndpoint + "/archiveTypes");
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var versions = await response.Content.ReadFromJsonAsync<ProjectMetadata.SelectItem[]>();
-            versions.Length.Should().BeGreaterThan(0);
+            var archivers = await response.Content.ReadFromJsonAsync<UiConfig.SelectItem[]>();
+            archivers.Length.Should().BeGreaterThan(0);
         }
 
         [Fact]
         public async Task Get_Config_Dependencies_Should_Return_Dependencies()
         {
             // Act
-            var response = await HttpClient.GetAsync(ConfigurationEndpoint + "/dependencies");
+            var response = await HttpClient.GetAsync(UiConfigEndpoint + "/dependencies");
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var versions = await response.Content.ReadFromJsonAsync<ProjectMetadata.SelectItem[]>();
-            versions.Length.Should().BeGreaterThan(0);
-        }
-
-        [Fact]
-        public async Task Get_Config_ProjectTemplates_Should_Return_ProjectTemplates()
-        {
-            // Act
-            var response = await HttpClient.GetAsync(ConfigurationEndpoint + "/projectTemplates");
-
-            // Assert
-            response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var templates = await response.Content.ReadFromJsonAsync<ProjectTemplate[]>();
-            templates.Length.Should().BeGreaterThan(0);
+            var deps = await response.Content.ReadFromJsonAsync<UiConfig.SelectItem[]>();
+            deps.Length.Should().BeGreaterThan(0);
         }
 
         /* ----------------------------------------------------------------- *
@@ -142,7 +117,7 @@ namespace Steeltoe.InitializrApi.Test.Integration
 
         [Theory]
         [InlineData(AboutEndpoint)]
-        [InlineData(ConfigurationEndpoint)]
+        [InlineData(UiConfigEndpoint)]
         [InlineData(ProjectEndpoint)]
         public async Task Post_Should_Return_405_Method_Not_Allowed(string path)
         {
@@ -155,7 +130,7 @@ namespace Steeltoe.InitializrApi.Test.Integration
 
         [Theory]
         [InlineData(AboutEndpoint)]
-        [InlineData(ConfigurationEndpoint)]
+        [InlineData(UiConfigEndpoint)]
         [InlineData(ProjectEndpoint)]
         public async Task Put_Should_Return_405_Method_Not_Allowed(string path)
         {
@@ -168,7 +143,7 @@ namespace Steeltoe.InitializrApi.Test.Integration
 
         [Theory]
         [InlineData(AboutEndpoint)]
-        [InlineData(ConfigurationEndpoint)]
+        [InlineData(UiConfigEndpoint)]
         [InlineData(ProjectEndpoint)]
         public async Task Patch_Should_Return_405_Method_Not_Allowed(string path)
         {
@@ -181,7 +156,7 @@ namespace Steeltoe.InitializrApi.Test.Integration
 
         [Theory]
         [InlineData(AboutEndpoint)]
-        [InlineData(ConfigurationEndpoint)]
+        [InlineData(UiConfigEndpoint)]
         [InlineData(ProjectEndpoint)]
         public async Task Delete_Should_Return_405_Method_Not_Allowed(string path)
         {
@@ -198,7 +173,7 @@ namespace Steeltoe.InitializrApi.Test.Integration
 
         private const string AboutEndpoint = "/api/about";
 
-        private const string ConfigurationEndpoint = "/api/config";
+        private const string UiConfigEndpoint = "/api/uiconfig";
 
         private const string ProjectEndpoint = "/api/project";
 
@@ -214,7 +189,7 @@ namespace Steeltoe.InitializrApi.Test.Integration
 
         public HttpTests(WebApplicationFactory<Startup> fixture)
         {
-            fixture.Services.GetRequiredService<IInitializrConfigService>().Initialize();
+            fixture.Services.GetRequiredService<IUiConfigService>().Initialize();
             HttpClient = fixture.CreateClient();
         }
     }

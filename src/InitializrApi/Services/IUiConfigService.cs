@@ -9,12 +9,12 @@ namespace Steeltoe.InitializrApi.Services
     /// <summary>
     /// Contract for Initializr configuration service implementations.
     /// </summary>
-    public interface IInitializrConfigService : IInitializeable
+    public interface IUiConfigService : IInitializeable
     {
         /// <summary>
         /// Gets the Initializr configuration.
         /// </summary>
         /// <returns>Returns an Initializr configuration.</returns>
-        public InitializrConfig GetInitializrConfig();
+        public UiConfig GetUiConfig();
     }
 }

@@ -4,41 +4,40 @@
 
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Steeltoe.Extensions.Configuration.ConfigServer;
 using Steeltoe.InitializrApi.Models;
 using Steeltoe.InitializrApi.Services;
+using Steeltoe.InitializrApi.Utilities;
+using System;
+using System.IO;
 
 namespace Steeltoe.InitializrApi.Configuration
 {
     /// <summary>
-    /// An <see cref="IInitializrConfigService"/> using a <a href="https://cloud.spring.io/spring-cloud-config/reference/html/#_spring_cloud_config_server">Spring Cloud Config Server</a> backend.
+    /// An <see cref="IUiConfigService"/> using a local configuration file backend.
     /// </summary>
-    public class InitializrConfigService : InitializrApiServiceBase, IInitializrConfigService
+    public class UiConfigFile : InitializrApiServiceBase, IUiConfigService
     {
         /* ----------------------------------------------------------------- *
          * fields                                                            *
          * ----------------------------------------------------------------- */
 
-        private readonly InitializrConfig _config;
+        private readonly InitializrOptions _options;
+
+        private UiConfig _uiConfig;
 
         /* ----------------------------------------------------------------- *
          * constructors                                                      *
          * ----------------------------------------------------------------- */
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InitializrConfigService"/> class.
+        /// Initializes a new instance of the <see cref="UiConfigFile"/> class.
         /// </summary>
-        /// <param name="configuration">Injected configuration from Config Server.</param>
-        /// <param name="settings">Injected settings from Config Server.</param>
+        /// <param name="options">Injected options from appsettings.</param>
         /// <param name="logger">Injected logger.</param>
-        public InitializrConfigService(
-            IOptions<InitializrConfig> configuration,
-            IOptions<ConfigServerClientSettingsOptions> settings,
-            ILogger<InitializrConfigService> logger)
+        public UiConfigFile(IOptions<InitializrOptions> options, ILogger<UiConfigFile> logger)
             : base(logger)
         {
-            _config = configuration.Value;
-            Logger.LogInformation($"Config Server: uri={settings.Value.Uri},env={settings.Value.Env},label={settings.Value.Label}");
+            _options = options.Value;
         }
 
         /* ----------------------------------------------------------------- *
@@ -48,22 +47,27 @@ namespace Steeltoe.InitializrApi.Configuration
         /// <inheritdoc />
         public void Initialize()
         {
-            Logger.LogInformation("Initializing Initializr configuration.");
-            if (_config.ProjectMetadata is null)
+            Logger.LogInformation("loading configuration: {Path}", _options.UiConfigPath);
+            try
             {
-                Logger.LogError("Project metadata missing.");
+                var configJson = File.ReadAllText(_options.UiConfig["Path"]);
+                _uiConfig = Serializer.DeserializeJson<UiConfig>(configJson);
             }
-
-            if (_config.ProjectTemplates is null)
+            catch (FileNotFoundException)
             {
-                Logger.LogError("Project templates configuration missing.");
+                throw new ArgumentException($"UI configuration file path does not exist: {_options.UiConfigPath}");
+            }
+            catch (UnauthorizedAccessException)
+            {
+                throw new ArgumentException(
+                    $"UI configuration file path is not a file or cannot be read: {_options.UiConfigPath}");
             }
         }
 
-        /// <inheritdoc/>
-        public InitializrConfig GetInitializrConfig()
+        /// <inheritdoc />
+        public UiConfig GetUiConfig()
         {
-            return _config;
+            return _uiConfig;
         }
     }
 }

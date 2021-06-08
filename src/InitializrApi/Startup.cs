@@ -14,7 +14,6 @@ using Steeltoe.InitializrApi.Configuration;
 using Steeltoe.InitializrApi.Generators;
 using Steeltoe.InitializrApi.Models;
 using Steeltoe.InitializrApi.Services;
-using Steeltoe.InitializrApi.Templates;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Steeltoe.InitializrApi
@@ -42,7 +41,7 @@ namespace Steeltoe.InitializrApi
         public IConfiguration Configuration { get; }
 
         /// <summary>
-        /// Called by the runtime.  Adds <see cref="IInitializrConfigService"/> and <see cref="IProjectGenerator"/> services.
+        /// Called by the runtime.  Adds <see cref="IUiConfigService"/> and <see cref="IProjectGenerator"/> services.
         /// </summary>
         /// <param name="services">Injected services.</param>
         public void ConfigureServices(IServiceCollection services)
@@ -50,15 +49,15 @@ namespace Steeltoe.InitializrApi
             services.AddOptions();
             services.Configure<InitializrOptions>(Configuration.GetSection(InitializrOptions.Initializr));
             var initializrOptions = Configuration.GetSection(InitializrOptions.Initializr).Get<InitializrOptions>();
-            if (initializrOptions?.ConfigurationPath is null)
+            if (initializrOptions?.UiConfigPath is null)
             {
                 services.ConfigureConfigServerClientOptions(Configuration);
-                services.Configure<InitializrConfig>(Configuration);
-                services.AddSingleton<IInitializrConfigService, InitializrConfigService>();
+                services.Configure<UiConfig>(Configuration);
+                services.AddSingleton<IUiConfigService, UiConfigService>();
             }
             else
             {
-                services.AddSingleton<IInitializrConfigService, InitializrConfigFile>();
+                services.AddSingleton<IUiConfigService, UiConfigFile>();
             }
 
             if (!(initializrOptions?.CorsOrigin is null))
@@ -73,9 +72,8 @@ namespace Steeltoe.InitializrApi
             }
 
             services.AddResponseCompression();
-            services.AddSingleton<IProjectTemplateRegistry, ProjectTemplateRegistry>();
             services.AddSingleton<IArchiverRegistry, ArchiverRegistry>();
-            services.AddTransient<IProjectGenerator, StubbleProjectGenerator>();
+            services.AddTransient<IProjectGenerator, NetCoreToolProjectGenerator>();
             services.AddControllers().AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.IgnoreNullValues = true;

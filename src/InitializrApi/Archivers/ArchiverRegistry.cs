@@ -39,7 +39,7 @@ namespace Steeltoe.InitializrApi.Archivers
         /// <inheritdoc />
         public void Initialize()
         {
-            Logger.LogInformation("Initializing archiver registry.");
+            Logger.LogInformation("Initializing archiver registry");
 
             _archivers.Clear();
             Register(new ZipArchiver());

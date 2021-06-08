@@ -13,7 +13,7 @@ using Xunit;
 
 namespace Steeltoe.InitializrApi.Test.Unit.Configuration
 {
-    public class InitializrConfigFileTests
+    public class UiConfigFileTests
     {
         /* ----------------------------------------------------------------- *
          * positive tests                                                    *
@@ -24,49 +24,49 @@ namespace Steeltoe.InitializrApi.Test.Unit.Configuration
          * ----------------------------------------------------------------- */
 
         [Fact]
-        public void Non_Existent_Config_File_Should_Throw_ArgumentException()
+        public void Non_Existent_File_Should_Throw_ArgumentException()
         {
             // Arrange
             var options = new Mock<IOptions<InitializrOptions>>();
             options.Setup(opts => opts.Value).Returns(new InitializrOptions
-                { Configuration = new Dictionary<string, string> { { "Path", "no_such_path" } } });
-            var logger = new NullLogger<InitializrConfigFile>();
-            var config = new InitializrConfigFile(options.Object, logger);
+                { UiConfig = new Dictionary<string, string> { { "Path", "no_such_path" } } });
+            var logger = new NullLogger<UiConfigFile>();
+            var config = new UiConfigFile(options.Object, logger);
 
             // Act
             Action act = () => config.Initialize();
 
             // Assert
-            act.Should().Throw<ArgumentException>().WithMessage("Configuration file path does not exist: no_such_path");
+            act.Should().Throw<ArgumentException>().WithMessage("UI configuration file path does not exist: no_such_path");
         }
 
         [Fact]
-        public void Directory_As_Config_File_Should_Throw_ArgumentException()
+        public void Directory_Should_Throw_ArgumentException()
         {
             // Arrange
             var options = new Mock<IOptions<InitializrOptions>>();
             options.Setup(opts => opts.Value).Returns(new InitializrOptions
-                { Configuration = new Dictionary<string, string> { { "Path", "." } } });
-            var logger = new NullLogger<InitializrConfigFile>();
-            var config = new InitializrConfigFile(options.Object, logger);
+                { UiConfig = new Dictionary<string, string> { { "Path", "." } } });
+            var logger = new NullLogger<UiConfigFile>();
+            var config = new UiConfigFile(options.Object, logger);
 
             // Act
             Action act = () => config.Initialize();
 
             // Assert
             act.Should().Throw<ArgumentException>()
-                .WithMessage("Configuration file path is not a file or cannot be read: .");
+                .WithMessage("UI configuration file path is not a file or cannot be read: .");
         }
 
         [Fact]
-        public void Non_Json_Config_File_Should_Throw_ArgumentException()
+        public void Non_Json_Should_Throw_ArgumentException()
         {
             // Arrange
             var options = new Mock<IOptions<InitializrOptions>>();
             options.Setup(opts => opts.Value).Returns(new InitializrOptions
-                { Configuration = new Dictionary<string, string> { { "Path", "Steeltoe.InitializrApi.dll" } } });
-            var logger = new NullLogger<InitializrConfigFile>();
-            var config = new InitializrConfigFile(options.Object, logger);
+                { UiConfig = new Dictionary<string, string> { { "Path", "Steeltoe.InitializrApi.dll" } } });
+            var logger = new NullLogger<UiConfigFile>();
+            var config = new UiConfigFile(options.Object, logger);
 
             // Act
             Action act = () => config.Initialize();

@@ -24,7 +24,7 @@ namespace Steeltoe.InitializrApi
         /// <summary>
         /// Gets or sets the configuration dictionary.
         /// </summary>
-        public Dictionary<string, string> Configuration { get; set; }
+        public Dictionary<string, string> UiConfig { get; set; }
 
         /// <summary>
         /// Gets or sets the CORS dictionary.
@@ -32,11 +32,11 @@ namespace Steeltoe.InitializrApi
         public Dictionary<string, string> Cors { get; set; }
 
         /// <summary>
-        /// Gets the path to the configuration file.
+        /// Gets the path to the UI configuration file.
         /// </summary>
-        public string ConfigurationPath
+        public string UiConfigPath
         {
-            get => Configuration?["Path"];
+            get => UiConfig?["Path"];
         }
 
         /// <summary>

@@ -13,26 +13,26 @@ namespace Steeltoe.InitializrApi.Controllers
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
-    public class ConfigController : InitializrApiControllerBase
+    public class UiConfigController : InitializrApiControllerBase
     {
         /* ----------------------------------------------------------------- *
          * fields                                                            *
          * ----------------------------------------------------------------- */
 
-        private readonly IInitializrConfigService _configService;
+        private readonly IUiConfigService _configService;
 
         /* ----------------------------------------------------------------- *
          * constructors                                                      *
          * ----------------------------------------------------------------- */
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConfigController"/> class.
+        /// Initializes a new instance of the <see cref="UiConfigController"/> class.
         /// </summary>
         /// <param name="configService">Injected configuration repository.</param>
         /// <param name="logger">Injected logger.</param>
-        public ConfigController(
-            IInitializrConfigService configService,
-            ILogger<ConfigController> logger)
+        public UiConfigController(
+            IUiConfigService configService,
+            ILogger<UiConfigController> logger)
             : base(logger)
         {
             _configService = configService;
@@ -47,20 +47,9 @@ namespace Steeltoe.InitializrApi.Controllers
         /// </summary>
         /// <returns>Returns a <c>GET</c> result which, if is <see cref="OkObjectResult"/>, contains the Initializr configuration.</returns>
         [HttpGet]
-        public IActionResult GetInitializrConfiguration()
+        public IActionResult GetUiConfig()
         {
-            return Ok(_configService.GetInitializrConfig());
-        }
-
-        /// <summary>
-        /// Implements <c>GET projectMetadata</c>.
-        /// </summary>
-        /// <returns>Returns a <c>GET</c> result which, if is <see cref="OkObjectResult"/>, contains Initializr project metadata.</returns>
-        [HttpGet]
-        [Route("projectMetadata")]
-        public IActionResult GetProjectMetadata()
-        {
-            return Ok(_configService.GetInitializrConfig().ProjectMetadata);
+            return Ok(_configService.GetUiConfig());
         }
 
         /// <summary>
@@ -71,7 +60,7 @@ namespace Steeltoe.InitializrApi.Controllers
         [Route("steeltoeVersions")]
         public IActionResult GetSteeltoeVersions()
         {
-            return Ok(_configService.GetInitializrConfig().ProjectMetadata.SteeltoeVersion.Values);
+            return Ok(_configService.GetUiConfig().SteeltoeVersion.Values);
         }
 
         /// <summary>
@@ -82,7 +71,7 @@ namespace Steeltoe.InitializrApi.Controllers
         [Route("dotNetFrameworks")]
         public IActionResult GetDotNetFrameworks()
         {
-            return Ok(_configService.GetInitializrConfig().ProjectMetadata.DotNetFramework.Values);
+            return Ok(_configService.GetUiConfig().DotNetFramework.Values);
         }
 
         /// <summary>
@@ -93,7 +82,7 @@ namespace Steeltoe.InitializrApi.Controllers
         [Route("dotNetTemplates")]
         public IActionResult GetDotNetTemplates()
         {
-            return Ok(_configService.GetInitializrConfig().ProjectMetadata.DotNetTemplate.Values);
+            return Ok(_configService.GetUiConfig().DotNetTemplate.Values);
         }
 
         /// <summary>
@@ -104,7 +93,7 @@ namespace Steeltoe.InitializrApi.Controllers
         [Route("languages")]
         public IActionResult GetLanguages()
         {
-            return Ok(_configService.GetInitializrConfig().ProjectMetadata.Language.Values);
+            return Ok(_configService.GetUiConfig().Language.Values);
         }
 
         /// <summary>
@@ -115,7 +104,7 @@ namespace Steeltoe.InitializrApi.Controllers
         [Route("archiveTypes")]
         public IActionResult GetArchiveTypes()
         {
-            return Ok(_configService.GetInitializrConfig().ProjectMetadata.Packaging.Values);
+            return Ok(_configService.GetUiConfig().Packaging.Values);
         }
 
         /// <summary>
@@ -126,18 +115,7 @@ namespace Steeltoe.InitializrApi.Controllers
         [Route("dependencies")]
         public IActionResult GetDependencies()
         {
-            return Ok(_configService.GetInitializrConfig().ProjectMetadata.Dependencies.Values);
-        }
-
-        /// <summary>
-        /// Implements <c>GET projectTemplates</c>.
-        /// </summary>
-        /// <returns>Return a <c>GET</c> result which, if is <see cref="OkObjectResult"/>, contains InitializrApi project templates configuration.</returns>
-        [HttpGet]
-        [Route("projectTemplates")]
-        public IActionResult GetProjectTemplatesConfig()
-        {
-            return Ok(_configService.GetInitializrConfig().ProjectTemplates);
+            return Ok(_configService.GetUiConfig().Dependencies.Values);
         }
     }
 }

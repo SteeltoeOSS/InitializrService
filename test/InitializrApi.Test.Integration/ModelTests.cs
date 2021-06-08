@@ -24,19 +24,19 @@ namespace Steeltoe.InitializrApi.Test.Integration
                 new Uri("https://raw.githubusercontent.com/SteeltoeOSS/InitializrWeb/dev/start-client/dev/api.mock.json");
             using var client = new WebClient();
             var bits = client.DownloadString(testFile);
-            var metadata = Serializer.DeserializeJson<ProjectMetadata>(bits);
-            metadata.SteeltoeVersion.Default.Should().Be("3.0.2");
-            metadata.DotNetFramework.Default.Should().Be("netcoreapp3.1");
-            metadata.DotNetTemplate.Default.Should().Be("webapi");
-            metadata.Language.Default.Should().Be("csharp");
-            metadata.Name.Default.Should().Be("Dev");
-            metadata.Namespace.Default.Should().Be("DevNamespace");
-            metadata.ApplicationName.Default.Should().Be("DevApplication");
-            metadata.Description.Default.Should().Be("Development project application");
-            metadata.Dependencies.Values[0].Name.Should().Be("Focus Group");
-            metadata.Dependencies.Values[0].Values[0].Name.Should().Be("Focus Dependency");
-            metadata.Dependencies.Values[0].Values[0].SteeltoeVersionRange.Should().Be("[2.4.0,3.0.0)");
-            metadata.Dependencies.Values[0].Values[0].DotNetFrameworkRange.Should().Be("netcoreapp3.1");
+            var uiConfig = Serializer.DeserializeJson<UiConfig>(bits);
+            uiConfig.SteeltoeVersion.Default.Should().Be("3.0.2");
+            uiConfig.DotNetFramework.Default.Should().Be("netcoreapp3.1");
+            uiConfig.DotNetTemplate.Default.Should().Be("webapi");
+            uiConfig.Language.Default.Should().Be("csharp");
+            uiConfig.Name.Default.Should().Be("Dev");
+            uiConfig.Namespace.Default.Should().Be("DevNamespace");
+            uiConfig.ApplicationName.Default.Should().Be("DevApplication");
+            uiConfig.Description.Default.Should().Be("Development project application");
+            uiConfig.Dependencies.Values[0].Name.Should().Be("Focus Group");
+            uiConfig.Dependencies.Values[0].Values[0].Name.Should().Be("Focus Dependency");
+            uiConfig.Dependencies.Values[0].Values[0].SteeltoeVersionRange.Should().Be("[2.4.0,3.0.0)");
+            uiConfig.Dependencies.Values[0].Values[0].DotNetFrameworkRange.Should().Be("netcoreapp3.1");
         }
 
         /* ----------------------------------------------------------------- *

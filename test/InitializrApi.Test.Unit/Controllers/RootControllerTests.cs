@@ -27,87 +27,85 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
             var initializrCfg = new Mock<IOptions<InitializrOptions>>();
             var initializrOpts = new InitializrOptions { Logo = "/no/such/logo" };
             initializrCfg.Setup(cfg => cfg.Value).Returns(initializrOpts);
-            var config = new InitializrConfig
+            var config = new UiConfig
             {
-                ProjectMetadata = new ProjectMetadata
+                Name = new UiConfig.Text
                 {
-                    Name = new ProjectMetadata.Text
+                    Default = "MyProject"
+                },
+                ApplicationName = new UiConfig.Text
+                {
+                    Default = "MyApplication"
+                },
+                Namespace = new UiConfig.Text
+                {
+                    Default = "MyNamespace"
+                },
+                Description = new UiConfig.Text
+                {
+                    Default = "my description"
+                },
+                SteeltoeVersion = new UiConfig.SingleSelectList
+                {
+                    Default = "1.2.3"
+                },
+                DotNetFramework = new UiConfig.SingleSelectList
+                {
+                    Default = "1.2"
+                },
+                DotNetTemplate = new UiConfig.SingleSelectList
+                {
+                    Default = "mytemplate"
+                },
+                Language = new UiConfig.SingleSelectList
+                {
+                    Default = "mylang"
+                },
+                Packaging = new UiConfig.SingleSelectList
+                {
+                    Default = "mypkg"
+                },
+                Dependencies = new UiConfig.GroupList
+                {
+                    Values = new[]
                     {
-                        Default = "MyProject"
-                    },
-                    ApplicationName = new ProjectMetadata.Text
-                    {
-                        Default = "MyApplication"
-                    },
-                    Namespace = new ProjectMetadata.Text
-                    {
-                        Default = "MyNamespace"
-                    },
-                    Description = new ProjectMetadata.Text
-                    {
-                        Default = "my description"
-                    },
-                    SteeltoeVersion = new ProjectMetadata.SingleSelectList
-                    {
-                        Default = "1.2.3"
-                    },
-                    DotNetFramework = new ProjectMetadata.SingleSelectList
-                    {
-                        Default = "1.2"
-                    },
-                    DotNetTemplate = new ProjectMetadata.SingleSelectList
-                    {
-                        Default = "mytemplate"
-                    },
-                    Language = new ProjectMetadata.SingleSelectList
-                    {
-                        Default = "mylang"
-                    },
-                    Packaging = new ProjectMetadata.SingleSelectList
-                    {
-                        Default = "mypkg"
-                    },
-                    Dependencies = new ProjectMetadata.GroupList
-                    {
-                        Values = new[]
+                        new UiConfig.Group()
                         {
-                            new ProjectMetadata.Group()
+                            Name = "AGroup",
+                            Values = new[]
                             {
-                                Name = "AGroup",
-                                Values = new[]
+                                new UiConfig.GroupItem()
                                 {
-                                    new ProjectMetadata.GroupItem()
-                                    {
-                                        Id = "dep1",
-                                        Description = "DependencyOne"
-                                    },
-                                    new ProjectMetadata.GroupItem()
-                                    {
-                                        Id = "dep2",
-                                        Description = "DependencyTwo"
-                                    }
+                                    Id = "dep1",
+                                    Description = "DependencyOne"
+                                },
+                                new UiConfig.GroupItem()
+                                {
+                                    Id = "dep2",
+                                    Description = "DependencyTwo"
                                 }
-                            },
-                            new ProjectMetadata.Group()
+                            }
+                        },
+                        new UiConfig.Group()
+                        {
+                            Name = "AnotherGroup",
+                            Values = new[]
                             {
-                                Name = "AnotherGroup",
-                                Values = new[]
+                                new UiConfig.GroupItem
                                 {
-                                    new ProjectMetadata.GroupItem
-                                    {
-                                        Id = "anotherdep",
-                                        Description = "AnotherDependency",
-                                        SteeltoeVersionRange = "[1.0,1.9)",
-                                    }
+                                    Id = "anotherdep",
+                                    Description = "AnotherDependency",
+                                    SteeltoeVersionRange = "[1.0,1.9)",
                                 }
                             }
                         }
                     }
                 }
             };
-            var configService = new Mock<IInitializrConfigService>();
-            configService.Setup(repo => repo.GetInitializrConfig()).Returns(config);
-            var controller = new RootController(initializrCfg.Object, configService.Object, new NullLogger<RootController>());
+            var configService = new Mock<IUiConfigService>();
+            configService.Setup(repo => repo.GetUiConfig()).Returns(config);
+            var controller = new RootController(initializrCfg.Object, configService.Object,
+                new NullLogger<RootController>());
 
             // Act
             var result = controller.GetHelp();
@@ -140,5 +138,4 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
          * negative tests                                                    *
          * ----------------------------------------------------------------- */
     }
-
 }

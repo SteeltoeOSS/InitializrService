@@ -23,7 +23,7 @@ namespace Steeltoe.InitializrApi.Controllers
          * fields                                                            *
          * ----------------------------------------------------------------- */
 
-        private readonly IInitializrConfigService _configService;
+        private readonly IUiConfigService _configService;
 
         private readonly IProjectGenerator _projectGenerator;
 
@@ -41,7 +41,7 @@ namespace Steeltoe.InitializrApi.Controllers
         /// <param name="archiverRegistry">Injected archiver registry.</param>
         /// <param name="logger">Injected logger.</param>
         public ProjectController(
-            IInitializrConfigService configService,
+            IUiConfigService configService,
             IProjectGenerator projectGenerator,
             IArchiverRegistry archiverRegistry,
             ILogger<ProjectController> logger)
@@ -64,8 +64,7 @@ namespace Steeltoe.InitializrApi.Controllers
         [AcceptVerbs("GET")]
         public ActionResult GetProjectArchive([FromQuery] ProjectSpec spec)
         {
-            var config = _configService.GetInitializrConfig();
-            var defaults = config.ProjectMetadata;
+            var defaults = _configService.GetUiConfig();
             var normalizedSpec = new ProjectSpec()
             {
                 Name = spec.Name ?? defaults?.Name?.Default,
@@ -94,9 +93,9 @@ namespace Steeltoe.InitializrApi.Controllers
             if (normalizedSpec.Dependencies != null)
             {
                 var caseSensitiveDeps = new List<string>();
-                if (config.ProjectMetadata?.Dependencies?.Values != null)
+                if (defaults.Dependencies?.Values != null)
                 {
-                    foreach (var group in config.ProjectMetadata.Dependencies.Values)
+                    foreach (var group in defaults.Dependencies.Values)
                     {
                         foreach (var dep in group.Values)
                         {

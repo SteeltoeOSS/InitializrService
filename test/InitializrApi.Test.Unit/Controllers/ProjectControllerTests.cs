@@ -51,19 +51,16 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
         public void Configuration_Should_Specify_Defaults()
         {
             // Arrange
-            var config = new InitializrConfig
+            var config = new UiConfig
             {
-                ProjectMetadata = new ProjectMetadata
-                {
-                    Name = new ProjectMetadata.Text { Default = "my project name" },
-                    Description = new ProjectMetadata.Text { Default = "my description" },
-                    Namespace = new ProjectMetadata.Text { Default = "my namespace" },
-                    SteeltoeVersion = new ProjectMetadata.SingleSelectList { Default = "my steeltoe version" },
-                    DotNetFramework = new ProjectMetadata.SingleSelectList { Default = "my dotnet framework" },
-                    DotNetTemplate = new ProjectMetadata.SingleSelectList { Default = "my dotnet template" },
-                    Language = new ProjectMetadata.SingleSelectList { Default = "my language" },
-                    Packaging = new ProjectMetadata.SingleSelectList { Default = "myarchive" },
-                },
+                Name = new UiConfig.Text { Default = "my project name" },
+                Description = new UiConfig.Text { Default = "my description" },
+                Namespace = new UiConfig.Text { Default = "my namespace" },
+                SteeltoeVersion = new UiConfig.SingleSelectList { Default = "my steeltoe version" },
+                DotNetFramework = new UiConfig.SingleSelectList { Default = "my dotnet framework" },
+                DotNetTemplate = new UiConfig.SingleSelectList { Default = "my dotnet template" },
+                Language = new UiConfig.SingleSelectList { Default = "my language" },
+                Packaging = new UiConfig.SingleSelectList { Default = "myarchive" },
             };
             var controller = new ProjectControllerBuilder()
                 .WithInitializrConfiguration(config)
@@ -91,22 +88,19 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
         public void Dependencies_Should_Be_Case_Corrected()
         {
             // Arrange
-            var config = new InitializrConfig
+            var config = new UiConfig
             {
-                ProjectMetadata = new ProjectMetadata
+                Dependencies = new UiConfig.GroupList
                 {
-                    Dependencies = new ProjectMetadata.GroupList
+                    Values = new[]
                     {
-                        Values = new[]
+                        new UiConfig.Group
                         {
-                            new ProjectMetadata.Group
+                            Values = new[]
                             {
-                                Values = new[]
+                                new UiConfig.GroupItem
                                 {
-                                    new ProjectMetadata.GroupItem
-                                    {
-                                        Id = "CamelCaseDep",
-                                    },
+                                    Id = "CamelCaseDep",
                                 },
                             },
                         },
@@ -187,7 +181,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
         {
             // Arrange
             var spec = new ProjectSpec();
-            var config = new InitializrConfig { ProjectTemplates = new ProjectTemplateConfiguration[0] };
+            var config = new UiConfig();
             var controller = new ProjectControllerBuilder().WithInitializrConfiguration(config).Build();
 
             // Act
@@ -205,7 +199,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
 
         class ProjectControllerBuilder
         {
-            private InitializrConfig _config;
+            private UiConfig _uiConfig;
 
             private IProjectGenerator _generator;
 
@@ -213,18 +207,14 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
 
             internal ProjectController Build()
             {
-                if (_config is null)
+                if (_uiConfig is null)
                 {
-                    _config = new InitializrConfig
+                    _uiConfig = new UiConfig
                     {
-                        ProjectMetadata = new ProjectMetadata
+                        Packaging = new UiConfig.SingleSelectList
                         {
-                            Packaging = new ProjectMetadata.SingleSelectList
-                            {
-                                Default = "myarchive",
-                            },
+                            Default = "myarchive",
                         },
-                        ProjectTemplates = new ProjectTemplateConfiguration[0],
                     };
                 }
 
@@ -241,8 +231,8 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
                     _registry = mock.Object;
                 }
 
-                var configurationService = new Mock<IInitializrConfigService>();
-                configurationService.Setup(svc => svc.GetInitializrConfig()).Returns(_config);
+                var configurationService = new Mock<IUiConfigService>();
+                configurationService.Setup(svc => svc.GetUiConfig()).Returns(_uiConfig);
                 var logger = new NullLogger<ProjectController>();
                 var projectController =
                     new ProjectController(configurationService.Object, _generator, _registry, logger)
@@ -255,9 +245,9 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
                 return projectController;
             }
 
-            internal ProjectControllerBuilder WithInitializrConfiguration(InitializrConfig config)
+            internal ProjectControllerBuilder WithInitializrConfiguration(UiConfig uiConfig)
             {
-                _config = config;
+                _uiConfig = uiConfig;
                 return this;
             }
 

@@ -13,7 +13,7 @@ using Xunit;
 
 namespace Steeltoe.InitializrApi.Test.Unit.Configuration
 {
-    public class UiConfigFileTests
+    public class InitializrApiOptionsTests
     {
         /* ----------------------------------------------------------------- *
          * positive tests                                                    *
@@ -24,11 +24,11 @@ namespace Steeltoe.InitializrApi.Test.Unit.Configuration
          * ----------------------------------------------------------------- */
 
         [Fact]
-        public void Non_Existent_File_Should_Throw_ArgumentException()
+        public void Non_Existent_UiConfig_Path_Should_Throw_ArgumentException()
         {
             // Arrange
-            var options = new Mock<IOptions<InitializrOptions>>();
-            options.Setup(opts => opts.Value).Returns(new InitializrOptions
+            var options = new Mock<IOptions<InitializrApiOptions>>();
+            options.Setup(opts => opts.Value).Returns(new InitializrApiOptions
                 { UiConfig = new Dictionary<string, string> { { "Path", "no_such_path" } } });
             var logger = new NullLogger<UiConfigFile>();
             var config = new UiConfigFile(options.Object, logger);
@@ -37,15 +37,16 @@ namespace Steeltoe.InitializrApi.Test.Unit.Configuration
             Action act = () => config.Initialize();
 
             // Assert
-            act.Should().Throw<ArgumentException>().WithMessage("UI configuration file path does not exist: no_such_path");
+            act.Should().Throw<ArgumentException>()
+                .WithMessage("UI configuration file path does not exist: no_such_path");
         }
 
         [Fact]
-        public void Directory_Should_Throw_ArgumentException()
+        public void Directory_UiConfig_Path_Should_Throw_ArgumentException()
         {
             // Arrange
-            var options = new Mock<IOptions<InitializrOptions>>();
-            options.Setup(opts => opts.Value).Returns(new InitializrOptions
+            var options = new Mock<IOptions<InitializrApiOptions>>();
+            options.Setup(opts => opts.Value).Returns(new InitializrApiOptions
                 { UiConfig = new Dictionary<string, string> { { "Path", "." } } });
             var logger = new NullLogger<UiConfigFile>();
             var config = new UiConfigFile(options.Object, logger);
@@ -59,11 +60,11 @@ namespace Steeltoe.InitializrApi.Test.Unit.Configuration
         }
 
         [Fact]
-        public void Non_Json_Should_Throw_ArgumentException()
+        public void Non_Json_UiConfig_Should_Throw_ArgumentException()
         {
             // Arrange
-            var options = new Mock<IOptions<InitializrOptions>>();
-            options.Setup(opts => opts.Value).Returns(new InitializrOptions
+            var options = new Mock<IOptions<InitializrApiOptions>>();
+            options.Setup(opts => opts.Value).Returns(new InitializrApiOptions
                 { UiConfig = new Dictionary<string, string> { { "Path", "Steeltoe.InitializrApi.dll" } } });
             var logger = new NullLogger<UiConfigFile>();
             var config = new UiConfigFile(options.Object, logger);

@@ -24,8 +24,6 @@ namespace Steeltoe.InitializrApi
     [ExcludeFromCodeCoverage]
     public class Startup
     {
-        private string _corsOrigin;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Startup"/> class.
         /// </summary>
@@ -47,8 +45,8 @@ namespace Steeltoe.InitializrApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddOptions();
-            services.Configure<InitializrOptions>(Configuration.GetSection(InitializrOptions.Initializr));
-            var initializrOptions = Configuration.GetSection(InitializrOptions.Initializr).Get<InitializrOptions>();
+            services.Configure<InitializrApiOptions>(Configuration.GetSection(InitializrApiOptions.InitializrApi));
+            var initializrOptions = Configuration.GetSection(InitializrApiOptions.InitializrApi).Get<InitializrApiOptions>();
             if (initializrOptions?.UiConfigPath is null)
             {
                 services.ConfigureConfigServerClientOptions(Configuration);
@@ -58,17 +56,6 @@ namespace Steeltoe.InitializrApi
             else
             {
                 services.AddSingleton<IUiConfigService, UiConfigFile>();
-            }
-
-            if (!(initializrOptions?.CorsOrigin is null))
-            {
-                _corsOrigin = "ConfiguredOrigins";
-                services.AddCors(options =>
-                {
-                    options.AddPolicy(
-                        name: _corsOrigin,
-                        builder => { builder.WithOrigins(initializrOptions.CorsOrigin); });
-                });
             }
 
             services.AddResponseCompression();
@@ -98,11 +85,6 @@ namespace Steeltoe.InitializrApi
             }
 
             app.UseResponseCompression();
-            if (!(_corsOrigin is null))
-            {
-                app.UseCors(_corsOrigin);
-            }
-
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthorization();

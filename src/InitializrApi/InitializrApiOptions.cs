@@ -9,12 +9,12 @@ namespace Steeltoe.InitializrApi
     /// <summary>
     /// Initializr configuration options.
     /// </summary>
-    public sealed class InitializrOptions
+    public sealed class InitializrApiOptions
     {
         /// <summary>
         /// The value of the appsettings section name.
         /// </summary>
-        public const string Initializr = "Initializr";
+        public const string InitializrApi = "InitializrApi";
 
         /// <summary>
         /// Gets or sets the path to the logo used for doc header.
@@ -27,24 +27,11 @@ namespace Steeltoe.InitializrApi
         public Dictionary<string, string> UiConfig { get; set; }
 
         /// <summary>
-        /// Gets or sets the CORS dictionary.
-        /// </summary>
-        public Dictionary<string, string> Cors { get; set; }
-
-        /// <summary>
         /// Gets the path to the UI configuration file.
         /// </summary>
         public string UiConfigPath
         {
             get => UiConfig?["Path"];
-        }
-
-        /// <summary>
-        /// Gets the CORS origin.
-        /// </summary>
-        public string CorsOrigin
-        {
-            get => Cors?["Origin"];
         }
     }
 }

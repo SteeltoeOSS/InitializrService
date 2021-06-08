@@ -24,8 +24,8 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
         public void Get_Should_Return_Help()
         {
             // Arrange
-            var initializrCfg = new Mock<IOptions<InitializrOptions>>();
-            var initializrOpts = new InitializrOptions { Logo = "/no/such/logo" };
+            var initializrCfg = new Mock<IOptions<InitializrApiOptions>>();
+            var initializrOpts = new InitializrApiOptions { Logo = "/no/such/logo" };
             initializrCfg.Setup(cfg => cfg.Value).Returns(initializrOpts);
             var config = new UiConfig
             {

@@ -26,7 +26,7 @@ namespace Steeltoe.InitializrApi.Controllers
 
         private const string NewLine = "\n";
 
-        private readonly InitializrOptions _options;
+        private readonly InitializrApiOptions _apiOptions;
 
         private readonly IUiConfigService _configService;
 
@@ -41,12 +41,12 @@ namespace Steeltoe.InitializrApi.Controllers
         /// <param name="configService">Injected Initializr configuration service.</param>
         /// <param name="logger">Injected logger.</param>
         public RootController(
-            IOptions<InitializrOptions> options,
+            IOptions<InitializrApiOptions> options,
             IUiConfigService configService,
             ILogger<RootController> logger)
             : base(logger)
         {
-            _options = options.Value;
+            _apiOptions = options.Value;
             _configService = configService;
         }
 
@@ -62,12 +62,12 @@ namespace Steeltoe.InitializrApi.Controllers
         public IActionResult GetHelp()
         {
             var help = new List<string>();
-            if (!(_options?.Logo is null))
+            if (!(_apiOptions?.Logo is null))
             {
                 try
                 {
                     help.Add(string.Empty);
-                    var logoPath = _options.Logo;
+                    var logoPath = _apiOptions.Logo;
                     System.IO.File.ReadAllLines(logoPath).ToList().ForEach(l => help.Add(l));
                     help.Add(string.Empty);
                 }

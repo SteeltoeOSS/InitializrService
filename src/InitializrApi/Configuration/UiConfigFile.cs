@@ -21,7 +21,7 @@ namespace Steeltoe.InitializrApi.Configuration
          * fields                                                            *
          * ----------------------------------------------------------------- */
 
-        private readonly InitializrOptions _options;
+        private readonly InitializrApiOptions _apiOptions;
 
         private UiConfig _uiConfig;
 
@@ -34,10 +34,10 @@ namespace Steeltoe.InitializrApi.Configuration
         /// </summary>
         /// <param name="options">Injected options from appsettings.</param>
         /// <param name="logger">Injected logger.</param>
-        public UiConfigFile(IOptions<InitializrOptions> options, ILogger<UiConfigFile> logger)
+        public UiConfigFile(IOptions<InitializrApiOptions> options, ILogger<UiConfigFile> logger)
             : base(logger)
         {
-            _options = options.Value;
+            _apiOptions = options.Value;
         }
 
         /* ----------------------------------------------------------------- *
@@ -47,20 +47,20 @@ namespace Steeltoe.InitializrApi.Configuration
         /// <inheritdoc />
         public void Initialize()
         {
-            Logger.LogInformation("loading configuration: {Path}", _options.UiConfigPath);
+            Logger.LogInformation("loading configuration: {Path}", _apiOptions.UiConfigPath);
             try
             {
-                var configJson = File.ReadAllText(_options.UiConfig["Path"]);
+                var configJson = File.ReadAllText(_apiOptions.UiConfig["Path"]);
                 _uiConfig = Serializer.DeserializeJson<UiConfig>(configJson);
             }
             catch (FileNotFoundException)
             {
-                throw new ArgumentException($"UI configuration file path does not exist: {_options.UiConfigPath}");
+                throw new ArgumentException($"UI configuration file path does not exist: {_apiOptions.UiConfigPath}");
             }
             catch (UnauthorizedAccessException)
             {
                 throw new ArgumentException(
-                    $"UI configuration file path is not a file or cannot be read: {_options.UiConfigPath}");
+                    $"UI configuration file path is not a file or cannot be read: {_apiOptions.UiConfigPath}");
             }
         }
 

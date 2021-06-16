@@ -11,9 +11,4 @@
     <ProjectReference Include="..\InitializrApi.Test.Utils\Steeltoe.InitializrApi.Test.Utils.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Generators" />
-    <Folder Include="Templates" />
-  </ItemGroup>
-
 </Project>

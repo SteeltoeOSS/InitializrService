@@ -63,7 +63,6 @@ namespace Steeltoe.InitializrApi
         {
             var host = CreateHostBuilder(args).Build();
             host.Services.GetRequiredService<IUiConfigService>().Initialize();
-            host.Services.GetRequiredService<IArchiverRegistry>().Initialize();
             host.Run();
         }
 

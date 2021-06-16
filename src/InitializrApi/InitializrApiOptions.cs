@@ -17,21 +17,28 @@ namespace Steeltoe.InitializrApi
         public const string InitializrApi = "InitializrApi";
 
         /// <summary>
-        /// Gets or sets the path to the logo used for doc header.
+        /// Gets or sets the Net Core Tool Service config dictionary.
         /// </summary>
-        public string Logo { get; set; }
+        public Dictionary<string, string> NetCoreToolService { get; set; }
 
         /// <summary>
-        /// Gets or sets the configuration dictionary.
+        /// Gets the URI for the Net Core Tool Service.
+        /// </summary>
+        public string NetCoreToolServiceUri => NetCoreToolService?["Uri"];
+
+        /// <summary>
+        /// Gets or sets the UI config dictionary.
         /// </summary>
         public Dictionary<string, string> UiConfig { get; set; }
 
         /// <summary>
-        /// Gets the path to the UI configuration file.
+        /// Gets the path to the UI config.
         /// </summary>
-        public string UiConfigPath
-        {
-            get => UiConfig?["Path"];
-        }
+        public string UiConfigPath => UiConfig?["Path"];
+
+        /// <summary>
+        /// Gets or sets the path to the logo used for doc header.
+        /// </summary>
+        public string Logo { get; set; }
     }
 }

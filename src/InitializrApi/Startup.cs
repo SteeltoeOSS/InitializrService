@@ -9,11 +9,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Steeltoe.Extensions.Configuration.ConfigServer;
-using Steeltoe.InitializrApi.Archivers;
 using Steeltoe.InitializrApi.Configuration;
 using Steeltoe.InitializrApi.Generators;
 using Steeltoe.InitializrApi.Models;
 using Steeltoe.InitializrApi.Services;
+using System;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Steeltoe.InitializrApi
@@ -46,8 +46,13 @@ namespace Steeltoe.InitializrApi
         {
             services.AddOptions();
             services.Configure<InitializrApiOptions>(Configuration.GetSection(InitializrApiOptions.InitializrApi));
-            var initializrOptions = Configuration.GetSection(InitializrApiOptions.InitializrApi).Get<InitializrApiOptions>();
-            if (initializrOptions?.UiConfigPath is null)
+            var options = Configuration.GetSection(InitializrApiOptions.InitializrApi).Get<InitializrApiOptions>();
+            if (options?.NetCoreToolServiceUri is null)
+            {
+                throw new Exception("Net Core Tool Service URI is not configured");
+            }
+
+            if (options?.UiConfigPath is null)
             {
                 services.ConfigureConfigServerClientOptions(Configuration);
                 services.Configure<UiConfig>(Configuration);
@@ -59,12 +64,11 @@ namespace Steeltoe.InitializrApi
             }
 
             services.AddResponseCompression();
-            services.AddSingleton<IArchiverRegistry, ArchiverRegistry>();
             services.AddTransient<IProjectGenerator, NetCoreToolProjectGenerator>();
-            services.AddControllers().AddJsonOptions(options =>
+            services.AddControllers().AddJsonOptions(jsonOptions =>
             {
-                options.JsonSerializerOptions.IgnoreNullValues = true;
-                options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+                jsonOptions.JsonSerializerOptions.IgnoreNullValues = true;
+                jsonOptions.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
             });
         }
 

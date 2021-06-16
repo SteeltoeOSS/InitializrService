@@ -27,8 +27,6 @@ namespace Steeltoe.InitializrApi.Controllers
 
         private readonly IProjectGenerator _projectGenerator;
 
-        private readonly IArchiverRegistry _archiverRegistry;
-
         /* ----------------------------------------------------------------- *
          * constructors                                                      *
          * ----------------------------------------------------------------- */
@@ -38,18 +36,15 @@ namespace Steeltoe.InitializrApi.Controllers
         /// </summary>
         /// <param name="configService">Injected Initializr configuration service.</param>
         /// <param name="projectGenerator">Injected project generator.</param>
-        /// <param name="archiverRegistry">Injected archiver registry.</param>
         /// <param name="logger">Injected logger.</param>
         public ProjectController(
             IUiConfigService configService,
             IProjectGenerator projectGenerator,
-            IArchiverRegistry archiverRegistry,
             ILogger<ProjectController> logger)
             : base(logger)
         {
             _configService = configService;
             _projectGenerator = projectGenerator;
-            _archiverRegistry = archiverRegistry;
         }
 
         /* ----------------------------------------------------------------- *
@@ -82,12 +77,6 @@ namespace Steeltoe.InitializrApi.Controllers
                 return StatusCode(
                     StatusCodes.Status500InternalServerError,
                     "Default packaging not configured.");
-            }
-
-            var archiver = _archiverRegistry.Lookup(normalizedSpec.Packaging);
-            if (archiver is null)
-            {
-                return NotFound($"Packaging '{normalizedSpec.Packaging}' not found.");
             }
 
             if (normalizedSpec.Dependencies != null)
@@ -127,17 +116,16 @@ namespace Steeltoe.InitializrApi.Controllers
             }
 
             Logger.LogDebug("Project specification: {ProjectSpec}", normalizedSpec);
-            var project = _projectGenerator.GenerateProject(normalizedSpec);
-            if (project is null)
+            var projectArchive = _projectGenerator.GenerateProjectArchive(normalizedSpec);
+            if (projectArchive is null)
             {
                 return NotFound($"No project template for spec: {normalizedSpec}");
             }
 
-            var archiveBytes = archiver.ToBytes(project.FileEntries);
             return File(
-                archiveBytes,
-                $"application/{normalizedSpec.Packaging}",
-                $"{normalizedSpec.Name}{archiver.GetFileExtension()}");
+                projectArchive,
+                $"application/zip",
+                $"{normalizedSpec.Name}.zip");
         }
     }
 }

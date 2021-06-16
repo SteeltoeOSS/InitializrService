@@ -15,7 +15,7 @@ namespace Steeltoe.InitializrApi.Services
         /// Generates a project based on the spec.
         /// </summary>
         /// <param name="spec">Project specification.</param>
-        /// <returns>The generated project, or null if not able to generate project per spec.</returns>
-        Project GenerateProject(ProjectSpec spec);
+        /// <returns>The generated project archive as a byte array, or null if not able to generate project per spec.</returns>
+        byte[] GenerateProjectArchive(ProjectSpec spec);
     }
 }

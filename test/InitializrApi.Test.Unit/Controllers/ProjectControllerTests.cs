@@ -2,17 +2,12 @@
 // The .NET Foundation licenses this file to you under the Apache 2.0 License.
 // See the LICENSE file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.IO.Compression;
-using System.Text;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
-using Steeltoe.InitializrApi.Archivers;
 using Steeltoe.InitializrApi.Controllers;
 using Steeltoe.InitializrApi.Models;
 using Steeltoe.InitializrApi.Services;
@@ -25,27 +20,6 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
         /* ----------------------------------------------------------------- *
          * positive tests                                                    *
          * ----------------------------------------------------------------- */
-
-        [Fact]
-        public void Zip_Archive_Format_Should_Return_Zip_Archive()
-        {
-            // Arrange
-            var archiverRegistry = new Mock<IArchiverRegistry>();
-            archiverRegistry.Setup(reg => reg.Lookup(It.Is<string>(s => s.Equals("zip"))))
-                .Returns(new ZipArchiver());
-            var controller = new ProjectControllerBuilder().WithArchiverRegistry(archiverRegistry.Object).Build();
-            var spec = new ProjectSpec { Packaging = "zip" };
-
-            // Act
-            var unknown = controller.GetProjectArchive(spec);
-
-            // Assert
-            var result = Assert.IsType<FileContentResult>(unknown);
-            result.ContentType.Should().Be("application/zip");
-            result.FileDownloadName.Should().EndWith(".zip");
-            var stream = new MemoryStream(result.FileContents);
-            new ZipArchive(stream).Should().BeOfType<ZipArchive>();
-        }
 
         [Fact]
         public void Configuration_Should_Specify_Defaults()
@@ -203,8 +177,6 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
 
             private IProjectGenerator _generator;
 
-            private IArchiverRegistry _registry;
-
             internal ProjectController Build()
             {
                 if (_uiConfig is null)
@@ -223,25 +195,16 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
                     _generator = new TestProjectGenerator();
                 }
 
-                if (_registry is null)
-                {
-                    var mock = new Mock<IArchiverRegistry>();
-                    mock.Setup(reg => reg.Lookup(It.Is<string>(s => s.Equals("myarchive"))))
-                        .Returns(new TestArchiver());
-                    _registry = mock.Object;
-                }
-
                 var configurationService = new Mock<IUiConfigService>();
                 configurationService.Setup(svc => svc.GetUiConfig()).Returns(_uiConfig);
                 var logger = new NullLogger<ProjectController>();
-                var projectController =
-                    new ProjectController(configurationService.Object, _generator, _registry, logger)
+                var projectController = new ProjectController(configurationService.Object, _generator, logger)
+                {
+                    ControllerContext =
                     {
-                        ControllerContext =
-                        {
-                            HttpContext = new DefaultHttpContext()
-                        }
-                    };
+                        HttpContext = new DefaultHttpContext()
+                    }
+                };
                 return projectController;
             }
 
@@ -250,18 +213,14 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
                 _uiConfig = uiConfig;
                 return this;
             }
-
-            internal ProjectControllerBuilder WithArchiverRegistry(IArchiverRegistry registry)
-            {
-                _registry = registry;
-                return this;
-            }
         }
 
         private class TestProjectGenerator : IProjectGenerator
         {
-            public Project GenerateProject(ProjectSpec spec)
+            public byte[] GenerateProjectArchive(ProjectSpec spec)
             {
+                return null;
+                /*
                 if (spec.Name != null && spec.Name.Equals("nosuchtemplate"))
                 {
                     return null;
@@ -282,33 +241,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
                     { Path = "packaging", Text = spec.Packaging ?? "<na>" });
                 project.FileEntries.Add(new FileEntry { Path = "dependencies", Text = spec.Dependencies ?? "<na>" });
                 return project;
-            }
-        }
-
-        private class TestArchiver : IArchiver
-        {
-            public byte[] ToBytes(IEnumerable<FileEntry> fileEntries)
-            {
-                var buf = new StringBuilder();
-                foreach (var fileEntry in fileEntries)
-                {
-                    buf.Append(fileEntry.Path)
-                        .Append('=')
-                        .Append(fileEntry.Text)
-                        .Append(Environment.NewLine);
-                }
-
-                return Encoding.UTF8.GetBytes(buf.ToString());
-            }
-
-            public string GetPackaging()
-            {
-                return "application/myarchive";
-            }
-
-            public string GetFileExtension()
-            {
-                return ".myext";
+                */
             }
         }
     }

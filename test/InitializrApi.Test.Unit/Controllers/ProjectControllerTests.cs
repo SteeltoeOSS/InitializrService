@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the Apache 2.0 License.
 // See the LICENSE file in the project root for more information.
 
-using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -23,8 +22,8 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
          * positive tests                                                    *
          * ----------------------------------------------------------------- */
 
-        // [Fact]
-        public async Task Configuration_Should_Specify_Defaults()
+        [Fact]
+        public void Configuration_Should_Specify_Defaults()
         {
             // Arrange
             var config = new UiConfig
@@ -43,7 +42,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
                 .Build();
 
             // Act
-            var unknown = await controller.GetProjectArchive(new ProjectSpec());
+            var unknown = controller.GetProjectArchive(new ProjectSpec());
 
             // Assert
             var result = Assert.IsType<FileContentResult>(unknown);
@@ -60,8 +59,8 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
             reader.ReadLine().Should().BeNull();
         }
 
-        // [Fact]
-        public async Task Dependencies_Should_Be_Case_Corrected()
+        [Fact]
+        public void Dependencies_Should_Be_Case_Corrected()
         {
             // Arrange
             var config = new UiConfig
@@ -93,7 +92,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
                 .Build();
 
             // Act
-            var unknown = await controller.GetProjectArchive(spec);
+            var unknown = controller.GetProjectArchive(spec);
 
             // Assert
             var result = Assert.IsType<FileContentResult>(unknown);
@@ -106,15 +105,15 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
          * negative tests                                                    *
          * ----------------------------------------------------------------- */
 
-        // [Fact]
-        public async Task No_Template_Found_Should_Return_404_Page_Not_Found()
+        [Fact]
+        public void No_Template_Found_Should_Return_404_Page_Not_Found()
         {
             // Arrange
             var controller = new ProjectControllerBuilder().Build();
             var spec = new ProjectSpec { Name = "nosuchtemplate" };
 
             // Act
-            var unknown = await controller.GetProjectArchive(spec);
+            var unknown = controller.GetProjectArchive(spec);
 
             // Assert
             var result = Assert.IsType<NotFoundObjectResult>(unknown);
@@ -122,15 +121,15 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
                 .Be("No project template for spec: [name=nosuchtemplate,packaging=myarchive]");
         }
 
-        // [Fact]
-        public async Task Unknown_Archive_Format_Should_Return_404_Page_Not_Found()
+        [Fact]
+        public void Unknown_Archive_Format_Should_Return_404_Page_Not_Found()
         {
             // Arrange
             var controller = new ProjectControllerBuilder().Build();
             var spec = new ProjectSpec { Packaging = "nosuchformat" };
 
             // Act
-            var unknown = await controller.GetProjectArchive(spec);
+            var unknown = controller.GetProjectArchive(spec);
 
             // Assert
             var result = Assert.IsType<NotFoundObjectResult>(unknown);
@@ -138,14 +137,14 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
         }
 
         [Fact]
-        public async Task Unknown_Dependency_Should_Return_404_Page_Not_found()
+        public void Unknown_Dependency_Should_Return_404_Page_Not_found()
         {
             // Arrange
             var controller = new ProjectControllerBuilder().Build();
             var spec = new ProjectSpec { Dependencies = "nosuchdep" };
 
             // Act
-            var unknown = await controller.GetProjectArchive(spec);
+            var unknown = controller.GetProjectArchive(spec);
 
             // Assert
             var result = Assert.IsType<NotFoundObjectResult>(unknown);
@@ -153,7 +152,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
         }
 
         [Fact]
-        public async Task Null_Archive_Format_Should_Return_500_Internal_Server_Error()
+        public void Null_Archive_Format_Should_Return_500_Internal_Server_Error()
         {
             // Arrange
             var spec = new ProjectSpec();
@@ -161,7 +160,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
             var controller = new ProjectControllerBuilder().WithInitializrConfiguration(config).Build();
 
             // Act
-            var unknown = await controller.GetProjectArchive(spec);
+            var unknown = controller.GetProjectArchive(spec);
 
             // Assert
             var result = Assert.IsType<ObjectResult>(unknown);

@@ -11,4 +11,5 @@ RUN apk add bash
 RUN curl https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh > wait-for-it \
             && chmod +x wait-for-it
 COPY --from=build /srv .
+ENV DOTNET_URLS http://0.0.0.0:80
 ENTRYPOINT ["dotnet", "Steeltoe.InitializrApi.dll"]

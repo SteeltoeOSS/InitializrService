@@ -5,9 +5,9 @@
 namespace Steeltoe.InitializrApi.Models
 {
     /// <summary>
-    /// A model of metadata used to describe the configuration of a project.
+    /// A model of an InitializrApi server configuration.
     /// </summary>
-    public sealed class ProjectMetadata
+    public sealed class UiConfig
     {
         /* ----------------------------------------------------------------- *
          * properties                                                        *

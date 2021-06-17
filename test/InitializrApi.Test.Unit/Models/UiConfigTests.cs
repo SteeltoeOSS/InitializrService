@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Steeltoe.InitializrApi.Test.Unit.Models
 {
-    public class ProjectMetadataTests
+    public class UiConfigTests
     {
         /* ----------------------------------------------------------------- *
          * positive tests                                                    *
@@ -18,31 +18,30 @@ namespace Steeltoe.InitializrApi.Test.Unit.Models
         public void Properties_Should_Be_Defined()
         {
             // Arrange
-            var metadata = new ProjectMetadata();
+            var uiConfig = new UiConfig();
 
             // Act
 
             // Assert
-            metadata.Name.Should().BeNull();
-            metadata.Namespace.Should().BeNull();
-            metadata.ApplicationName.Should().BeNull();
-            metadata.Description.Should().BeNull();
-            metadata.SteeltoeVersion.Should().BeNull();
-            metadata.DotNetFramework.Should().BeNull();
-            metadata.DotNetTemplate.Should().BeNull();
-            metadata.Language.Should().BeNull();
-            metadata.Packaging.Should().BeNull();
-            metadata.Dependencies.Should().BeNull();
+            uiConfig.Name.Should().BeNull();
+            uiConfig.Namespace.Should().BeNull();
+            uiConfig.ApplicationName.Should().BeNull();
+            uiConfig.Description.Should().BeNull();
+            uiConfig.SteeltoeVersion.Should().BeNull();
+            uiConfig.DotNetFramework.Should().BeNull();
+            uiConfig.DotNetTemplate.Should().BeNull();
+            uiConfig.Language.Should().BeNull();
+            uiConfig.Packaging.Should().BeNull();
+            uiConfig.Dependencies.Should().BeNull();
         }
 
         [Fact]
         public void Item_Name_Should_Default_To_Id()
         {
             // Arrange
-            var item = new ConcreteItem();
+            var item = new ConcreteItem { Id = "joe" };
 
             // Act
-            item.Id = "joe";
 
             // Assert
             item.Name.Should().Be("joe");
@@ -56,7 +55,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Models
          * helpers                                                           *
          * ----------------------------------------------------------------- */
 
-        class ConcreteItem : ProjectMetadata.Item
+        class ConcreteItem : UiConfig.Item
         {
         }
     }

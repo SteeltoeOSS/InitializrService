@@ -2,7 +2,6 @@
 
   <ItemGroup>
     <PackageReference Include="Steeltoe.Extensions.Configuration.ConfigServerCore" Version="$(SteeltoeVersion)" />
-    <PackageReference Include="Stubble.Core" Version="$(StubbleCoreVersion)" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,6 +26,10 @@
     <Content Include="Resources/**/*.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Templates" />
   </ItemGroup>
 
 </Project>

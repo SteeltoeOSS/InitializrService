@@ -9,6 +9,7 @@ using Steeltoe.InitializrApi.Models;
 using Steeltoe.InitializrApi.Services;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Steeltoe.InitializrApi.Controllers
 {
@@ -23,11 +24,9 @@ namespace Steeltoe.InitializrApi.Controllers
          * fields                                                            *
          * ----------------------------------------------------------------- */
 
-        private readonly IInitializrConfigService _configService;
+        private readonly IUiConfigService _configService;
 
         private readonly IProjectGenerator _projectGenerator;
-
-        private readonly IArchiverRegistry _archiverRegistry;
 
         /* ----------------------------------------------------------------- *
          * constructors                                                      *
@@ -38,18 +37,15 @@ namespace Steeltoe.InitializrApi.Controllers
         /// </summary>
         /// <param name="configService">Injected Initializr configuration service.</param>
         /// <param name="projectGenerator">Injected project generator.</param>
-        /// <param name="archiverRegistry">Injected archiver registry.</param>
         /// <param name="logger">Injected logger.</param>
         public ProjectController(
-            IInitializrConfigService configService,
+            IUiConfigService configService,
             IProjectGenerator projectGenerator,
-            IArchiverRegistry archiverRegistry,
             ILogger<ProjectController> logger)
             : base(logger)
         {
             _configService = configService;
             _projectGenerator = projectGenerator;
-            _archiverRegistry = archiverRegistry;
         }
 
         /* ----------------------------------------------------------------- *
@@ -62,10 +58,9 @@ namespace Steeltoe.InitializrApi.Controllers
         /// </summary>
         /// <returns>A task containing the <c>GET</c> result which, if is <see cref="FileContentResult"/>, contains a project bundle archive stream.</returns>
         [AcceptVerbs("GET")]
-        public ActionResult GetProjectArchive([FromQuery] ProjectSpec spec)
+        public async Task<ActionResult> GetProjectArchive([FromQuery] ProjectSpec spec)
         {
-            var config = _configService.GetInitializrConfig();
-            var defaults = config.ProjectMetadata;
+            var defaults = _configService.GetUiConfig();
             var normalizedSpec = new ProjectSpec()
             {
                 Name = spec.Name ?? defaults?.Name?.Default,
@@ -85,18 +80,12 @@ namespace Steeltoe.InitializrApi.Controllers
                     "Default packaging not configured.");
             }
 
-            var archiver = _archiverRegistry.Lookup(normalizedSpec.Packaging);
-            if (archiver is null)
-            {
-                return NotFound($"Packaging '{normalizedSpec.Packaging}' not found.");
-            }
-
             if (normalizedSpec.Dependencies != null)
             {
                 var caseSensitiveDeps = new List<string>();
-                if (config.ProjectMetadata?.Dependencies?.Values != null)
+                if (defaults.Dependencies?.Values != null)
                 {
-                    foreach (var group in config.ProjectMetadata.Dependencies.Values)
+                    foreach (var group in defaults.Dependencies.Values)
                     {
                         foreach (var dep in group.Values)
                         {
@@ -128,17 +117,16 @@ namespace Steeltoe.InitializrApi.Controllers
             }
 
             Logger.LogDebug("Project specification: {ProjectSpec}", normalizedSpec);
-            var project = _projectGenerator.GenerateProject(normalizedSpec);
-            if (project is null)
+            var projectArchive = await _projectGenerator.GenerateProjectArchive(normalizedSpec);
+            if (projectArchive is null)
             {
                 return NotFound($"No project template for spec: {normalizedSpec}");
             }
 
-            var archiveBytes = archiver.ToBytes(project.FileEntries);
             return File(
-                archiveBytes,
-                $"application/{normalizedSpec.Packaging}",
-                $"{normalizedSpec.Name}{archiver.GetFileExtension()}");
+                projectArchive,
+                $"application/zip",
+                $"{normalizedSpec.Name}.zip");
         }
     }
 }

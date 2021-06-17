@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using Steeltoe.InitializrApi.Models;
+using System.Threading.Tasks;
 
 namespace Steeltoe.InitializrApi.Services
 {
@@ -15,7 +16,7 @@ namespace Steeltoe.InitializrApi.Services
         /// Generates a project based on the spec.
         /// </summary>
         /// <param name="spec">Project specification.</param>
-        /// <returns>The generated project, or null if not able to generate project per spec.</returns>
-        Project GenerateProject(ProjectSpec spec);
+        /// <returns>The generated project archive as a byte array, or null if not able to generate project per spec.</returns>
+        Task<byte[]> GenerateProjectArchive(ProjectSpec spec);
     }
 }

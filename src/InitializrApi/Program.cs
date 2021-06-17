@@ -62,9 +62,7 @@ namespace Steeltoe.InitializrApi
         public static void Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
-            host.Services.GetRequiredService<IInitializrConfigService>().Initialize();
-            host.Services.GetRequiredService<IProjectTemplateRegistry>().Initialize();
-            host.Services.GetRequiredService<IArchiverRegistry>().Initialize();
+            host.Services.GetRequiredService<IUiConfigService>().Initialize();
             host.Run();
         }
 

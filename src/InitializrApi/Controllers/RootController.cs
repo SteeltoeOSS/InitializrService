@@ -26,9 +26,9 @@ namespace Steeltoe.InitializrApi.Controllers
 
         private const string NewLine = "\n";
 
-        private readonly InitializrOptions _options;
+        private readonly InitializrApiOptions _apiOptions;
 
-        private readonly IInitializrConfigService _configService;
+        private readonly IUiConfigService _configService;
 
         /* ----------------------------------------------------------------- *
          * constructors                                                      *
@@ -41,12 +41,12 @@ namespace Steeltoe.InitializrApi.Controllers
         /// <param name="configService">Injected Initializr configuration service.</param>
         /// <param name="logger">Injected logger.</param>
         public RootController(
-            IOptions<InitializrOptions> options,
-            IInitializrConfigService configService,
+            IOptions<InitializrApiOptions> options,
+            IUiConfigService configService,
             ILogger<RootController> logger)
             : base(logger)
         {
-            _options = options.Value;
+            _apiOptions = options.Value;
             _configService = configService;
         }
 
@@ -62,12 +62,12 @@ namespace Steeltoe.InitializrApi.Controllers
         public IActionResult GetHelp()
         {
             var help = new List<string>();
-            if (!(_options?.Logo is null))
+            if (!(_apiOptions?.Logo is null))
             {
                 try
                 {
                     help.Add(string.Empty);
-                    var logoPath = _options.Logo;
+                    var logoPath = _apiOptions.Logo;
                     System.IO.File.ReadAllLines(logoPath).ToList().ForEach(l => help.Add(l));
                     help.Add(string.Empty);
                 }
@@ -80,7 +80,7 @@ namespace Steeltoe.InitializrApi.Controllers
 
             help.Add(" :: Steeltoe Initializr ::  https://start.steeltoe.io");
             help.Add(string.Empty);
-            var metadata = _configService.GetInitializrConfig().ProjectMetadata;
+            var uiConfig = _configService.GetUiConfig();
             help.Add("This service generates quickstart projects that can be easily customized.");
             help.Add("Possible customizations include a project's dependencies and .NET target framework.");
             help.Add(string.Empty);
@@ -88,15 +88,15 @@ namespace Steeltoe.InitializrApi.Controllers
             var table = new List<List<string>>
             {
                 new List<string> { "Parameter", "Description", "Default value" },
-                new List<string> { "name", "project name", metadata.Name.Default },
-                new List<string> { "applicationName", "application name", metadata.ApplicationName.Default },
-                new List<string> { "namespace", "namespace", metadata.Namespace.Default },
-                new List<string> { "description", "project description", metadata.Description.Default },
-                new List<string> { "steeltoeVersion", "Steeltoe version", metadata.SteeltoeVersion.Default },
-                new List<string> { "dotNetFramework", "target .NET framework", metadata.DotNetFramework.Default },
-                new List<string> { "dotNetTemplate", ".NET template", metadata.DotNetTemplate.Default },
-                new List<string> { "language", "programming language", metadata.Language.Default },
-                new List<string> { "packaging", "project packaging", metadata.Packaging.Default },
+                new List<string> { "name", "project name", uiConfig.Name.Default },
+                new List<string> { "applicationName", "application name", uiConfig.ApplicationName.Default },
+                new List<string> { "namespace", "namespace", uiConfig.Namespace.Default },
+                new List<string> { "description", "project description", uiConfig.Description.Default },
+                new List<string> { "steeltoeVersion", "Steeltoe version", uiConfig.SteeltoeVersion.Default },
+                new List<string> { "dotNetFramework", "target .NET framework", uiConfig.DotNetFramework.Default },
+                new List<string> { "dotNetTemplate", ".NET template", uiConfig.DotNetTemplate.Default },
+                new List<string> { "language", "programming language", uiConfig.Language.Default },
+                new List<string> { "packaging", "project packaging", uiConfig.Packaging.Default },
             };
             help.AddRange(ToTable(table));
             help.Add(string.Empty);
@@ -106,7 +106,7 @@ namespace Steeltoe.InitializrApi.Controllers
             {
                 new List<string> { "Id", "Description", "Required Steeltoe version" },
             };
-            foreach (var group in metadata.Dependencies.Values)
+            foreach (var group in uiConfig.Dependencies.Values)
             {
                 foreach (var dependency in group.Values)
                 {

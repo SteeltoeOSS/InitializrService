@@ -54,26 +54,27 @@
     ]
   },
   "language": {
+    "type": "single-select",
     "default": "csharp",
     "values": [
       {
         "id": "csharp",
         "name": "C#"
       }
-    ],
-    "type": "single-select"
+    ]
   },
   "packaging": {
+    "type": "single-select",
     "default": "zip",
     "values": [
       {
         "id": "zip",
         "name": "zip"
       }
-    ],
-    "type": "single-select"
+    ]
   },
   "dependencies": {
+    "type": "hierarchical-multi-select",
     "values": [
       {
         "name": "Configuration",
@@ -217,7 +218,6 @@
           }
         ]
       }
-    ],
-    "type": "hierarchical-multi-select"
+    ]
   }
 }

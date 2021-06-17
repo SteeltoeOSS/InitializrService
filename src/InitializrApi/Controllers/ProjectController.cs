@@ -9,6 +9,7 @@ using Steeltoe.InitializrApi.Models;
 using Steeltoe.InitializrApi.Services;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Steeltoe.InitializrApi.Controllers
 {
@@ -57,7 +58,7 @@ namespace Steeltoe.InitializrApi.Controllers
         /// </summary>
         /// <returns>A task containing the <c>GET</c> result which, if is <see cref="FileContentResult"/>, contains a project bundle archive stream.</returns>
         [AcceptVerbs("GET")]
-        public ActionResult GetProjectArchive([FromQuery] ProjectSpec spec)
+        public async Task<ActionResult> GetProjectArchive([FromQuery] ProjectSpec spec)
         {
             var defaults = _configService.GetUiConfig();
             var normalizedSpec = new ProjectSpec()
@@ -116,7 +117,7 @@ namespace Steeltoe.InitializrApi.Controllers
             }
 
             Logger.LogDebug("Project specification: {ProjectSpec}", normalizedSpec);
-            var projectArchive = _projectGenerator.GenerateProjectArchive(normalizedSpec);
+            var projectArchive = await _projectGenerator.GenerateProjectArchive(normalizedSpec);
             if (projectArchive is null)
             {
                 return NotFound($"No project template for spec: {normalizedSpec}");

@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using System.IO;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -217,7 +218,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
 
         private class TestProjectGenerator : IProjectGenerator
         {
-            public byte[] GenerateProjectArchive(ProjectSpec spec)
+            public Task<byte[]> GenerateProjectArchive(ProjectSpec spec)
             {
                 return null;
                 /*

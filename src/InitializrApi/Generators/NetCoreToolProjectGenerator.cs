@@ -6,6 +6,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Steeltoe.InitializrApi.Models;
 using Steeltoe.InitializrApi.Services;
+using System.IO;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace Steeltoe.InitializrApi.Generators
 {
@@ -14,6 +17,10 @@ namespace Steeltoe.InitializrApi.Generators
     /// </summary>
     public class NetCoreToolProjectGenerator : InitializrApiServiceBase, IProjectGenerator
     {
+        private static readonly HttpClient Client = new ();
+
+        private readonly string _netCoreToolServiceUri;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="NetCoreToolProjectGenerator"/> class.
         /// </summary>
@@ -24,12 +31,17 @@ namespace Steeltoe.InitializrApi.Generators
             ILogger<NetCoreToolProjectGenerator> logger)
             : base(logger)
         {
+            _netCoreToolServiceUri = options.Value.NetCoreToolServiceUri;
         }
 
         /// <inheritdoc/>
-        public byte[] GenerateProjectArchive(ProjectSpec spec)
+        public async Task<byte[]> GenerateProjectArchive(ProjectSpec spec)
         {
-            return null;
+            var response = await Client.GetAsync($"{_netCoreToolServiceUri}/new/steeltoe-webapi");
+            var buffer = new MemoryStream();
+            await response.Content.CopyToAsync(buffer);
+            var bytes = buffer.GetBuffer();
+            return bytes;
         }
     }
 }

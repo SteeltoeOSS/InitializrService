@@ -56,7 +56,6 @@ namespace Steeltoe.InitializrApi
                 throw new Exception("Net Core Tool Service URI is not configured");
             }
 
-
             if (options?.UiConfigPath is null)
             {
                 services.ConfigureConfigServerClientOptions(Configuration);

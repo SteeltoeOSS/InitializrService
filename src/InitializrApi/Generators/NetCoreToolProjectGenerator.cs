@@ -18,7 +18,7 @@ namespace Steeltoe.InitializrApi.Generators
     /// </summary>
     public class NetCoreToolProjectGenerator : InitializrApiServiceBase, IProjectGenerator
     {
-        private static readonly HttpClient Client = new();
+        private static readonly HttpClient Client = new ();
 
         private readonly string _netCoreToolServiceUri;
 

@@ -24,6 +24,8 @@ namespace Steeltoe.InitializrApi
     [ExcludeFromCodeCoverage]
     public class Startup
     {
+        private string _netCoreToolServiceUri;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Startup"/> class.
         /// </summary>
@@ -47,10 +49,13 @@ namespace Steeltoe.InitializrApi
             services.AddOptions();
             services.Configure<InitializrApiOptions>(Configuration.GetSection(InitializrApiOptions.InitializrApi));
             var options = Configuration.GetSection(InitializrApiOptions.InitializrApi).Get<InitializrApiOptions>();
-            if (options?.NetCoreToolServiceUri is null)
+            _netCoreToolServiceUri = options?.NetCoreToolServiceUri;
+
+            if (_netCoreToolServiceUri is null)
             {
                 throw new Exception("Net Core Tool Service URI is not configured");
             }
+
 
             if (options?.UiConfigPath is null)
             {
@@ -82,6 +87,7 @@ namespace Steeltoe.InitializrApi
         {
             var about = Program.About;
             logger.LogInformation("{Program}, version {Version} [{Commit}]", about.Name, about.Version, about.Commit);
+            logger.LogInformation("Net Core Tool Service URI: {NetCoreToolService}", _netCoreToolServiceUri);
 
             if (env.IsDevelopment())
             {

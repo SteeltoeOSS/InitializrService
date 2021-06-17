@@ -24,7 +24,6 @@ namespace Steeltoe.InitializrApi.Generators
             ILogger<NetCoreToolProjectGenerator> logger)
             : base(logger)
         {
-            Logger.LogInformation("Net Core Tool Service URI: {Uri}", options.Value.NetCoreToolServiceUri);
         }
 
         /// <inheritdoc/>

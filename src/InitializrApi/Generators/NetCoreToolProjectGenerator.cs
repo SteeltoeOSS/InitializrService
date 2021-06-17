@@ -8,6 +8,7 @@ using Steeltoe.InitializrApi.Models;
 using Steeltoe.InitializrApi.Services;
 using System.IO;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Steeltoe.InitializrApi.Generators
@@ -17,7 +18,7 @@ namespace Steeltoe.InitializrApi.Generators
     /// </summary>
     public class NetCoreToolProjectGenerator : InitializrApiServiceBase, IProjectGenerator
     {
-        private static readonly HttpClient Client = new ();
+        private static readonly HttpClient Client = new();
 
         private readonly string _netCoreToolServiceUri;
 
@@ -37,7 +38,51 @@ namespace Steeltoe.InitializrApi.Generators
         /// <inheritdoc/>
         public async Task<byte[]> GenerateProjectArchive(ProjectSpec spec)
         {
-            var response = await Client.GetAsync($"{_netCoreToolServiceUri}/new/steeltoe-webapi");
+            var projectUrl = new StringBuilder();
+            projectUrl.Append(_netCoreToolServiceUri)
+                .Append("/new/steeltoe-webapi")
+                .Append('?')
+                .Append("packaging=").Append(spec.Packaging)
+                .Append('&')
+                .Append("options=")
+                .Append("no-restore")
+                .Append(",output=").Append(spec.Name);
+            if (spec.Dependencies is not null)
+            {
+                foreach (var dependency in spec.Dependencies.Split(','))
+                {
+                    projectUrl.Append(',');
+                    switch (dependency)
+                    {
+                        case "actuator":
+                            projectUrl.Append("management-endpoints");
+                            break;
+                        case "amqp":
+                            projectUrl.Append("rabbitmq");
+                            break;
+                        case "circuit-breaker":
+                            projectUrl.Append("hystrix");
+                            break;
+                        case "config-server":
+                            projectUrl.Append("cloud-config");
+                            break;
+                        case "data-redis":
+                            projectUrl.Append("redis");
+                            break;
+                        case "data-mongodb":
+                            projectUrl.Append("mongodb");
+                            break;
+                        case "eureka-client":
+                            projectUrl.Append("eureka");
+                            break;
+                        default:
+                            projectUrl.Append(dependency);
+                            break;
+                    }
+                }
+            }
+
+            var response = await Client.GetAsync(projectUrl.ToString());
             var buffer = new MemoryStream();
             await response.Content.CopyToAsync(buffer);
             var bytes = buffer.GetBuffer();

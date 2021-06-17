@@ -30,14 +30,14 @@ stages:
             inputs:
               packageType: sdk
               version: 5.0.x
-          - task: SonarSource.sonarcloud.14d9cde6-c1da-4d55-aa01-2965cd301255.SonarCloudPrepare@1
-            displayName: Start SonarQube Analysis
-            inputs:
-              SonarCloud: SonarCloud
-              organization: steeltoeoss
-              projectKey: InitializrApi
-              extraProperties: |
-                sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)/**/*.opencover.xml
+#          - task: SonarSource.sonarcloud.14d9cde6-c1da-4d55-aa01-2965cd301255.SonarCloudPrepare@1
+#            displayName: Start SonarQube Analysis
+#            inputs:
+#              SonarCloud: SonarCloud
+#              organization: steeltoeoss
+#              projectKey: InitializrApi
+#              extraProperties: |
+#                sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)/**/*.opencover.xml
           - task: DotNetCoreCLI@2
             displayName: dotnet restore
             inputs:
@@ -72,9 +72,9 @@ stages:
               ArtifactStagingDirectory: $(Build.ArtifactStagingDirectory)
               SignClientUser: $(SignClientUser)
               SignClientSecret: $(SignClientSecret)
-          - task: SonarSource.sonarcloud.ce096e50-6155-4de8-8800-4221aaeed4a1.SonarCloudAnalyze@1
-            displayName: Stop SonarQube Analysis
-          - task: SonarSource.sonarcloud.38b27399-a642-40af-bb7d-9971f69712e8.SonarCloudPublish@1
-            displayName: Publish SonarQube Analysis
+#          - task: SonarSource.sonarcloud.ce096e50-6155-4de8-8800-4221aaeed4a1.SonarCloudAnalyze@1
+#            displayName: Stop SonarQube Analysis
+#          - task: SonarSource.sonarcloud.38b27399-a642-40af-bb7d-9971f69712e8.SonarCloudPublish@1
+#            displayName: Publish SonarQube Analysis
           - task: PublishBuildArtifacts@1
             displayName: Publish Build Artifacts

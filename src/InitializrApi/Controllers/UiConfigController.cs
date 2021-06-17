@@ -12,7 +12,7 @@ namespace Steeltoe.InitializrApi.Controllers
     /// Server configuration endpoint.
     /// </summary>
     [ApiController]
-    [Route("api/config]")]
+    [Route("api/[controller]")]
     public class UiConfigController : InitializrApiControllerBase
     {
         /* ----------------------------------------------------------------- *

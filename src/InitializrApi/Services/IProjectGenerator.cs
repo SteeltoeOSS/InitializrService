@@ -22,6 +22,7 @@ namespace Steeltoe.InitializrApi.Services
     }
 
     /// <inheritdoc />
+    [Serializable]
     public class NoProjectForSpecException : Exception
     {
         /// <inheritdoc cref="Exception"/>
@@ -32,6 +33,7 @@ namespace Steeltoe.InitializrApi.Services
     }
 
     /// <inheritdoc />
+    [Serializable]
     public class InvalidSpecException : Exception
     {
         /// <inheritdoc cref="Exception"/>

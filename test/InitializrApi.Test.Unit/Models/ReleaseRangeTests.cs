@@ -190,8 +190,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Models
             // Act
 
             // Assert
-            (v1 == v2).Should().Be(true);
-            (v1 != v2).Should().Be(false);
+            v1.Equals(v2).Should().Be(true);
         }
 
         [Fact]
@@ -204,8 +203,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Models
             // Act
 
             // Assert
-            (v1 != v2).Should().Be(true);
-            (v1 == v2).Should().Be(false);
+            v1.Equals(v2).Should().Be(false);
         }
 
         [Fact]

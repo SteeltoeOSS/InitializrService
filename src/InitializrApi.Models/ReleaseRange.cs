@@ -116,7 +116,7 @@ namespace Steeltoe.InitializrApi.Models
                 return false;
             }
 
-            if (releaseVersion == _start && !_startInclusive)
+            if (releaseVersion.Equals(_start) && !_startInclusive)
             {
                 return false;
             }
@@ -131,7 +131,7 @@ namespace Steeltoe.InitializrApi.Models
                 return false;
             }
 
-            if (releaseVersion == _stop && !_stopInclusive)
+            if (releaseVersion.Equals(_stop) && !_stopInclusive)
             {
                 return false;
             }
@@ -185,7 +185,7 @@ namespace Steeltoe.InitializrApi.Models
         /// <summary>
         /// Similar to <see cref="Version"/> but with added support for prefixes, e.g. netcoreapp2.1.
         /// </summary>
-        public class ReleaseVersion
+        public sealed class ReleaseVersion
         {
             private readonly string _representation;
 
@@ -260,28 +260,6 @@ namespace Steeltoe.InitializrApi.Models
             }
 
             /// <summary>
-            /// Returns <see cref="CompareTo"/> == 0.
-            /// </summary>
-            /// <param name="a">Left operand.</param>
-            /// <param name="b">Right operand.</param>
-            /// <returns>a == b.</returns>
-            public static bool operator ==(ReleaseVersion a, ReleaseVersion b)
-            {
-                return CompareTo(a, b) == 0;
-            }
-
-            /// <summary>
-            /// Returns <see cref="CompareTo"/> != 0.
-            /// </summary>
-            /// <param name="a">Left operand.</param>
-            /// <param name="b">Right operand.</param>
-            /// <returns>a != b.</returns>
-            public static bool operator !=(ReleaseVersion a, ReleaseVersion b)
-            {
-                return CompareTo(a, b) != 0;
-            }
-
-            /// <summary>
             /// Semantically compares 2 <see cref="ReleaseVersion"/>s.
             /// </summary>
             /// <param name="a">Left operand.</param>
@@ -332,7 +310,7 @@ namespace Steeltoe.InitializrApi.Models
             /// </summary>
             /// <param name="other">Other version.</param>
             /// <returns>this == other.</returns>
-            protected bool Equals(ReleaseVersion other)
+            private bool Equals(ReleaseVersion other)
             {
                 return _representation == other._representation;
             }

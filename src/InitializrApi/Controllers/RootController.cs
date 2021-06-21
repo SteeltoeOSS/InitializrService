@@ -10,6 +10,7 @@ using Steeltoe.InitializrApi.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace Steeltoe.InitializrApi.Controllers
 {
@@ -23,8 +24,6 @@ namespace Steeltoe.InitializrApi.Controllers
         /* ----------------------------------------------------------------- *
          * fields                                                            *
          * ----------------------------------------------------------------- */
-
-        private const string NewLine = "\n";
 
         private readonly InitializrApiOptions _apiOptions;
 
@@ -87,16 +86,16 @@ namespace Steeltoe.InitializrApi.Controllers
             help.Add("The URI templates take a set of parameters to customize the result of a request.");
             var table = new List<List<string>>
             {
-                new List<string> { "Parameter", "Description", "Default value" },
-                new List<string> { "name", "project name", uiConfig.Name.Default },
-                new List<string> { "applicationName", "application name", uiConfig.ApplicationName.Default },
-                new List<string> { "namespace", "namespace", uiConfig.Namespace.Default },
-                new List<string> { "description", "project description", uiConfig.Description.Default },
-                new List<string> { "steeltoeVersion", "Steeltoe version", uiConfig.SteeltoeVersion.Default },
-                new List<string> { "dotNetFramework", "target .NET framework", uiConfig.DotNetFramework.Default },
-                new List<string> { "dotNetTemplate", ".NET template", uiConfig.DotNetTemplate.Default },
-                new List<string> { "language", "programming language", uiConfig.Language.Default },
-                new List<string> { "packaging", "project packaging", uiConfig.Packaging.Default },
+                new () { "Parameter", "Description", "Default value" },
+                new () { "name", "project name", uiConfig.Name.Default },
+                new () { "applicationName", "application name", uiConfig.ApplicationName.Default },
+                new () { "namespace", "namespace", uiConfig.Namespace.Default },
+                new () { "description", "project description", uiConfig.Description.Default },
+                new () { "steeltoeVersion", "Steeltoe version", uiConfig.SteeltoeVersion.Default },
+                new () { "dotNetFramework", "target .NET framework", uiConfig.DotNetFramework.Default },
+                new () { "dotNetTemplate", ".NET template", uiConfig.DotNetTemplate.Default },
+                new () { "language", "programming language", uiConfig.Language.Default },
+                new () { "packaging", "project packaging", uiConfig.Packaging.Default },
             };
             help.AddRange(ToTable(table));
             help.Add(string.Empty);
@@ -104,20 +103,17 @@ namespace Steeltoe.InitializrApi.Controllers
             help.Add("list of \"dependencies\".");
             table = new List<List<string>>
             {
-                new List<string> { "Id", "Description", "Required Steeltoe version" },
+                new () { "Id", "Description", "Required Steeltoe version" },
             };
-            foreach (var group in uiConfig.Dependencies.Values)
-            {
-                foreach (var dependency in group.Values)
+            table.AddRange(
+                from @group in uiConfig.Dependencies.Values
+                from dependency in @group.Values
+                select new List<string>
                 {
-                    table.Add(new List<string>
-                    {
-                        dependency.Id,
-                        dependency.Description,
-                        new ReleaseRange(dependency.SteeltoeVersionRange).ToPrettyString(),
-                    });
-                }
-            }
+                    dependency.Id,
+                    dependency.Description,
+                    new ReleaseRange(dependency.SteeltoeVersionRange).ToPrettyString(),
+                });
 
             help.AddRange(ToTable(table));
             help.Add(string.Empty);
@@ -133,39 +129,49 @@ namespace Steeltoe.InitializrApi.Controllers
             help.Add("To create a project with a actuator endpoints and a Redis backend:");
             help.Add("\t$ http https://start.steeltoe.io/api/project dependencies==actuators,redis -d");
 
-            return Ok(string.Join(NewLine, help));
+            const char newline = '\n';
+            return Ok(string.Join(newline, help));
         }
 
-        private IEnumerable<string> ToTable(List<List<string>> rows)
+        private static IEnumerable<string> ToTable(IReadOnlyList<List<string>> rows)
         {
-            var max = new int[rows[0].Count];
-            for (var c = 0; c < max.Length; ++c)
+            var columnMaxWidth = new int[rows[0].Count];
+            for (var column = 0; column < columnMaxWidth.Length; ++column)
             {
-                max[c] = 0;
-                for (int r = 0; r < rows.Count; ++r)
+                columnMaxWidth[column] = 0;
+                foreach (var row in rows)
                 {
-                    max[c] = Math.Max(max[c], rows[r][c].Length);
+                    columnMaxWidth[column] = Math.Max(columnMaxWidth[column], row[column].Length);
                 }
             }
 
-            var border = "+";
-            var format = "|";
-            for (int c = 0; c < max.Length; ++c)
+            const char borderHorizontal = '-';
+            const char borderVertical = '|';
+            const char borderJunction = '+';
+
+            var borderBuffer = new StringBuilder();
+            borderBuffer.Append(borderJunction);
+            var lineFormatBuffer = new StringBuilder();
+            lineFormatBuffer.Append(borderVertical);
+            for (var column = 0; column < columnMaxWidth.Length; ++column)
             {
-                border += new string('-', max[c] + 2) + "+";
-                format += $" {{{c},-{max[c]}}} |";
+                borderBuffer.Append(new string(borderHorizontal, columnMaxWidth[column] + 2)).Append(borderJunction);
+                lineFormatBuffer.Append(" {").Append(column).Append(",-").Append(columnMaxWidth[column]).Append("} ")
+                    .Append(borderVertical);
             }
 
-            var table = new List<string>();
-            table.Add(border);
-            table.Add(string.Format(format, rows[0].ToArray<object>()));
-            table.Add(border);
-            for (int r = 1; r < rows.Count; ++r)
+            var borderRule = borderBuffer.ToString();
+            var lineFormat = lineFormatBuffer.ToString();
+            var table = new List<string>
             {
-                table.Add(string.Format(format, rows[r].ToArray<object>()));
+                borderRule, string.Format(lineFormat, rows[0].ToArray<object>()), borderRule,
+            };
+            for (var row = 1; row < rows.Count; ++row)
+            {
+                table.Add(string.Format(lineFormat, rows[row].ToArray<object>()));
             }
 
-            table.Add(border);
+            table.Add(borderRule);
             return table;
         }
     }

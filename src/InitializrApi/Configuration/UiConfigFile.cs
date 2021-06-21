@@ -18,14 +18,6 @@ namespace Steeltoe.InitializrApi.Configuration
     public class UiConfigFile : InitializrApiServiceBase, IUiConfigService
     {
         /* ----------------------------------------------------------------- *
-         * fields                                                            *
-         * ----------------------------------------------------------------- */
-
-        private readonly InitializrApiOptions _apiOptions;
-
-        private UiConfig _uiConfig;
-
-        /* ----------------------------------------------------------------- *
          * constructors                                                      *
          * ----------------------------------------------------------------- */
 
@@ -37,37 +29,29 @@ namespace Steeltoe.InitializrApi.Configuration
         public UiConfigFile(IOptions<InitializrApiOptions> options, ILogger<UiConfigFile> logger)
             : base(logger)
         {
-            _apiOptions = options.Value;
-        }
-
-        /* ----------------------------------------------------------------- *
-         * methods                                                           *
-         * ----------------------------------------------------------------- */
-
-        /// <inheritdoc />
-        public void Initialize()
-        {
-            Logger.LogInformation("loading configuration: {Path}", _apiOptions.UiConfigPath);
+            var apiOptions = options.Value;
+            Logger.LogInformation("loading configuration: {Path}", apiOptions.UiConfigPath);
             try
             {
-                var configJson = File.ReadAllText(_apiOptions.UiConfig["Path"]);
-                _uiConfig = Serializer.DeserializeJson<UiConfig>(configJson);
+                var configJson = File.ReadAllText(apiOptions.UiConfig["Path"]);
+                UiConfig = Serializer.DeserializeJson<UiConfig>(configJson);
             }
             catch (FileNotFoundException)
             {
-                throw new ArgumentException($"UI configuration file path does not exist: {_apiOptions.UiConfigPath}");
+                throw new ArgumentException($"UI configuration file path does not exist: {apiOptions.UiConfigPath}");
             }
             catch (UnauthorizedAccessException)
             {
                 throw new ArgumentException(
-                    $"UI configuration file path is not a file or cannot be read: {_apiOptions.UiConfigPath}");
+                    $"UI configuration file path is not a file or cannot be read: {apiOptions.UiConfigPath}");
             }
         }
 
-        /// <inheritdoc />
-        public UiConfig GetUiConfig()
-        {
-            return _uiConfig;
-        }
+        /* ----------------------------------------------------------------- *
+         * properties                                                        *
+         * ----------------------------------------------------------------- */
+
+        /// <inheritdoc/>
+        public UiConfig UiConfig { get; }
     }
 }

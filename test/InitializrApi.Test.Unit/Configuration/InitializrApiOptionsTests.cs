@@ -31,10 +31,12 @@ namespace Steeltoe.InitializrApi.Test.Unit.Configuration
             options.Setup(opts => opts.Value).Returns(new InitializrApiOptions
                 { UiConfig = new Dictionary<string, string> { { "Path", "no_such_path" } } });
             var logger = new NullLogger<UiConfigFile>();
-            var config = new UiConfigFile(options.Object, logger);
 
             // Act
-            Action act = () => config.Initialize();
+            Action act = () =>
+            {
+                var _ = new UiConfigFile(options.Object, logger);
+            };
 
             // Assert
             act.Should().Throw<ArgumentException>()
@@ -49,10 +51,12 @@ namespace Steeltoe.InitializrApi.Test.Unit.Configuration
             options.Setup(opts => opts.Value).Returns(new InitializrApiOptions
                 { UiConfig = new Dictionary<string, string> { { "Path", "." } } });
             var logger = new NullLogger<UiConfigFile>();
-            var config = new UiConfigFile(options.Object, logger);
 
             // Act
-            Action act = () => config.Initialize();
+            Action act = () =>
+            {
+                var _ = new UiConfigFile(options.Object, logger);
+            };
 
             // Assert
             act.Should().Throw<ArgumentException>()
@@ -67,10 +71,12 @@ namespace Steeltoe.InitializrApi.Test.Unit.Configuration
             options.Setup(opts => opts.Value).Returns(new InitializrApiOptions
                 { UiConfig = new Dictionary<string, string> { { "Path", "Steeltoe.InitializrApi.dll" } } });
             var logger = new NullLogger<UiConfigFile>();
-            var config = new UiConfigFile(options.Object, logger);
 
             // Act
-            Action act = () => config.Initialize();
+            Action act = () =>
+            {
+                var _ = new UiConfigFile(options.Object, logger);
+            };
 
             // Assert
             act.Should().Throw<System.Text.Json.JsonException>();

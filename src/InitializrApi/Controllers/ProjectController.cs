@@ -9,6 +9,7 @@ using Steeltoe.InitializrApi.Models;
 using Steeltoe.InitializrApi.Services;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Steeltoe.InitializrApi.Controllers
@@ -24,7 +25,7 @@ namespace Steeltoe.InitializrApi.Controllers
          * fields                                                            *
          * ----------------------------------------------------------------- */
 
-        private readonly IUiConfigService _configService;
+        private readonly IUiConfigService _uiConfigService;
 
         private readonly IProjectGenerator _projectGenerator;
 
@@ -35,16 +36,16 @@ namespace Steeltoe.InitializrApi.Controllers
         /// <summary>
         /// Initializes a new instance of the <see cref="ProjectController"/> class.
         /// </summary>
-        /// <param name="configService">Injected Initializr configuration service.</param>
+        /// <param name="uiConfigService">Injected Initializr configuration service.</param>
         /// <param name="projectGenerator">Injected project generator.</param>
         /// <param name="logger">Injected logger.</param>
         public ProjectController(
-            IUiConfigService configService,
+            IUiConfigService uiConfigService,
             IProjectGenerator projectGenerator,
             ILogger<ProjectController> logger)
             : base(logger)
         {
-            _configService = configService;
+            _uiConfigService = uiConfigService;
             _projectGenerator = projectGenerator;
         }
 
@@ -60,7 +61,7 @@ namespace Steeltoe.InitializrApi.Controllers
         [AcceptVerbs("GET")]
         public async Task<ActionResult> GetProjectArchive([FromQuery] ProjectSpec spec)
         {
-            var defaults = _configService.GetUiConfig();
+            var defaults = _uiConfigService.UiConfig;
             var normalizedSpec = new ProjectSpec()
             {
                 Name = spec.Name ?? defaults?.Name?.Default,
@@ -85,26 +86,21 @@ namespace Steeltoe.InitializrApi.Controllers
                 var caseSensitiveDeps = new List<string>();
                 if (defaults.Dependencies?.Values != null)
                 {
-                    foreach (var group in defaults.Dependencies.Values)
-                    {
-                        foreach (var dep in group.Values)
-                        {
-                            caseSensitiveDeps.Add(dep.Id);
-                        }
-                    }
+                    caseSensitiveDeps.AddRange(
+                        from @group in defaults.Dependencies.Values
+                        from dep in @group.Values
+                        select dep.Id);
                 }
 
                 var deps = normalizedSpec.Dependencies.Split(',');
                 for (int i = 0; i < deps.Length; ++i)
                 {
                     var found = false;
-                    foreach (var caseSensitiveDep in caseSensitiveDeps)
+                    foreach (var caseSensitiveDep in caseSensitiveDeps.Where(
+                        caseSensitiveDep => caseSensitiveDep.Equals(deps[i], StringComparison.OrdinalIgnoreCase)))
                     {
-                        if (caseSensitiveDep.Equals(deps[i], StringComparison.OrdinalIgnoreCase))
-                        {
-                            deps[i] = caseSensitiveDep;
-                            found = true;
-                        }
+                        deps[i] = caseSensitiveDep;
+                        found = true;
                     }
 
                     if (!found)

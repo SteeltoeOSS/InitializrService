@@ -16,12 +16,6 @@ namespace Steeltoe.InitializrApi.Configuration
     public class UiConfigService : InitializrApiServiceBase, IUiConfigService
     {
         /* ----------------------------------------------------------------- *
-         * fields                                                            *
-         * ----------------------------------------------------------------- */
-
-        private readonly UiConfig _uiConfig;
-
-        /* ----------------------------------------------------------------- *
          * constructors                                                      *
          * ----------------------------------------------------------------- */
 
@@ -37,7 +31,7 @@ namespace Steeltoe.InitializrApi.Configuration
             ILogger<UiConfigService> logger)
             : base(logger)
         {
-            _uiConfig = configuration.Value;
+            UiConfig = configuration.Value;
             Logger.LogInformation(
                 "Config Server: uri={ConfigServer},env={Environment},label={Label}",
                 settings.Value.Uri,
@@ -46,19 +40,10 @@ namespace Steeltoe.InitializrApi.Configuration
         }
 
         /* ----------------------------------------------------------------- *
-         * methods                                                           *
+         * properties                                                        *
          * ----------------------------------------------------------------- */
 
-        /// <inheritdoc />
-        public void Initialize()
-        {
-            Logger.LogInformation("Initializing Initializr configuration");
-        }
-
         /// <inheritdoc/>
-        public UiConfig GetUiConfig()
-        {
-            return _uiConfig;
-        }
+        public UiConfig UiConfig { get; }
     }
 }

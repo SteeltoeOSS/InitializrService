@@ -27,7 +27,7 @@ namespace Steeltoe.InitializrApi.Controllers
 
         private readonly InitializrApiOptions _apiOptions;
 
-        private readonly IUiConfigService _configService;
+        private readonly IUiConfigService _uiConfigService;
 
         /* ----------------------------------------------------------------- *
          * constructors                                                      *
@@ -37,16 +37,16 @@ namespace Steeltoe.InitializrApi.Controllers
         /// Initializes a new instance of the <see cref="RootController"/> class.
         /// </summary>
         /// <param name="options">Injected Initializr options.</param>
-        /// <param name="configService">Injected Initializr configuration service.</param>
+        /// <param name="uiConfigService">Injected Initializr configuration service.</param>
         /// <param name="logger">Injected logger.</param>
         public RootController(
             IOptions<InitializrApiOptions> options,
-            IUiConfigService configService,
+            IUiConfigService uiConfigService,
             ILogger<RootController> logger)
             : base(logger)
         {
             _apiOptions = options.Value;
-            _configService = configService;
+            _uiConfigService = uiConfigService;
         }
 
         /* ----------------------------------------------------------------- *
@@ -61,7 +61,7 @@ namespace Steeltoe.InitializrApi.Controllers
         public IActionResult GetHelp()
         {
             var help = new List<string>();
-            if (!(_apiOptions?.Logo is null))
+            if (_apiOptions?.Logo is not null)
             {
                 try
                 {
@@ -79,7 +79,7 @@ namespace Steeltoe.InitializrApi.Controllers
 
             help.Add(" :: Steeltoe Initializr ::  https://start.steeltoe.io");
             help.Add(string.Empty);
-            var uiConfig = _configService.GetUiConfig();
+            var uiConfig = _uiConfigService.UiConfig;
             help.Add("This service generates quickstart projects that can be easily customized.");
             help.Add("Possible customizations include a project's dependencies and .NET target framework.");
             help.Add(string.Empty);

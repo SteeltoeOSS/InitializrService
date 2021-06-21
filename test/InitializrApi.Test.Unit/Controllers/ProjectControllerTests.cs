@@ -188,7 +188,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
                 _generator ??= new TestProjectGenerator();
 
                 var configurationService = new Mock<IUiConfigService>();
-                configurationService.Setup(svc => svc.GetUiConfig()).Returns(_uiConfig);
+                configurationService.Setup(svc => svc.UiConfig).Returns(_uiConfig);
                 var logger = new NullLogger<ProjectController>();
                 var projectController = new ProjectController(configurationService.Object, _generator, logger)
                 {

@@ -19,7 +19,7 @@ namespace Steeltoe.InitializrApi.Controllers
          * fields                                                            *
          * ----------------------------------------------------------------- */
 
-        private readonly IUiConfigService _configService;
+        private readonly IUiConfigService _uiConfigService;
 
         /* ----------------------------------------------------------------- *
          * constructors                                                      *
@@ -28,14 +28,14 @@ namespace Steeltoe.InitializrApi.Controllers
         /// <summary>
         /// Initializes a new instance of the <see cref="UiConfigController"/> class.
         /// </summary>
-        /// <param name="configService">Injected configuration repository.</param>
+        /// <param name="uiConfigService">Injected configuration repository.</param>
         /// <param name="logger">Injected logger.</param>
         public UiConfigController(
-            IUiConfigService configService,
+            IUiConfigService uiConfigService,
             ILogger<UiConfigController> logger)
             : base(logger)
         {
-            _configService = configService;
+            _uiConfigService = uiConfigService;
         }
 
         /* ----------------------------------------------------------------- *
@@ -49,7 +49,7 @@ namespace Steeltoe.InitializrApi.Controllers
         [HttpGet]
         public IActionResult GetUiConfig()
         {
-            return Ok(_configService.GetUiConfig());
+            return Ok(_uiConfigService.UiConfig);
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace Steeltoe.InitializrApi.Controllers
         [Route("steeltoeVersions")]
         public IActionResult GetSteeltoeVersions()
         {
-            return Ok(_configService.GetUiConfig().SteeltoeVersion.Values);
+            return Ok(_uiConfigService.UiConfig.SteeltoeVersion.Values);
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace Steeltoe.InitializrApi.Controllers
         [Route("dotNetFrameworks")]
         public IActionResult GetDotNetFrameworks()
         {
-            return Ok(_configService.GetUiConfig().DotNetFramework.Values);
+            return Ok(_uiConfigService.UiConfig.DotNetFramework.Values);
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace Steeltoe.InitializrApi.Controllers
         [Route("dotNetTemplates")]
         public IActionResult GetDotNetTemplates()
         {
-            return Ok(_configService.GetUiConfig().DotNetTemplate.Values);
+            return Ok(_uiConfigService.UiConfig.DotNetTemplate.Values);
         }
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace Steeltoe.InitializrApi.Controllers
         [Route("languages")]
         public IActionResult GetLanguages()
         {
-            return Ok(_configService.GetUiConfig().Language.Values);
+            return Ok(_uiConfigService.UiConfig.Language.Values);
         }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace Steeltoe.InitializrApi.Controllers
         [Route("archiveTypes")]
         public IActionResult GetArchiveTypes()
         {
-            return Ok(_configService.GetUiConfig().Packaging.Values);
+            return Ok(_uiConfigService.UiConfig.Packaging.Values);
         }
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace Steeltoe.InitializrApi.Controllers
         [Route("dependencies")]
         public IActionResult GetDependencies()
         {
-            return Ok(_configService.GetUiConfig().Dependencies.Values);
+            return Ok(_uiConfigService.UiConfig.Dependencies.Values);
         }
     }
 }

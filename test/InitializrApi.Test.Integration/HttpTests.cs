@@ -4,9 +4,7 @@ using System.Net.Http.Json;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.Extensions.DependencyInjection;
 using Steeltoe.InitializrApi.Models;
-using Steeltoe.InitializrApi.Services;
 using Xunit;
 
 namespace Steeltoe.InitializrApi.Test.Integration
@@ -189,7 +187,6 @@ namespace Steeltoe.InitializrApi.Test.Integration
 
         public HttpTests(WebApplicationFactory<Startup> fixture)
         {
-            fixture.Services.GetRequiredService<IUiConfigService>().Initialize();
             HttpClient = fixture.CreateClient();
         }
     }

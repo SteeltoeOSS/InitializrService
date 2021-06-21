@@ -117,16 +117,22 @@ namespace Steeltoe.InitializrApi.Controllers
             }
 
             Logger.LogDebug("Project specification: {ProjectSpec}", normalizedSpec);
-            var projectArchive = await _projectGenerator.GenerateProjectArchive(normalizedSpec);
-            if (projectArchive is null)
+            try
             {
-                return NotFound($"No project template for spec: {normalizedSpec}");
+                var projectPackage = await _projectGenerator.GenerateProjectArchive(normalizedSpec);
+                return File(
+                    projectPackage,
+                    $"application/zip",
+                    $"{normalizedSpec.Name}.zip");
             }
-
-            return File(
-                projectArchive,
-                $"application/zip",
-                $"{normalizedSpec.Name}.zip");
+            catch (NoProjectForSpecException e)
+            {
+                return NotFound(e.Message);
+            }
+            catch (InvalidSpecException e)
+            {
+                return BadRequest(e.Message);
+            }
         }
     }
 }

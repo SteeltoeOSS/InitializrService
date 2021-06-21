@@ -14,6 +14,7 @@ using Steeltoe.InitializrApi.Generators;
 using Steeltoe.InitializrApi.Models;
 using Steeltoe.InitializrApi.Services;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Steeltoe.InitializrApi
@@ -48,14 +49,22 @@ namespace Steeltoe.InitializrApi
         {
             services.AddOptions();
             services.Configure<InitializrApiOptions>(Configuration.GetSection(InitializrApiOptions.InitializrApi));
-            var options = Configuration.GetSection(InitializrApiOptions.InitializrApi).Get<InitializrApiOptions>();
-            _netCoreToolServiceUri = options?.NetCoreToolServiceUri;
-
-            if (_netCoreToolServiceUri is null)
+            InitializrApiOptions options;
+            try
             {
-                throw new Exception("Net Core Tool Service URI is not configured");
+                options = Configuration.GetSection(InitializrApiOptions.InitializrApi).Get<InitializrApiOptions>();
+            }
+            catch (Exception e)
+            {
+                if (e.InnerException is KeyNotFoundException)
+                {
+                    throw new ArgumentException("InitializrApi configuration is missing or errant");
+                }
+
+                throw;
             }
 
+            _netCoreToolServiceUri = options?.NetCoreToolServiceUri;
             if (options?.UiConfigPath is null)
             {
                 services.ConfigureConfigServerClientOptions(Configuration);

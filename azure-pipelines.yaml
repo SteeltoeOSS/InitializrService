@@ -51,8 +51,7 @@ stages:
             displayName: dotnet test
             inputs:
               command: test
-              arguments: --no-build
-#              arguments: --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+              arguments: --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
 #          - task: DotNetCoreCLI@2
 #            displayName: dotnet publish
 #            inputs:

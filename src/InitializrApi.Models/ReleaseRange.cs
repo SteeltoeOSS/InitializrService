@@ -189,9 +189,6 @@ namespace Steeltoe.InitializrApi.Models
         {
             private readonly string _representation;
 
-            // ReSharper disable once NotAccessedField.Local
-            private readonly string _prefix;
-
             private readonly Version _version;
 
             private readonly int _releaseCandidate;
@@ -217,12 +214,7 @@ namespace Steeltoe.InitializrApi.Models
                             throw new ArgumentException($"Release range must contain 1 or 2 versions: '{version}'");
                         }
 
-                        _prefix = version.Substring(0, prefixEnd);
                         version = version.Substring(prefixEnd);
-                    }
-                    else
-                    {
-                        _prefix = string.Empty;
                     }
 
                     const string rcDelimeter = "-rc";

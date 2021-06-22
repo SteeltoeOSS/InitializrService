@@ -43,7 +43,7 @@ namespace Steeltoe.InitializrApi.Configuration
          * properties                                                        *
          * ----------------------------------------------------------------- */
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IUiConfigService"/>
         public UiConfig UiConfig { get; }
     }
 }

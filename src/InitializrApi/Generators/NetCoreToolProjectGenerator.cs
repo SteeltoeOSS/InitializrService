@@ -46,6 +46,8 @@ namespace Steeltoe.InitializrApi.Generators
                 .Append('&')
                 .Append("options=")
                 .Append("no-restore")
+                .Append(",steeltoe=").Append(spec.SteeltoeVersion)
+                .Append(",framework=").Append(spec.DotNetFramework)
                 .Append(",output=").Append(spec.Name);
             if (spec.Dependencies is not null)
             {

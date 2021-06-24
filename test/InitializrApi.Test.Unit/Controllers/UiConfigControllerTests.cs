@@ -25,7 +25,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
             // Arrange
             var uiConfig = new UiConfig();
             var configService = new Mock<IUiConfigService>();
-            configService.Setup(repo => repo.GetUiConfig()).Returns(uiConfig);
+            configService.Setup(svc => svc.UiConfig).Returns(uiConfig);
             var controller = new UiConfigController(configService.Object, new NullLogger<UiConfigController>());
 
             // Act

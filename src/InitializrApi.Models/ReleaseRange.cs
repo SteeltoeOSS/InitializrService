@@ -116,7 +116,7 @@ namespace Steeltoe.InitializrApi.Models
                 return false;
             }
 
-            if (releaseVersion == _start && !_startInclusive)
+            if (releaseVersion.Equals(_start) && !_startInclusive)
             {
                 return false;
             }
@@ -131,7 +131,7 @@ namespace Steeltoe.InitializrApi.Models
                 return false;
             }
 
-            if (releaseVersion == _stop && !_stopInclusive)
+            if (releaseVersion.Equals(_stop) && !_stopInclusive)
             {
                 return false;
             }
@@ -185,12 +185,9 @@ namespace Steeltoe.InitializrApi.Models
         /// <summary>
         /// Similar to <see cref="Version"/> but with added support for prefixes, e.g. netcoreapp2.1.
         /// </summary>
-        public class ReleaseVersion
+        public sealed class ReleaseVersion
         {
             private readonly string _representation;
-
-            // ReSharper disable once NotAccessedField.Local
-            private readonly string _prefix;
 
             private readonly Version _version;
 
@@ -217,12 +214,7 @@ namespace Steeltoe.InitializrApi.Models
                             throw new ArgumentException($"Release range must contain 1 or 2 versions: '{version}'");
                         }
 
-                        _prefix = version.Substring(0, prefixEnd);
                         version = version.Substring(prefixEnd);
-                    }
-                    else
-                    {
-                        _prefix = string.Empty;
                     }
 
                     const string rcDelimeter = "-rc";
@@ -265,28 +257,6 @@ namespace Steeltoe.InitializrApi.Models
             public static bool operator >(ReleaseVersion a, ReleaseVersion b)
             {
                 return CompareTo(a, b) > 0;
-            }
-
-            /// <summary>
-            /// Returns <see cref="CompareTo"/> == 0.
-            /// </summary>
-            /// <param name="a">Left operand.</param>
-            /// <param name="b">Right operand.</param>
-            /// <returns>a == b.</returns>
-            public static bool operator ==(ReleaseVersion a, ReleaseVersion b)
-            {
-                return CompareTo(a, b) == 0;
-            }
-
-            /// <summary>
-            /// Returns <see cref="CompareTo"/> != 0.
-            /// </summary>
-            /// <param name="a">Left operand.</param>
-            /// <param name="b">Right operand.</param>
-            /// <returns>a != b.</returns>
-            public static bool operator !=(ReleaseVersion a, ReleaseVersion b)
-            {
-                return CompareTo(a, b) != 0;
             }
 
             /// <summary>
@@ -340,7 +310,7 @@ namespace Steeltoe.InitializrApi.Models
             /// </summary>
             /// <param name="other">Other version.</param>
             /// <returns>this == other.</returns>
-            protected bool Equals(ReleaseVersion other)
+            private bool Equals(ReleaseVersion other)
             {
                 return _representation == other._representation;
             }

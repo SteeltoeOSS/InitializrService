@@ -103,7 +103,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
                 }
             };
             var configService = new Mock<IUiConfigService>();
-            configService.Setup(repo => repo.GetUiConfig()).Returns(config);
+            configService.Setup(svc => svc.UiConfig).Returns(config);
             var controller = new RootController(initializrCfg.Object, configService.Object,
                 new NullLogger<RootController>());
 

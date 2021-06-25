@@ -53,7 +53,6 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
             projectPackage.Should().Contain("namespace=my namespace");
             projectPackage.Should().Contain("steeltoe version=my steeltoe version");
             projectPackage.Should().Contain("dotnet framework=my dotnet framework");
-            projectPackage.Should().Contain("dotnet template=my dotnet template");
             projectPackage.Should().Contain("language=my language");
             projectPackage.Should().Contain("packaging=myarchive");
             projectPackage.Should().Contain("dependencies=<na>");

@@ -33,15 +33,22 @@ namespace Steeltoe.InitializrApi.Test.Unit.Models
         }
 
         [Fact]
-        public void Application_Should_Be_Assumed()
+        public void Application_Should_Be_Default_to_Name()
         {
             // Arrange
-            var spec = new ProjectSpec { Packaging = "foo" };
+            var spec = new ProjectSpec();
 
             // Act
+            spec.Name = "foo";
 
             // Assert
-            spec.Packaging.Should().Be("foo");
+            spec.Application.Should().Be("foo");
+
+            // Act
+            spec.Application = "bar";
+
+            // Assert
+            spec.Application.Should().Be("bar");
         }
 
         [Fact]

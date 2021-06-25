@@ -12,6 +12,11 @@ namespace Steeltoe.InitializrApi.Models
     public sealed class ProjectSpec
     {
         /* ----------------------------------------------------------------- *
+         * fields                                                             *
+         * ----------------------------------------------------------------- */
+        private string _application;
+
+        /* ----------------------------------------------------------------- *
          * properties                                                        *
          * ----------------------------------------------------------------- */
 
@@ -21,14 +26,18 @@ namespace Steeltoe.InitializrApi.Models
         public string Name { get; set; }
 
         /// <summary>
+        /// Gets or sets the project application.
+        /// </summary>
+        public string Application
+        {
+            get => _application ?? Name;
+            set => _application = value;
+        }
+
+        /// <summary>
         /// Gets or sets the project description.
         /// </summary>
         public string Description { get; set; }
-
-        /// <summary>
-        /// Gets or sets the project application.
-        /// </summary>
-        public string Application { get; set; }
 
         /// <summary>
         /// Gets or sets the Steeltoe version.

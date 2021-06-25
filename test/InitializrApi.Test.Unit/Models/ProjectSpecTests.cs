@@ -25,7 +25,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Models
             // Assert
             spec.Name.Should().BeNull();
             spec.Description.Should().BeNull();
-            spec.Application.Should().BeNull();
+            spec.Namespace.Should().BeNull();
             spec.SteeltoeVersion.Should().BeNull();
             spec.DotNetFramework.Should().BeNull();
             spec.Language.Should().BeNull();
@@ -42,13 +42,13 @@ namespace Steeltoe.InitializrApi.Test.Unit.Models
             spec.Name = "foo";
 
             // Assert
-            spec.Application.Should().Be("foo");
+            spec.Namespace.Should().Be("foo");
 
             // Act
-            spec.Application = "bar";
+            spec.Namespace = "bar";
 
             // Assert
-            spec.Application.Should().Be("bar");
+            spec.Namespace.Should().Be("bar");
         }
 
         [Fact]
@@ -102,7 +102,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Models
                 "[steeltoe=mysteeltoeversion,framework=myframework,lang=mylanguage,pkg=mypackaging]");
 
             // Arrange
-            spec.Application = "myapp";
+            spec.Namespace = "myapp";
 
             // Act
             s = spec.ToString();

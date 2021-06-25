@@ -25,11 +25,9 @@ namespace Steeltoe.InitializrApi.Test.Unit.Models
             // Assert
             uiConfig.Name.Should().BeNull();
             uiConfig.Namespace.Should().BeNull();
-            uiConfig.ApplicationName.Should().BeNull();
             uiConfig.Description.Should().BeNull();
             uiConfig.SteeltoeVersion.Should().BeNull();
             uiConfig.DotNetFramework.Should().BeNull();
-            uiConfig.DotNetTemplate.Should().BeNull();
             uiConfig.Language.Should().BeNull();
             uiConfig.Packaging.Should().BeNull();
             uiConfig.Dependencies.Should().BeNull();

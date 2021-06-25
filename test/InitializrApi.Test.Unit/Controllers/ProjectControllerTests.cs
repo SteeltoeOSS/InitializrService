@@ -34,7 +34,6 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
                 Namespace = new UiConfig.Text { Default = "my namespace" },
                 SteeltoeVersion = new UiConfig.SingleSelectList { Default = "my steeltoe version" },
                 DotNetFramework = new UiConfig.SingleSelectList { Default = "my dotnet framework" },
-                DotNetTemplate = new UiConfig.SingleSelectList { Default = "my dotnet template" },
                 Language = new UiConfig.SingleSelectList { Default = "my language" },
                 Packaging = new UiConfig.SingleSelectList { Default = "myarchive" },
             };
@@ -49,8 +48,8 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
 
             // Assert
             projectPackage.Should().Contain("project name=my project name");
-            projectPackage.Should().Contain("description=my description");
             projectPackage.Should().Contain("namespace=my namespace");
+            projectPackage.Should().Contain("description=my description");
             projectPackage.Should().Contain("steeltoe version=my steeltoe version");
             projectPackage.Should().Contain("dotnet framework=my dotnet framework");
             projectPackage.Should().Contain("language=my language");
@@ -227,7 +226,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
                 buffer.Append(newline);
                 buffer.Append("description=").Append(spec.Description ?? "<na>" );
                 buffer.Append(newline);
-                buffer.Append("namespace=").Append(spec.Application ?? "<na>" );
+                buffer.Append("namespace=").Append(spec.Namespace ?? "<na>" );
                 buffer.Append(newline);
                 buffer.Append("steeltoe version=").Append(spec.SteeltoeVersion ?? "<na>" );
                 buffer.Append(newline);

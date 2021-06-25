@@ -12,6 +12,11 @@ namespace Steeltoe.InitializrApi.Models
     public sealed class ProjectSpec
     {
         /* ----------------------------------------------------------------- *
+         * fields                                                             *
+         * ----------------------------------------------------------------- */
+        private string _application;
+
+        /* ----------------------------------------------------------------- *
          * properties                                                        *
          * ----------------------------------------------------------------- */
 
@@ -21,14 +26,18 @@ namespace Steeltoe.InitializrApi.Models
         public string Name { get; set; }
 
         /// <summary>
+        /// Gets or sets the project application.
+        /// </summary>
+        public string Application
+        {
+            get => _application ?? Name;
+            set => _application = value;
+        }
+
+        /// <summary>
         /// Gets or sets the project description.
         /// </summary>
         public string Description { get; set; }
-
-        /// <summary>
-        /// Gets or sets the project namespace.
-        /// </summary>
-        public string Namespace { get; set; }
 
         /// <summary>
         /// Gets or sets the Steeltoe version.
@@ -39,11 +48,6 @@ namespace Steeltoe.InitializrApi.Models
         /// Gets or sets the DotNet framework ID.
         /// </summary>
         public string DotNetFramework { get; set; }
-
-        /// <summary>
-        /// Gets or sets the DotNet template ID.
-        /// </summary>
-        public string DotNetTemplate { get; set; }
 
         /// <summary>
         /// Gets or sets the programming language ID.
@@ -75,45 +79,39 @@ namespace Steeltoe.InitializrApi.Models
                 delim = ",";
             }
 
-            if (Description != null)
+            if (Application != null)
             {
-                buf.Append(delim).Append("description=").Append(Description);
+                buf.Append(delim).Append("app=").Append(Application);
                 delim = ",";
             }
 
-            if (Namespace != null)
+            if (Description != null)
             {
-                buf.Append(delim).Append("namespace=").Append(Namespace);
+                buf.Append(delim).Append("desc=").Append(Description);
                 delim = ",";
             }
 
             if (SteeltoeVersion != null)
             {
-                buf.Append(delim).Append("steeltoeVersion=").Append(SteeltoeVersion);
+                buf.Append(delim).Append("steeltoe=").Append(SteeltoeVersion);
                 delim = ",";
             }
 
             if (DotNetFramework != null)
             {
-                buf.Append(delim).Append("dotNetFramework=").Append(DotNetFramework);
-                delim = ",";
-            }
-
-            if (DotNetTemplate != null)
-            {
-                buf.Append(delim).Append("dotNetTemplate=").Append(DotNetTemplate);
+                buf.Append(delim).Append("framework=").Append(DotNetFramework);
                 delim = ",";
             }
 
             if (Language != null)
             {
-                buf.Append(delim).Append("language=").Append(Language);
+                buf.Append(delim).Append("lang=").Append(Language);
                 delim = ",";
             }
 
             if (Packaging != null)
             {
-                buf.Append(delim).Append("packaging=").Append(Packaging);
+                buf.Append(delim).Append("pkg=").Append(Packaging);
             }
 
             if (Dependencies != null)

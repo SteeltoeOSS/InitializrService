@@ -3,7 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using FluentAssertions;
-using Steeltoe.InitializrApi.Models;
+using Steeltoe.InitializrApi.Config;
 using Xunit;
 
 namespace Steeltoe.InitializrApi.Test.Unit.Models

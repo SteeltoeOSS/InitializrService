@@ -5,7 +5,7 @@
 using System;
 using System.Net;
 using FluentAssertions;
-using Steeltoe.InitializrApi.Models;
+using Steeltoe.InitializrApi.Config;
 using Steeltoe.InitializrApi.Utilities;
 using Xunit;
 

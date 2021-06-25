@@ -45,10 +45,10 @@ namespace Steeltoe.InitializrApi.Generators
                 .Append("packaging=").Append(spec.Packaging)
                 .Append('&')
                 .Append("options=")
-                .Append("no-restore")
+                .Append("output=").Append(spec.Application)
+                .Append(",description=").Append(spec.Description)
                 .Append(",steeltoe=").Append(spec.SteeltoeVersion)
-                .Append(",framework=").Append(spec.DotNetFramework)
-                .Append(",output=").Append(spec.Name);
+                .Append(",framework=").Append(spec.DotNetFramework);
             if (spec.Dependencies is not null)
             {
                 foreach (var dependency in spec.Dependencies.Split(','))
@@ -83,6 +83,8 @@ namespace Steeltoe.InitializrApi.Generators
                     }
                 }
             }
+
+            projectUrl.Append(",no-restore");
 
             var response = await Client.GetAsync(projectUrl.ToString());
             var buffer = new MemoryStream();

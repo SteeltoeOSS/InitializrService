@@ -65,11 +65,10 @@ namespace Steeltoe.InitializrApi.Controllers
             var normalizedSpec = new ProjectSpec()
             {
                 Name = spec.Name ?? defaults?.Name?.Default,
+                Application = spec.Application ?? defaults?.Namespace?.Default,
                 Description = spec.Description ?? defaults?.Description?.Default,
-                Namespace = spec.Namespace ?? defaults?.Namespace?.Default,
                 SteeltoeVersion = spec.SteeltoeVersion ?? defaults?.SteeltoeVersion?.Default,
                 DotNetFramework = spec.DotNetFramework ?? defaults?.DotNetFramework?.Default,
-                DotNetTemplate = spec.DotNetTemplate ?? defaults?.DotNetTemplate?.Default,
                 Language = spec.Language ?? defaults?.Language?.Default,
                 Packaging = spec.Packaging ?? defaults?.Packaging?.Default,
                 Dependencies = spec.Dependencies ?? defaults?.Dependencies?.Default,

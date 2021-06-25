@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using Moq;
+using Steeltoe.InitializrApi.Config;
 using Steeltoe.InitializrApi.Controllers;
-using Steeltoe.InitializrApi.Models;
 using Steeltoe.InitializrApi.Services;
 using Xunit;
 

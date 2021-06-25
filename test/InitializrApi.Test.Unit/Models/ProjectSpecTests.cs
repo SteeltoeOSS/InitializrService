@@ -25,10 +25,9 @@ namespace Steeltoe.InitializrApi.Test.Unit.Models
             // Assert
             spec.Name.Should().BeNull();
             spec.Description.Should().BeNull();
-            spec.Namespace.Should().BeNull();
+            spec.Application.Should().BeNull();
             spec.SteeltoeVersion.Should().BeNull();
             spec.DotNetFramework.Should().BeNull();
-            spec.DotNetTemplate.Should().BeNull();
             spec.Language.Should().BeNull();
             spec.Packaging.Should().BeNull();
         }
@@ -64,7 +63,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Models
             s = spec.ToString();
 
             // Assert
-            s.Should().Be("[packaging=mypackaging]");
+            s.Should().Be("[pkg=mypackaging]");
 
             // Arrange
             spec.Language = "mylanguage";
@@ -73,16 +72,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Models
             s = spec.ToString();
 
             // Assert
-            s.Should().Be("[language=mylanguage,packaging=mypackaging]");
-
-            // Arrange
-            spec.DotNetTemplate = "mytemplate";
-
-            // Act
-            s = spec.ToString();
-
-            // Assert
-            s.Should().Be("[dotNetTemplate=mytemplate,language=mylanguage,packaging=mypackaging]");
+            s.Should().Be("[lang=mylanguage,pkg=mypackaging]");
 
             // Arrange
             spec.DotNetFramework = "myframework";
@@ -92,7 +82,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Models
 
             // Assert
             s.Should().Be(
-                "[dotNetFramework=myframework,dotNetTemplate=mytemplate,language=mylanguage,packaging=mypackaging]");
+                "[framework=myframework,lang=mylanguage,pkg=mypackaging]");
 
             // Arrange
             spec.SteeltoeVersion = "mysteeltoeversion";
@@ -102,17 +92,17 @@ namespace Steeltoe.InitializrApi.Test.Unit.Models
 
             // Assert
             s.Should().Be(
-                "[steeltoeVersion=mysteeltoeversion,dotNetFramework=myframework,dotNetTemplate=mytemplate,language=mylanguage,packaging=mypackaging]");
+                "[steeltoe=mysteeltoeversion,framework=myframework,lang=mylanguage,pkg=mypackaging]");
 
             // Arrange
-            spec.Namespace = "mynamespace";
+            spec.Application = "myapp";
 
             // Act
             s = spec.ToString();
 
             // Assert
             s.Should().Be(
-                "[namespace=mynamespace,steeltoeVersion=mysteeltoeversion,dotNetFramework=myframework,dotNetTemplate=mytemplate,language=mylanguage,packaging=mypackaging]");
+                "[app=myapp,steeltoe=mysteeltoeversion,framework=myframework,lang=mylanguage,pkg=mypackaging]");
 
             // Arrange
             spec.Description = "mydesc";
@@ -122,7 +112,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Models
 
             // Assert
             s.Should().Be(
-                "[description=mydesc,namespace=mynamespace,steeltoeVersion=mysteeltoeversion,dotNetFramework=myframework,dotNetTemplate=mytemplate,language=mylanguage,packaging=mypackaging]");
+                "[app=myapp,desc=mydesc,steeltoe=mysteeltoeversion,framework=myframework,lang=mylanguage,pkg=mypackaging]");
 
             // Arrange
             spec.Name = "myname";
@@ -132,7 +122,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Models
 
             // Assert
             s.Should().Be(
-                "[name=myname,description=mydesc,namespace=mynamespace,steeltoeVersion=mysteeltoeversion,dotNetFramework=myframework,dotNetTemplate=mytemplate,language=mylanguage,packaging=mypackaging]");
+                "[name=myname,app=myapp,desc=mydesc,steeltoe=mysteeltoeversion,framework=myframework,lang=mylanguage,pkg=mypackaging]");
         }
 
         /* ----------------------------------------------------------------- *

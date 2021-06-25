@@ -228,13 +228,11 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
                 buffer.Append(newline);
                 buffer.Append("description=").Append(spec.Description ?? "<na>" );
                 buffer.Append(newline);
-                buffer.Append("namespace=").Append(spec.Namespace ?? "<na>" );
+                buffer.Append("namespace=").Append(spec.Application ?? "<na>" );
                 buffer.Append(newline);
                 buffer.Append("steeltoe version=").Append(spec.SteeltoeVersion ?? "<na>" );
                 buffer.Append(newline);
                 buffer.Append("dotnet framework=").Append(spec.DotNetFramework ?? "<na>" );
-                buffer.Append(newline);
-                buffer.Append("dotnet template=").Append(spec.DotNetTemplate ?? "<na>" );
                 buffer.Append(newline);
                 buffer.Append("language=").Append(spec.Language ?? "<na>" );
                 buffer.Append(newline);

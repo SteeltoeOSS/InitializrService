@@ -4,7 +4,7 @@
 
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Steeltoe.InitializrApi.Models;
+using Steeltoe.InitializrApi.Config;
 using Steeltoe.InitializrApi.Services;
 using Steeltoe.InitializrApi.Utilities;
 using System;

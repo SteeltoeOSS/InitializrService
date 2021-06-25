@@ -67,7 +67,7 @@ stages:
             displayName: dotnet pack
             inputs:
               command: pack
-              packagesToPack: src/InitializrApi.Models
+              packagesToPack: src/InitializrApi.Config
               arguments: --no-build
           - task: Powershell@2
             displayName: Sign NuGets

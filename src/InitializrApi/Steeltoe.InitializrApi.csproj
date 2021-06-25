@@ -4,7 +4,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\InitializrApi.Models\Steeltoe.InitializrApi.Models.csproj" />
+    <ProjectReference Include="..\InitializrApi.Config\Steeltoe.InitializrApi.Config.csproj" />
   </ItemGroup>
 
   <ItemGroup>

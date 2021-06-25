@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
+using Steeltoe.InitializrApi.Config;
 using Steeltoe.InitializrApi.Controllers;
 using Steeltoe.InitializrApi.Models;
 using Steeltoe.InitializrApi.Services;

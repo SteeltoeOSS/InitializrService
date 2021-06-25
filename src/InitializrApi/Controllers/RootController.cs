@@ -88,12 +88,10 @@ namespace Steeltoe.InitializrApi.Controllers
             {
                 new () { "Parameter", "Description", "Default value" },
                 new () { "name", "project name", uiConfig.Name.Default },
-                new () { "applicationName", "application name", uiConfig.ApplicationName.Default },
                 new () { "namespace", "namespace", uiConfig.Namespace.Default },
                 new () { "description", "project description", uiConfig.Description.Default },
                 new () { "steeltoeVersion", "Steeltoe version", uiConfig.SteeltoeVersion.Default },
                 new () { "dotNetFramework", "target .NET framework", uiConfig.DotNetFramework.Default },
-                new () { "dotNetTemplate", ".NET template", uiConfig.DotNetTemplate.Default },
                 new () { "language", "programming language", uiConfig.Language.Default },
                 new () { "packaging", "project packaging", uiConfig.Packaging.Default },
             };

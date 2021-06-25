@@ -14,7 +14,7 @@ namespace Steeltoe.InitializrApi.Models
         /* ----------------------------------------------------------------- *
          * fields                                                             *
          * ----------------------------------------------------------------- */
-        private string _application;
+        private string _namespace;
 
         /* ----------------------------------------------------------------- *
          * properties                                                        *
@@ -26,12 +26,12 @@ namespace Steeltoe.InitializrApi.Models
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the project application.
+        /// Gets or sets the project namespace.
         /// </summary>
-        public string Application
+        public string Namespace
         {
-            get => _application ?? Name;
-            set => _application = value;
+            get => _namespace ?? Name;
+            set => _namespace = value;
         }
 
         /// <summary>
@@ -79,9 +79,9 @@ namespace Steeltoe.InitializrApi.Models
                 delim = ",";
             }
 
-            if (Application != null)
+            if (Namespace != null)
             {
-                buf.Append(delim).Append("app=").Append(Application);
+                buf.Append(delim).Append("app=").Append(Namespace);
                 delim = ",";
             }
 

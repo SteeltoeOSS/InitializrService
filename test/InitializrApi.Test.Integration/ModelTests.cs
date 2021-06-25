@@ -27,11 +27,9 @@ namespace Steeltoe.InitializrApi.Test.Integration
             var uiConfig = Serializer.DeserializeJson<UiConfig>(bits);
             uiConfig.SteeltoeVersion.Default.Should().Be("3.0.2");
             uiConfig.DotNetFramework.Default.Should().Be("netcoreapp3.1");
-            uiConfig.DotNetTemplate.Default.Should().Be("webapi");
             uiConfig.Language.Default.Should().Be("csharp");
             uiConfig.Name.Default.Should().Be("Dev");
             uiConfig.Namespace.Default.Should().Be("DevNamespace");
-            uiConfig.ApplicationName.Default.Should().Be("DevApplication");
             uiConfig.Description.Default.Should().Be("Development project application");
             uiConfig.Dependencies.Values[0].Name.Should().Be("Focus Group");
             uiConfig.Dependencies.Values[0].Values[0].Name.Should().Be("Focus Dependency");

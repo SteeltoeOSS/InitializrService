@@ -3,17 +3,13 @@
     "type": "text",
     "default": "Sample"
   },
-  "applicationName": {
-    "type": "text",
-    "default": "SampleApplication"
-  },
   "namespace": {
     "type": "text",
-    "default": "Sample"
+    "default": "Sample.Namespace"
   },
   "description": {
     "type": "text",
-    "default": "Sample project application"
+    "default": "Sample application"
   },
   "steeltoeVersion": {
     "type": "single-select",

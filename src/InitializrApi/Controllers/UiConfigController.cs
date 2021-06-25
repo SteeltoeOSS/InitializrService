@@ -75,17 +75,6 @@ namespace Steeltoe.InitializrApi.Controllers
         }
 
         /// <summary>
-        /// Implements <c>GET dotNetTemplates</c>.
-        /// </summary>
-        /// <returns>Returns a <c>GET</c> result which, if is <see cref="OkObjectResult"/>, contains Initializr .NET templates.</returns>
-        [HttpGet]
-        [Route("dotNetTemplates")]
-        public IActionResult GetDotNetTemplates()
-        {
-            return Ok(_uiConfigService.UiConfig.DotNetTemplate.Values);
-        }
-
-        /// <summary>
         /// Implements <c>GET languages</c>.
         /// </summary>
         /// <returns>Returns a <c>GET</c> result which, if is <see cref="OkObjectResult"/>, contains Initializr languages.</returns>

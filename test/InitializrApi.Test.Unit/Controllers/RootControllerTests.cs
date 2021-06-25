@@ -33,10 +33,6 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
                 {
                     Default = "MyProject"
                 },
-                ApplicationName = new UiConfig.Text
-                {
-                    Default = "MyApplication"
-                },
                 Namespace = new UiConfig.Text
                 {
                     Default = "MyNamespace"
@@ -52,10 +48,6 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
                 DotNetFramework = new UiConfig.SingleSelectList
                 {
                     Default = "1.2"
-                },
-                DotNetTemplate = new UiConfig.SingleSelectList
-                {
-                    Default = "mytemplate"
                 },
                 Language = new UiConfig.SingleSelectList
                 {
@@ -119,12 +111,10 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
             help.Should().MatchRegex("Examples:");
             help.Should().MatchRegex(@"\|\s+Parameter\s+\|\s+Description\s+\|\s+Default value\s+\|");
             help.Should().MatchRegex(@"\|\s+name\s+\|\s+project name\s+\|\s+MyProject\s+\|");
-            help.Should().MatchRegex(@"\|\s+applicationName\s+\|\s+application name\s+\|\s+MyApplication\s+\|");
             help.Should().MatchRegex(@"\|\s+namespace\s+\|\s+namespace\s+\|\s+MyNamespace\s+\|");
             help.Should().MatchRegex(@"\|\s+description\s+\|\s+project description\s+\|\s+my description\s+\|");
             help.Should().MatchRegex(@"\|\s+steeltoeVersion\s+\|\s+Steeltoe version\s+\|\s+1.2.3\s+\|");
             help.Should().MatchRegex(@"\|\s+dotNetFramework\s+\|\s+target .NET framework\s+\|\s+1.2\s+\|");
-            help.Should().MatchRegex(@"\|\s+dotNetTemplate\s+\|\s+.NET template\s+\|\s+mytemplate\s+\|");
             help.Should().MatchRegex(@"\|\s+language\s+\|\s+programming language\s+\|\s+mylang\s+\|");
             help.Should().MatchRegex(@"\|\s+packaging\s+\|\s+project packaging\s+\|\s+mypkg\s+\|");
             help.Should().MatchRegex(@"\|\s+Id\s+\|\s+Description\s+\|\s+Required Steeltoe version\s+\|");

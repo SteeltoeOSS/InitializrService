@@ -52,18 +52,6 @@ namespace Steeltoe.InitializrApi.Test.Integration
         }
 
         [Fact]
-        public async Task Get_Config_DotNet_Templates_Should_Return_DotNet_Templates()
-        {
-            // Act
-            var response = await HttpClient.GetAsync(UiConfigEndpoint + "/dotNetTemplates");
-
-            // Assert
-            response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var templates = await response.Content.ReadFromJsonAsync<UiConfig.SelectItem[]>();
-            templates.Length.Should().BeGreaterThan(0);
-        }
-
-        [Fact]
         public async Task Get_Config_Languages_Should_Return_Languages()
         {
             // Act

@@ -45,7 +45,7 @@ namespace Steeltoe.InitializrApi.Generators
                 .Append("packaging=").Append(spec.Packaging)
                 .Append('&')
                 .Append("options=")
-                .Append("output=").Append(spec.Application)
+                .Append("output=").Append(spec.Namespace)
                 .Append(",description=").Append(spec.Description)
                 .Append(",steeltoe=").Append(spec.SteeltoeVersion)
                 .Append(",framework=").Append(spec.DotNetFramework);

@@ -19,11 +19,6 @@ namespace Steeltoe.InitializrApi.Config
         public Text Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the project application name.
-        /// </summary>
-        public Text ApplicationName { get; set; }
-
-        /// <summary>
         /// Gets or sets the project namespace.
         /// </summary>
         public Text Namespace { get; set; }
@@ -42,11 +37,6 @@ namespace Steeltoe.InitializrApi.Config
         /// Gets or sets the DotNet frameworks.
         /// </summary>
         public SingleSelectList DotNetFramework { get; set; }
-
-        /// <summary>
-        /// Gets or sets the DotNet template.
-        /// </summary>
-        public SingleSelectList DotNetTemplate { get; set; }
 
         /// <summary>
         /// Gets or sets the programming language.

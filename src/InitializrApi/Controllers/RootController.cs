@@ -22,7 +22,7 @@ namespace Steeltoe.InitializrApi.Controllers
     public class RootController : InitializrApiControllerBase
     {
         /* ----------------------------------------------------------------- *
-         * fields                                                            *
+         * fields                                                             *
          * ----------------------------------------------------------------- */
 
         private readonly InitializrApiOptions _apiOptions;

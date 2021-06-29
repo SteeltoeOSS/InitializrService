@@ -17,7 +17,7 @@ namespace Steeltoe.InitializrApi.Config.Utilities
     public class ReleaseRangeYamlConverter : IYamlTypeConverter
     {
         /* ----------------------------------------------------------------- *
-         * fields                                                            *
+         * fields                                                             *
          * ----------------------------------------------------------------- */
         private static readonly Type RangeType = typeof(ReleaseRange);
 

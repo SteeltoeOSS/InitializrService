@@ -22,7 +22,7 @@ namespace Steeltoe.InitializrApi.Controllers
     public class ProjectController : InitializrApiControllerBase
     {
         /* ----------------------------------------------------------------- *
-         * fields                                                            *
+         * fields                                                             *
          * ----------------------------------------------------------------- */
 
         private readonly IUiConfigService _uiConfigService;

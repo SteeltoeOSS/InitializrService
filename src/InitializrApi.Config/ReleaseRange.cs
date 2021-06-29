@@ -17,7 +17,7 @@ namespace Steeltoe.InitializrApi.Config
     public sealed class ReleaseRange
     {
         /* ----------------------------------------------------------------- *
-         * fields                                                            *
+         * fields                                                             *
          * ----------------------------------------------------------------- */
 
         private readonly ReleaseVersion _start;

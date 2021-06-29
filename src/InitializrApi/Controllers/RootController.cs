@@ -5,7 +5,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Steeltoe.InitializrApi.Models;
+using Steeltoe.InitializrApi.Config;
 using Steeltoe.InitializrApi.Services;
 using System;
 using System.Collections.Generic;

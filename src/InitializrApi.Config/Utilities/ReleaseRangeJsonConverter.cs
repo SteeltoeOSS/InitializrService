@@ -6,7 +6,7 @@ using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Steeltoe.InitializrApi.Models.Utilities
+namespace Steeltoe.InitializrApi.Config.Utilities
 {
     /// <summary>
     /// Deserializes a <see cref="ReleaseRange"/> in JSON expressions.

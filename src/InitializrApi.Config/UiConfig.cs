@@ -51,7 +51,7 @@ namespace Steeltoe.InitializrApi.Config
         /// <summary>
         /// Gets or sets the project dependencies.
         /// </summary>
-        public GroupList Dependencies { get; set; }
+        public GroupList Dependencies { get; set; } = new ();
 
         /// <summary>
         /// HTML form text data.
@@ -180,7 +180,7 @@ namespace Steeltoe.InitializrApi.Config
             /// <summary>
             /// Gets or sets the groups.
             /// </summary>
-            public Group[] Values { get; set; }
+            public Group[] Values { get; set; } = System.Array.Empty<Group>();
         }
     }
 }

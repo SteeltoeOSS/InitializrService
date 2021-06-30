@@ -32,8 +32,8 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
                 Name = new UiConfig.Text { Default = "my project name" },
                 Description = new UiConfig.Text { Default = "my description" },
                 Namespace = new UiConfig.Text { Default = "my namespace" },
-                SteeltoeVersion = new UiConfig.SingleSelectList { Default = "my steeltoe version" },
-                DotNetFramework = new UiConfig.SingleSelectList { Default = "my dotnet framework" },
+                SteeltoeVersion = new UiConfig.SingleSelectList { Default = "3.0.0" },
+                DotNetFramework = new UiConfig.SingleSelectList { Default = "netcoreapp3.1" },
                 Language = new UiConfig.SingleSelectList { Default = "my language" },
                 Packaging = new UiConfig.SingleSelectList { Default = "myarchive" },
             };
@@ -50,8 +50,8 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
             projectPackage.Should().Contain("project name=my project name");
             projectPackage.Should().Contain("namespace=my namespace");
             projectPackage.Should().Contain("description=my description");
-            projectPackage.Should().Contain("steeltoe version=my steeltoe version");
-            projectPackage.Should().Contain("dotnet framework=my dotnet framework");
+            projectPackage.Should().Contain("steeltoe version=3.0.0");
+            projectPackage.Should().Contain("dotnet framework=netcoreapp3.1");
             projectPackage.Should().Contain("language=my language");
             projectPackage.Should().Contain("packaging=myarchive");
             projectPackage.Should().Contain("dependencies=<na>");

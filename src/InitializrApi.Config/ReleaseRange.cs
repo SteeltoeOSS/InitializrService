@@ -2,13 +2,13 @@
 // The .NET Foundation licenses this file to you under the Apache 2.0 License.
 // See the LICENSE file in the project root for more information.
 
-using Steeltoe.InitializrApi.Models.Utilities;
+using Steeltoe.InitializrApi.Config.Utilities;
 using System;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 
-namespace Steeltoe.InitializrApi.Models
+namespace Steeltoe.InitializrApi.Config
 {
     /// <summary>
     /// A model of a release range.
@@ -17,7 +17,7 @@ namespace Steeltoe.InitializrApi.Models
     public sealed class ReleaseRange
     {
         /* ----------------------------------------------------------------- *
-         * fields                                                            *
+         * fields                                                             *
          * ----------------------------------------------------------------- */
 
         private readonly ReleaseVersion _start;

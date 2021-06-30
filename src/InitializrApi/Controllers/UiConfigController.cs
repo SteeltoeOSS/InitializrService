@@ -16,7 +16,7 @@ namespace Steeltoe.InitializrApi.Controllers
     public class UiConfigController : InitializrApiControllerBase
     {
         /* ----------------------------------------------------------------- *
-         * fields                                                            *
+         * fields                                                             *
          * ----------------------------------------------------------------- */
 
         private readonly IUiConfigService _uiConfigService;

@@ -30,7 +30,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Models
             uiConfig.DotNetFramework.Should().BeNull();
             uiConfig.Language.Should().BeNull();
             uiConfig.Packaging.Should().BeNull();
-            uiConfig.Dependencies.Should().BeNull();
+            uiConfig.Dependencies.Should().NotBeNull();
         }
 
         [Fact]

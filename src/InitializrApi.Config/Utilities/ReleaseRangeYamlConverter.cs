@@ -9,7 +9,7 @@ using YamlDotNet.Core;
 using YamlDotNet.Core.Events;
 using YamlDotNet.Serialization;
 
-namespace Steeltoe.InitializrApi.Models.Utilities
+namespace Steeltoe.InitializrApi.Config.Utilities
 {
     /// <summary>
     /// Deserializes a <see cref="ReleaseRange"/> in YAML expressions.
@@ -17,7 +17,7 @@ namespace Steeltoe.InitializrApi.Models.Utilities
     public class ReleaseRangeYamlConverter : IYamlTypeConverter
     {
         /* ----------------------------------------------------------------- *
-         * fields                                                            *
+         * fields                                                             *
          * ----------------------------------------------------------------- */
         private static readonly Type RangeType = typeof(ReleaseRange);
 

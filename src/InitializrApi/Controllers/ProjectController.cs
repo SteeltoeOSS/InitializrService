@@ -5,11 +5,10 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Steeltoe.InitializrApi.Config;
 using Steeltoe.InitializrApi.Models;
 using Steeltoe.InitializrApi.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Steeltoe.InitializrApi.Controllers
@@ -22,7 +21,7 @@ namespace Steeltoe.InitializrApi.Controllers
     public class ProjectController : InitializrApiControllerBase
     {
         /* ----------------------------------------------------------------- *
-         * fields                                                            *
+         * fields                                                             *
          * ----------------------------------------------------------------- */
 
         private readonly IUiConfigService _uiConfigService;
@@ -80,26 +79,45 @@ namespace Steeltoe.InitializrApi.Controllers
                     "Default packaging not configured.");
             }
 
+            if (new ReleaseRange("3.0.0").Accepts(normalizedSpec.SteeltoeVersion)
+                && !new ReleaseRange("netcoreapp3.1").Accepts(normalizedSpec.DotNetFramework))
+            {
+                return NotFound(
+                    $".NET framework version {normalizedSpec.DotNetFramework} not found for Steeltoe version {normalizedSpec.SteeltoeVersion}");
+            }
+
             if (normalizedSpec.Dependencies != null)
             {
-                var caseSensitiveDeps = new List<string>();
-                if (defaults.Dependencies?.Values != null)
-                {
-                    caseSensitiveDeps.AddRange(
-                        from @group in defaults.Dependencies.Values
-                        from dep in @group.Values
-                        select dep.Id);
-                }
-
                 var deps = normalizedSpec.Dependencies.Split(',');
-                for (int i = 0; i < deps.Length; ++i)
+                for (var i = 0; i < deps.Length; ++i)
                 {
                     var found = false;
-                    foreach (var caseSensitiveDep in caseSensitiveDeps.Where(
-                        caseSensitiveDep => caseSensitiveDep.Equals(deps[i], StringComparison.OrdinalIgnoreCase)))
+                    foreach (var group in defaults.Dependencies.Values)
                     {
-                        deps[i] = caseSensitiveDep;
-                        found = true;
+                        foreach (var dep in group.Values)
+                        {
+                            if (!deps[i].Equals(dep.Id, StringComparison.OrdinalIgnoreCase))
+                            {
+                                continue;
+                            }
+
+                            var steeltoeRange = new ReleaseRange(dep.SteeltoeVersionRange);
+                            if (!steeltoeRange.Accepts(normalizedSpec.SteeltoeVersion))
+                            {
+                                return NotFound(
+                                    $"Dependency '{deps[i]}' not found for Steeltoe version {normalizedSpec.SteeltoeVersion}.");
+                            }
+
+                            var frameworkRange = new ReleaseRange(dep.DotNetFrameworkRange);
+                            if (!frameworkRange.Accepts(normalizedSpec.DotNetFramework))
+                            {
+                                return NotFound(
+                                    $"Dependency '{deps[i]}' not found for .NET framework version {normalizedSpec.DotNetFramework}.");
+                            }
+
+                            deps[i] = dep.Id;
+                            found = true;
+                        }
                     }
 
                     if (!found)

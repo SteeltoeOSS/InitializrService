@@ -4,7 +4,7 @@
 
 using System;
 using FluentAssertions;
-using Steeltoe.InitializrApi.Models;
+using Steeltoe.InitializrApi.Config;
 using Xunit;
 
 namespace Steeltoe.InitializrApi.Test.Unit.Models

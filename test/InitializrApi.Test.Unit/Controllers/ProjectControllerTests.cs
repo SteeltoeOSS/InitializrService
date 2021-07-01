@@ -82,6 +82,8 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
             };
             var spec = new ProjectSpec
             {
+                SteeltoeVersion = "0.0",
+                DotNetFramework = "0.0",
                 Packaging = "myarchive",
                 Dependencies = "camelcasedep",
             };
@@ -107,7 +109,12 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
         {
             // Arrange
             var controller = new ProjectControllerBuilder().Build();
-            var spec = new ProjectSpec { Name = "nosuchproject" };
+            var spec = new ProjectSpec
+            {
+                SteeltoeVersion = "0.0",
+                DotNetFramework = "0.0",
+                Name = "nosuchproject",
+            };
 
             // Act
             var unknown = await controller.GetProjectArchive(spec);
@@ -122,7 +129,12 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
         {
             // Arrange
             var controller = new ProjectControllerBuilder().Build();
-            var spec = new ProjectSpec { Packaging = "nosuchpackaging" };
+            var spec = new ProjectSpec
+            {
+                SteeltoeVersion = "0.0",
+                DotNetFramework = "0.0",
+                Packaging = "nosuchpackaging",
+            };
 
             // Act
             var unknown = await controller.GetProjectArchive(spec);
@@ -137,7 +149,12 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
         {
             // Arrange
             var controller = new ProjectControllerBuilder().Build();
-            var spec = new ProjectSpec { Dependencies = "nosuchdep" };
+            var spec = new ProjectSpec
+            {
+                SteeltoeVersion = "0.0",
+                DotNetFramework = "0.0",
+                Dependencies = "nosuchdep",
+            };
 
             // Act
             var unknown = await controller.GetProjectArchive(spec);

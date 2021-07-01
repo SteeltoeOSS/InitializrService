@@ -72,12 +72,6 @@ namespace Steeltoe.InitializrApi.Controllers
                 Packaging = spec.Packaging ?? defaults?.Packaging?.Default,
                 Dependencies = spec.Dependencies ?? defaults?.Dependencies?.Default,
             };
-            if (normalizedSpec.Packaging is null)
-            {
-                return StatusCode(
-                    StatusCodes.Status500InternalServerError,
-                    "Default packaging not configured.");
-            }
 
             if (new ReleaseRange("3.0.0").Accepts(normalizedSpec.SteeltoeVersion)
                 && !new ReleaseRange("netcoreapp3.1").Accepts(normalizedSpec.DotNetFramework))
@@ -105,14 +99,14 @@ namespace Steeltoe.InitializrApi.Controllers
                             if (!steeltoeRange.Accepts(normalizedSpec.SteeltoeVersion))
                             {
                                 return NotFound(
-                                    $"Dependency '{deps[i]}' not found for Steeltoe version {normalizedSpec.SteeltoeVersion}.");
+                                    $"No dependency '{deps[i]}' found for Steeltoe version {normalizedSpec.SteeltoeVersion}.");
                             }
 
                             var frameworkRange = new ReleaseRange(dep.DotNetFrameworkRange);
                             if (!frameworkRange.Accepts(normalizedSpec.DotNetFramework))
                             {
                                 return NotFound(
-                                    $"Dependency '{deps[i]}' not found for .NET framework version {normalizedSpec.DotNetFramework}.");
+                                    $"No dependency '{deps[i]}' found for .NET framework {normalizedSpec.DotNetFramework}.");
                             }
 
                             deps[i] = dep.Id;
@@ -127,6 +121,13 @@ namespace Steeltoe.InitializrApi.Controllers
                 }
 
                 normalizedSpec.Dependencies = string.Join(',', deps);
+            }
+
+            if (normalizedSpec.Packaging is null)
+            {
+                return StatusCode(
+                    StatusCodes.Status500InternalServerError,
+                    "Default packaging not configured.");
             }
 
             Logger.LogDebug("Project specification: {ProjectSpec}", normalizedSpec);

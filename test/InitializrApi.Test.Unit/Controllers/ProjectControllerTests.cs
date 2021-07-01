@@ -181,6 +181,97 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
             result.Value.Should().Be("Default packaging not configured.");
         }
 
+        [Fact]
+        public async Task Unsupported_Steeltoe_Version_Should_Return_404_NotFound()
+        {
+            // Arrange
+            var config = new UiConfig
+            {
+                Name = new UiConfig.Text { Default = "my project name" },
+                Description = new UiConfig.Text { Default = "my description" },
+                Namespace = new UiConfig.Text { Default = "my namespace" },
+                SteeltoeVersion = new UiConfig.SingleSelectList { Default = "0.0" },
+                DotNetFramework = new UiConfig.SingleSelectList { Default = "0.0" },
+                Dependencies = new UiConfig.GroupList
+                {
+                    Values = new[]
+                    {
+                        new UiConfig.Group
+                        {
+                            Values = new[]
+                            {
+                                new UiConfig.GroupItem
+                                {
+                                    Id = "MyDep",
+                                    SteeltoeVersionRange = "1.0"
+                                },
+                            },
+                        },
+                    },
+                },
+            };
+            var controller = new ProjectControllerBuilder()
+                .WithInitializrConfiguration(config)
+                .Build();
+            var spec = new ProjectSpec
+            {
+                Dependencies = "mydep",
+            };
+
+            // Act
+            var unknown = await controller.GetProjectArchive(spec);
+            var result = Assert.IsType<NotFoundObjectResult>(unknown);
+
+            // Assert
+            result.Value.ToString().Should().Be("No dependency 'mydep' found for Steeltoe version 0.0.");
+        }
+
+        [Fact]
+        public async Task Unsupported_DotNet_Framework_Should_Return_404_NotFound()
+        {
+            // Arrange
+            var config = new UiConfig
+            {
+                Name = new UiConfig.Text { Default = "my project name" },
+                Description = new UiConfig.Text { Default = "my description" },
+                Namespace = new UiConfig.Text { Default = "my namespace" },
+                SteeltoeVersion = new UiConfig.SingleSelectList { Default = "0.0" },
+                DotNetFramework = new UiConfig.SingleSelectList { Default = "0.0" },
+                Dependencies = new UiConfig.GroupList
+                {
+                    Values = new[]
+                    {
+                        new UiConfig.Group
+                        {
+                            Values = new[]
+                            {
+                                new UiConfig.GroupItem
+                                {
+                                    Id = "MyDep",
+                                    DotNetFrameworkRange = "1.0"
+                                },
+                            },
+                        },
+                    },
+                },
+            };
+            var controller = new ProjectControllerBuilder()
+                .WithInitializrConfiguration(config)
+                .Build();
+            var spec = new ProjectSpec
+            {
+                Dependencies = "mydep",
+            };
+
+            // Act
+            var unknown = await controller.GetProjectArchive(spec);
+            var result = Assert.IsType<NotFoundObjectResult>(unknown);
+
+            // Assert
+            result.Value.ToString().Should().Be("No dependency 'mydep' found for .NET framework 0.0.");
+        }
+
+
         /* ----------------------------------------------------------------- *
          * test helpers                                                      *
          * ----------------------------------------------------------------- */
@@ -241,19 +332,19 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
                 var buffer = new StringBuilder();
                 buffer.Append("project name=").Append(spec.Name ?? "<na>");
                 buffer.Append(newline);
-                buffer.Append("description=").Append(spec.Description ?? "<na>" );
+                buffer.Append("description=").Append(spec.Description ?? "<na>");
                 buffer.Append(newline);
-                buffer.Append("namespace=").Append(spec.Namespace ?? "<na>" );
+                buffer.Append("namespace=").Append(spec.Namespace ?? "<na>");
                 buffer.Append(newline);
-                buffer.Append("steeltoe version=").Append(spec.SteeltoeVersion ?? "<na>" );
+                buffer.Append("steeltoe version=").Append(spec.SteeltoeVersion ?? "<na>");
                 buffer.Append(newline);
-                buffer.Append("dotnet framework=").Append(spec.DotNetFramework ?? "<na>" );
+                buffer.Append("dotnet framework=").Append(spec.DotNetFramework ?? "<na>");
                 buffer.Append(newline);
-                buffer.Append("language=").Append(spec.Language ?? "<na>" );
+                buffer.Append("language=").Append(spec.Language ?? "<na>");
                 buffer.Append(newline);
-                buffer.Append("packaging=").Append(spec.Packaging ?? "<na>" );
+                buffer.Append("packaging=").Append(spec.Packaging ?? "<na>");
                 buffer.Append(newline);
-                buffer.Append("dependencies=").Append(spec.Dependencies ?? "<na>" );
+                buffer.Append("dependencies=").Append(spec.Dependencies ?? "<na>");
                 buffer.Append(newline);
                 return Task.FromResult(Encoding.ASCII.GetBytes(buffer.ToString()));
             }

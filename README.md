@@ -2,7 +2,7 @@
 
 Steeltoe Initializr API reference implementation
 
-[![Build Status](https://dev.azure.com/SteeltoeOSS/Steeltoe/_apis/build/status/Initializr/SteeltoeOSS.InitializrApi?branchName=main)](https://dev.azure.com/SteeltoeOSS/Steeltoe/_build/latest?definitionId=31&branchName=main)
+[![Build Status](https://dev.azure.com/SteeltoeOSS/Steeltoe/_apis/build/status/Initializr/SteeltoeOSS.InitializrApi?branchName=staging)](https://dev.azure.com/SteeltoeOSS/Steeltoe/_build/latest?definitionId=31&branchName=staging)
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=InitializrApi&metric=alert_status)](https://sonarcloud.io/dashboard?id=InitializrApi)
 

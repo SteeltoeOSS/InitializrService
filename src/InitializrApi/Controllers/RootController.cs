@@ -86,12 +86,12 @@ namespace Steeltoe.InitializrApi.Controllers
             help.Add("The URI templates take a set of parameters to customize the result of a request.");
             var table = new List<List<string>>
             {
-                new () { "Parameter", "Description", "Default value" },
+                new () { "Parameter", "Description", "Default Value" },
                 new () { "name", "project name", uiConfig.Name.Default },
                 new () { "namespace", "namespace", uiConfig.Namespace.Default },
                 new () { "description", "project description", uiConfig.Description.Default },
                 new () { "steeltoeVersion", "Steeltoe version", uiConfig.SteeltoeVersion.Default },
-                new () { "dotNetFramework", "target .NET framework", uiConfig.DotNetFramework.Default },
+                new () { "dotNetFramework", ".NET framework", uiConfig.DotNetFramework.Default },
                 new () { "language", "programming language", uiConfig.Language.Default },
                 new () { "packaging", "project packaging", uiConfig.Packaging.Default },
             };
@@ -125,8 +125,8 @@ namespace Steeltoe.InitializrApi.Controllers
             help.Add(
                 "\t$ http https://start.steeltoe.io/api/project steeltoeVersion==2.5.1 dotNetFramework==netcoreapp2.1 -d");
             help.Add(string.Empty);
-            help.Add("To create a project with a actuator endpoints and a Redis backend:");
-            help.Add("\t$ http https://start.steeltoe.io/api/project dependencies==actuators,redis -d");
+            help.Add("To create a project with management endpoints and a Redis backend:");
+            help.Add("\t$ http https://start.steeltoe.io/api/project dependencies==management-endpoints,connector-redis -d");
 
             const char newline = '\n';
             return Ok(string.Join(newline, help));

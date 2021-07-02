@@ -110,12 +110,12 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
             help.Should().MatchRegex("!!! failed to load logo:");
             help.Should().MatchRegex(":: Steeltoe Initializr ::  https://start.steeltoe.io");
             help.Should().MatchRegex("Examples:");
-            help.Should().MatchRegex(@"\|\s+Parameter\s+\|\s+Description\s+\|\s+Default value\s+\|");
+            help.Should().MatchRegex(@"\|\s+Parameter\s+\|\s+Description\s+\|\s+Default Value\s+\|");
             help.Should().MatchRegex(@"\|\s+name\s+\|\s+project name\s+\|\s+MyProject\s+\|");
             help.Should().MatchRegex(@"\|\s+namespace\s+\|\s+namespace\s+\|\s+MyNamespace\s+\|");
             help.Should().MatchRegex(@"\|\s+description\s+\|\s+project description\s+\|\s+my description\s+\|");
             help.Should().MatchRegex(@"\|\s+steeltoeVersion\s+\|\s+Steeltoe version\s+\|\s+1.2.3\s+\|");
-            help.Should().MatchRegex(@"\|\s+dotNetFramework\s+\|\s+target .NET framework\s+\|\s+1.2\s+\|");
+            help.Should().MatchRegex(@"\|\s+dotNetFramework\s+\|\s+.NET framework\s+\|\s+1.2\s+\|");
             help.Should().MatchRegex(@"\|\s+language\s+\|\s+programming language\s+\|\s+mylang\s+\|");
             help.Should().MatchRegex(@"\|\s+packaging\s+\|\s+project packaging\s+\|\s+mypkg\s+\|");
             help.Should().MatchRegex(@"\|\s+Id\s+\|\s+Description\s+\|\s+Steeltoe Version\s+\|\s+.NET Framework\s+\|");

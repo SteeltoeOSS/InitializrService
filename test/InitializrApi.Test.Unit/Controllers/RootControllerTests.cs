@@ -88,6 +88,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
                                     Id = "anotherdep",
                                     Description = "AnotherDependency",
                                     SteeltoeVersionRange = "[1.0,1.9)",
+                                    DotNetFrameworkRange = "2.0",
                                 }
                             }
                         }
@@ -117,11 +118,10 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
             help.Should().MatchRegex(@"\|\s+dotNetFramework\s+\|\s+target .NET framework\s+\|\s+1.2\s+\|");
             help.Should().MatchRegex(@"\|\s+language\s+\|\s+programming language\s+\|\s+mylang\s+\|");
             help.Should().MatchRegex(@"\|\s+packaging\s+\|\s+project packaging\s+\|\s+mypkg\s+\|");
-            help.Should().MatchRegex(@"\|\s+Id\s+\|\s+Description\s+\|\s+Required Steeltoe version\s+\|");
+            help.Should().MatchRegex(@"\|\s+Id\s+\|\s+Description\s+\|\s+Steeltoe Version\s+\|\s+.NET Framework\s+\|");
             help.Should().MatchRegex(@"\|\s+dep1\s+\|\s+DependencyOne\s+\|\s+\|");
             help.Should().MatchRegex(@"\|\s+dep2\s+\|\s+DependencyTwo\s+\|\s+\|");
-            help.Should().MatchRegex(@"\|\s+anotherdep\s+\|\s+AnotherDependency\s+\|\s+>=1.0 and <1.9\s+\|");
-            help.Should().MatchRegex(@"\|\s+anotherdep\s+\|\s+AnotherDependency\s+\|\s+>=1.0 and <1.9\s+\|");
+            help.Should().MatchRegex(@"\|\s+anotherdep\s+\|\s+AnotherDependency\s+\|\s+>=1.0 and <1.9\s+\|\s+>=2.0\s+\|");
         }
 
         /* ----------------------------------------------------------------- *

@@ -101,7 +101,7 @@ namespace Steeltoe.InitializrApi.Controllers
             help.Add("list of \"dependencies\".");
             table = new List<List<string>>
             {
-                new () { "Id", "Description", "Required Steeltoe version" },
+                new () { "Id", "Description", "Steeltoe Version", ".NET Framework" },
             };
             table.AddRange(
                 from @group in uiConfig.Dependencies.Values
@@ -111,6 +111,7 @@ namespace Steeltoe.InitializrApi.Controllers
                     dependency.Id,
                     dependency.Description,
                     new ReleaseRange(dependency.SteeltoeVersionRange).ToPrettyString(),
+                    new ReleaseRange(dependency.DotNetFrameworkRange).ToPrettyString(),
                 });
 
             help.AddRange(ToTable(table));

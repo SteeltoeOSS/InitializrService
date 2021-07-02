@@ -168,7 +168,11 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
         public async Task Null_Archive_Format_Should_Return_500_Internal_Server_Error()
         {
             // Arrange
-            var spec = new ProjectSpec();
+            var spec = new ProjectSpec
+            {
+                SteeltoeVersion = "0.0",
+                DotNetFramework = "0.0",
+            };
             var config = new UiConfig();
             var controller = new ProjectControllerBuilder().WithInitializrConfiguration(config).Build();
 

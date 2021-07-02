@@ -53,34 +53,7 @@ namespace Steeltoe.InitializrApi.Generators
             {
                 foreach (var dependency in spec.Dependencies.Split(','))
                 {
-                    projectUrl.Append(',');
-                    switch (dependency)
-                    {
-                        case "actuator":
-                            projectUrl.Append("management-endpoints");
-                            break;
-                        case "amqp":
-                            projectUrl.Append("rabbitmq");
-                            break;
-                        case "circuit-breaker":
-                            projectUrl.Append("hystrix");
-                            break;
-                        case "config-server":
-                            projectUrl.Append("cloud-config");
-                            break;
-                        case "data-redis":
-                            projectUrl.Append("redis");
-                            break;
-                        case "data-mongodb":
-                            projectUrl.Append("mongodb");
-                            break;
-                        case "eureka-client":
-                            projectUrl.Append("eureka");
-                            break;
-                        default:
-                            projectUrl.Append(dependency);
-                            break;
-                    }
+                    projectUrl.Append(',').Append(dependency);
                 }
             }
 

@@ -26,8 +26,8 @@ namespace Steeltoe.InitializrApi.Test.Unit.Models
             spec.Name.Should().BeNull();
             spec.Description.Should().BeNull();
             spec.Namespace.Should().BeNull();
-            spec.SteeltoeVersion.Should().Be("3.0.0");
-            spec.DotNetFramework.Should().Be("netcoreapp3.1");
+            spec.SteeltoeVersion.Should().BeNull();
+            spec.DotNetFramework.Should().BeNull();
             spec.Language.Should().BeNull();
             spec.Packaging.Should().BeNull();
         }

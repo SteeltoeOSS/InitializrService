@@ -42,12 +42,12 @@ namespace Steeltoe.InitializrApi.Models
         /// <summary>
         /// Gets or sets the Steeltoe version.
         /// </summary>
-        public string SteeltoeVersion { get; set; } = "3.0.0";
+        public string SteeltoeVersion { get; set; }
 
         /// <summary>
         /// Gets or sets the DotNet framework ID.
         /// </summary>
-        public string DotNetFramework { get; set; } = "netcoreapp3.1";
+        public string DotNetFramework { get; set; }
 
         /// <summary>
         /// Gets or sets the programming language ID.

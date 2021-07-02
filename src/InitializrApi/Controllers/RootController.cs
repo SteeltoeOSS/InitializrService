@@ -86,12 +86,12 @@ namespace Steeltoe.InitializrApi.Controllers
             help.Add("The URI templates take a set of parameters to customize the result of a request.");
             var table = new List<List<string>>
             {
-                new () { "Parameter", "Description", "Default value" },
+                new () { "Parameter", "Description", "Default Value" },
                 new () { "name", "project name", uiConfig.Name.Default },
                 new () { "namespace", "namespace", uiConfig.Namespace.Default },
                 new () { "description", "project description", uiConfig.Description.Default },
                 new () { "steeltoeVersion", "Steeltoe version", uiConfig.SteeltoeVersion.Default },
-                new () { "dotNetFramework", "target .NET framework", uiConfig.DotNetFramework.Default },
+                new () { "dotNetFramework", ".NET framework", uiConfig.DotNetFramework.Default },
                 new () { "language", "programming language", uiConfig.Language.Default },
                 new () { "packaging", "project packaging", uiConfig.Packaging.Default },
             };

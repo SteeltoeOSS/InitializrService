@@ -125,8 +125,8 @@ namespace Steeltoe.InitializrApi.Controllers
             help.Add(
                 "\t$ http https://start.steeltoe.io/api/project steeltoeVersion==2.5.1 dotNetFramework==netcoreapp2.1 -d");
             help.Add(string.Empty);
-            help.Add("To create a project with a actuator endpoints and a Redis backend:");
-            help.Add("\t$ http https://start.steeltoe.io/api/project dependencies==actuators,redis -d");
+            help.Add("To create a project with management endpoints and a Redis backend:");
+            help.Add("\t$ http https://start.steeltoe.io/api/project dependencies==management-endpoints,connector-redis -d");
 
             const char newline = '\n';
             return Ok(string.Join(newline, help));

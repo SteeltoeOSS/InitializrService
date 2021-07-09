@@ -70,11 +70,11 @@ namespace Steeltoe.InitializrApi
             {
                 services.ConfigureConfigServerClientOptions(Configuration);
                 services.Configure<UiConfig>(Configuration);
-                services.AddSingleton<IUiConfigService, UiConfigService>();
+                services.AddTransient<IUiConfigService, UiConfigService>();
             }
             else
             {
-                services.AddSingleton<IUiConfigService, UiConfigFile>();
+                services.AddTransient<IUiConfigService, UiConfigFile>();
             }
 
             services.AddResponseCompression();

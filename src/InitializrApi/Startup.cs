@@ -13,6 +13,7 @@ using Steeltoe.InitializrApi.Config;
 using Steeltoe.InitializrApi.Configuration;
 using Steeltoe.InitializrApi.Generators;
 using Steeltoe.InitializrApi.Services;
+using Steeltoe.Management.Endpoint;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -69,15 +70,16 @@ namespace Steeltoe.InitializrApi
             {
                 services.ConfigureConfigServerClientOptions(Configuration);
                 services.Configure<UiConfig>(Configuration);
-                services.AddSingleton<IUiConfigService, UiConfigService>();
+                services.AddTransient<IUiConfigService, UiConfigService>();
             }
             else
             {
-                services.AddSingleton<IUiConfigService, UiConfigFile>();
+                services.AddTransient<IUiConfigService, UiConfigFile>();
             }
 
             services.AddResponseCompression();
             services.AddTransient<IProjectGenerator, NetCoreToolProjectGenerator>();
+            services.AddAllActuators();
             services.AddControllers().AddJsonOptions(jsonOptions =>
             {
                 jsonOptions.JsonSerializerOptions.IgnoreNullValues = true;
@@ -106,7 +108,11 @@ namespace Steeltoe.InitializrApi
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthorization();
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapAllActuators();
+                endpoints.MapControllers();
+            });
         }
     }
 }

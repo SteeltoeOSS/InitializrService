@@ -5,6 +5,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Steeltoe.Extensions.Configuration.ConfigServer;
+using Steeltoe.Extensions.Logging;
 using Steeltoe.InitializrApi.Models;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
@@ -70,6 +71,7 @@ namespace Steeltoe.InitializrApi
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .AddConfigServer()
+                .ConfigureLogging((_, builder) => builder.AddDynamicConsole())
                 .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
     }
 }

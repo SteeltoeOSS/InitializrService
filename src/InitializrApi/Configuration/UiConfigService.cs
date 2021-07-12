@@ -26,7 +26,7 @@ namespace Steeltoe.InitializrApi.Configuration
         /// <param name="settings">Injected settings from Config Server.</param>
         /// <param name="logger">Injected logger.</param>
         public UiConfigService(
-            IOptions<UiConfig> configuration,
+            IOptionsSnapshot<UiConfig> configuration,
             IOptions<ConfigServerClientSettingsOptions> settings,
             ILogger<UiConfigService> logger)
             : base(logger)

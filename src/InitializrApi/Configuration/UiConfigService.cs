@@ -32,7 +32,7 @@ namespace Steeltoe.InitializrApi.Configuration
             : base(logger)
         {
             UiConfig = configuration.Value;
-            Logger.LogInformation(
+            Logger.LogDebug(
                 "Config Server: uri={ConfigServer},env={Environment},label={Label}",
                 settings.Value.Uri,
                 settings.Value.Env,

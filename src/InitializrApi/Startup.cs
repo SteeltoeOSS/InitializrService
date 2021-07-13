@@ -9,12 +9,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Steeltoe.Extensions.Configuration.ConfigServer;
-using Steeltoe.InitializrApi.Archivers;
+using Steeltoe.InitializrApi.Config;
 using Steeltoe.InitializrApi.Configuration;
 using Steeltoe.InitializrApi.Generators;
-using Steeltoe.InitializrApi.Models;
 using Steeltoe.InitializrApi.Services;
-using Steeltoe.InitializrApi.Templates;
+using Steeltoe.Management.Endpoint;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Steeltoe.InitializrApi
@@ -25,7 +26,7 @@ namespace Steeltoe.InitializrApi
     [ExcludeFromCodeCoverage]
     public class Startup
     {
-        private string _corsOrigin;
+        private string _netCoreToolServiceUri;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Startup"/> class.
@@ -42,44 +43,47 @@ namespace Steeltoe.InitializrApi
         public IConfiguration Configuration { get; }
 
         /// <summary>
-        /// Called by the runtime.  Adds <see cref="IInitializrConfigService"/> and <see cref="IProjectGenerator"/> services.
+        /// Called by the runtime.  Adds <see cref="IUiConfigService"/> and <see cref="IProjectGenerator"/> services.
         /// </summary>
         /// <param name="services">Injected services.</param>
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddOptions();
-            services.Configure<InitializrOptions>(Configuration.GetSection(InitializrOptions.Initializr));
-            var initializrOptions = Configuration.GetSection(InitializrOptions.Initializr).Get<InitializrOptions>();
-            if (initializrOptions?.ConfigurationPath is null)
+            services.Configure<InitializrApiOptions>(Configuration.GetSection(InitializrApiOptions.InitializrApi));
+            InitializrApiOptions options;
+            try
+            {
+                options = Configuration.GetSection(InitializrApiOptions.InitializrApi).Get<InitializrApiOptions>();
+            }
+            catch (Exception e)
+            {
+                if (e.InnerException is KeyNotFoundException)
+                {
+                    throw new ArgumentException("InitializrApi configuration is missing or errant");
+                }
+
+                throw;
+            }
+
+            _netCoreToolServiceUri = options?.NetCoreToolServiceUri;
+            if (options?.UiConfigPath is null)
             {
                 services.ConfigureConfigServerClientOptions(Configuration);
-                services.Configure<InitializrConfig>(Configuration);
-                services.AddSingleton<IInitializrConfigService, InitializrConfigService>();
+                services.Configure<UiConfig>(Configuration);
+                services.AddTransient<IUiConfigService, UiConfigService>();
             }
             else
             {
-                services.AddSingleton<IInitializrConfigService, InitializrConfigFile>();
-            }
-
-            if (!(initializrOptions?.CorsOrigin is null))
-            {
-                _corsOrigin = "ConfiguredOrigins";
-                services.AddCors(options =>
-                {
-                    options.AddPolicy(
-                        name: _corsOrigin,
-                        builder => { builder.WithOrigins(initializrOptions.CorsOrigin); });
-                });
+                services.AddTransient<IUiConfigService, UiConfigFile>();
             }
 
             services.AddResponseCompression();
-            services.AddSingleton<IProjectTemplateRegistry, ProjectTemplateRegistry>();
-            services.AddSingleton<IArchiverRegistry, ArchiverRegistry>();
-            services.AddTransient<IProjectGenerator, StubbleProjectGenerator>();
-            services.AddControllers().AddJsonOptions(options =>
+            services.AddTransient<IProjectGenerator, NetCoreToolProjectGenerator>();
+            services.AddAllActuators();
+            services.AddControllers().AddJsonOptions(jsonOptions =>
             {
-                options.JsonSerializerOptions.IgnoreNullValues = true;
-                options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+                jsonOptions.JsonSerializerOptions.IgnoreNullValues = true;
+                jsonOptions.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
             });
         }
 
@@ -93,6 +97,7 @@ namespace Steeltoe.InitializrApi
         {
             var about = Program.About;
             logger.LogInformation("{Program}, version {Version} [{Commit}]", about.Name, about.Version, about.Commit);
+            logger.LogInformation("Net Core Tool Service URI: {NetCoreToolService}", _netCoreToolServiceUri);
 
             if (env.IsDevelopment())
             {
@@ -100,15 +105,14 @@ namespace Steeltoe.InitializrApi
             }
 
             app.UseResponseCompression();
-            if (!(_corsOrigin is null))
-            {
-                app.UseCors(_corsOrigin);
-            }
-
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthorization();
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapAllActuators();
+                endpoints.MapControllers();
+            });
         }
     }
 }

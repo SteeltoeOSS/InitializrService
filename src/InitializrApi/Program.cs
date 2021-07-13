@@ -3,11 +3,10 @@
 // See the LICENSE file in the project root for more information.
 
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Steeltoe.Extensions.Configuration.ConfigServer;
+using Steeltoe.Extensions.Logging;
 using Steeltoe.InitializrApi.Models;
-using Steeltoe.InitializrApi.Services;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
@@ -61,11 +60,7 @@ namespace Steeltoe.InitializrApi
         /// </summary>
         public static void Main(string[] args)
         {
-            var host = CreateHostBuilder(args).Build();
-            host.Services.GetRequiredService<IInitializrConfigService>().Initialize();
-            host.Services.GetRequiredService<IProjectTemplateRegistry>().Initialize();
-            host.Services.GetRequiredService<IArchiverRegistry>().Initialize();
-            host.Run();
+            CreateHostBuilder(args).Build().Run();
         }
 
         /// <summary>
@@ -76,6 +71,7 @@ namespace Steeltoe.InitializrApi
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .AddConfigServer()
+                .ConfigureLogging((_, builder) => builder.AddDynamicConsole())
                 .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
     }
 }

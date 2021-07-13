@@ -5,7 +5,7 @@ variables:
   - name: major
     value: 0
   - name: minor
-    value: 13
+    value: 20
   - name: patch
     value: 0
   - name: DOTNET_SKIP_FIRST_TIME_EXPERIENCE
@@ -26,15 +26,15 @@ stages:
           vmImage: ubuntu-latest
         steps:
           - task: UseDotNet@2
-            displayName: Install .NET SDK 3.1
+            displayName: 'Install .NET Core SDK 5.0'
             inputs:
               packageType: sdk
-              version: 3.1.x
+              version: 5.0.x
           - task: UseDotNet@2
-            displayName: Install .NET SDK 2.1
+            displayName: 'Install .NET Core SDK 2.0'
             inputs:
               packageType: sdk
-              version: 2.1.x
+              version: 2.0.x
           - task: SonarSource.sonarcloud.14d9cde6-c1da-4d55-aa01-2965cd301255.SonarCloudPrepare@1
             displayName: Start SonarQube Analysis
             inputs:
@@ -67,7 +67,7 @@ stages:
             displayName: dotnet pack
             inputs:
               command: pack
-              packagesToPack: src/InitializrApi.Models
+              packagesToPack: src/InitializrApi.Config
               arguments: --no-build
           - task: Powershell@2
             displayName: Sign NuGets

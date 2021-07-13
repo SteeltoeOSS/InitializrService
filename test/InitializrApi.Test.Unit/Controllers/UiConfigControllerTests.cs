@@ -5,36 +5,35 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging.Abstractions;
+using Moq;
+using Steeltoe.InitializrApi.Config;
 using Steeltoe.InitializrApi.Controllers;
-using Steeltoe.InitializrApi.Models;
+using Steeltoe.InitializrApi.Services;
 using Xunit;
 
 namespace Steeltoe.InitializrApi.Test.Unit.Controllers
 {
-    public class AboutControllerTests
+    public class UiConfigControllerTests
     {
         /* ----------------------------------------------------------------- *
          * positive tests                                                    *
          * ----------------------------------------------------------------- */
 
         [Fact]
-        public void GetAbout_Should_Return_About()
+        public void GetUiConfig_Should_Return_UiConfig()
         {
             // Arrange
-            var controller = new AboutController(new NullLogger<AboutController>());
+            var uiConfig = new UiConfig();
+            var configService = new Mock<IUiConfigService>();
+            configService.Setup(svc => svc.UiConfig).Returns(uiConfig);
+            var controller = new UiConfigController(configService.Object, new NullLogger<UiConfigController>());
 
             // Act
-            var result = controller.GetAbout();
+            var result = controller.GetUiConfig();
 
             // Assert
             var indexResult = Assert.IsType<OkObjectResult>(result);
-            indexResult.Value.Should().BeOfType<About>();
-            var about = Assert.IsType<About>(indexResult.Value);
-            about.Name.Should().Be("Steeltoe.InitializrApi");
-            about.Vendor.Should().Be("SteeltoeOSS/VMware");
-            about.Url.Should().Be("https://github.com/SteeltoeOSS/InitializrApi/");
-            about.Version.Should().StartWith("0.20.0");
-            about.Commit.Should().NotBeNullOrWhiteSpace();
+            indexResult.Value.Should().BeSameAs(uiConfig);
         }
 
         /* ----------------------------------------------------------------- *

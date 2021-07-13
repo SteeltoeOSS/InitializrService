@@ -5,10 +5,11 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Steeltoe.InitializrApi.Config;
 using Steeltoe.InitializrApi.Models;
 using Steeltoe.InitializrApi.Services;
 using System;
-using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Steeltoe.InitializrApi.Controllers
 {
@@ -20,14 +21,12 @@ namespace Steeltoe.InitializrApi.Controllers
     public class ProjectController : InitializrApiControllerBase
     {
         /* ----------------------------------------------------------------- *
-         * fields                                                            *
+         * fields                                                             *
          * ----------------------------------------------------------------- */
 
-        private readonly IInitializrConfigService _configService;
+        private readonly IUiConfigService _uiConfigService;
 
         private readonly IProjectGenerator _projectGenerator;
-
-        private readonly IArchiverRegistry _archiverRegistry;
 
         /* ----------------------------------------------------------------- *
          * constructors                                                      *
@@ -36,20 +35,17 @@ namespace Steeltoe.InitializrApi.Controllers
         /// <summary>
         /// Initializes a new instance of the <see cref="ProjectController"/> class.
         /// </summary>
-        /// <param name="configService">Injected Initializr configuration service.</param>
+        /// <param name="uiConfigService">Injected Initializr configuration service.</param>
         /// <param name="projectGenerator">Injected project generator.</param>
-        /// <param name="archiverRegistry">Injected archiver registry.</param>
         /// <param name="logger">Injected logger.</param>
         public ProjectController(
-            IInitializrConfigService configService,
+            IUiConfigService uiConfigService,
             IProjectGenerator projectGenerator,
-            IArchiverRegistry archiverRegistry,
             ILogger<ProjectController> logger)
             : base(logger)
         {
-            _configService = configService;
+            _uiConfigService = uiConfigService;
             _projectGenerator = projectGenerator;
-            _archiverRegistry = archiverRegistry;
         }
 
         /* ----------------------------------------------------------------- *
@@ -62,58 +58,58 @@ namespace Steeltoe.InitializrApi.Controllers
         /// </summary>
         /// <returns>A task containing the <c>GET</c> result which, if is <see cref="FileContentResult"/>, contains a project bundle archive stream.</returns>
         [AcceptVerbs("GET")]
-        public ActionResult GetProjectArchive([FromQuery] ProjectSpec spec)
+        public async Task<ActionResult> GetProjectArchive([FromQuery] ProjectSpec spec)
         {
-            var config = _configService.GetInitializrConfig();
-            var defaults = config.ProjectMetadata;
+            var defaults = _uiConfigService.UiConfig;
             var normalizedSpec = new ProjectSpec()
             {
                 Name = spec.Name ?? defaults?.Name?.Default,
-                Description = spec.Description ?? defaults?.Description?.Default,
                 Namespace = spec.Namespace ?? defaults?.Namespace?.Default,
+                Description = spec.Description ?? defaults?.Description?.Default,
                 SteeltoeVersion = spec.SteeltoeVersion ?? defaults?.SteeltoeVersion?.Default,
                 DotNetFramework = spec.DotNetFramework ?? defaults?.DotNetFramework?.Default,
-                DotNetTemplate = spec.DotNetTemplate ?? defaults?.DotNetTemplate?.Default,
                 Language = spec.Language ?? defaults?.Language?.Default,
                 Packaging = spec.Packaging ?? defaults?.Packaging?.Default,
                 Dependencies = spec.Dependencies ?? defaults?.Dependencies?.Default,
             };
-            if (normalizedSpec.Packaging is null)
-            {
-                return StatusCode(
-                    StatusCodes.Status500InternalServerError,
-                    "Default packaging not configured.");
-            }
 
-            var archiver = _archiverRegistry.Lookup(normalizedSpec.Packaging);
-            if (archiver is null)
+            if (new ReleaseRange("3.0.0").Accepts(normalizedSpec.SteeltoeVersion)
+                && !new ReleaseRange("netcoreapp3.1").Accepts(normalizedSpec.DotNetFramework))
             {
-                return NotFound($"Packaging '{normalizedSpec.Packaging}' not found.");
+                return NotFound(
+                    $".NET framework version {normalizedSpec.DotNetFramework} not found for Steeltoe version {normalizedSpec.SteeltoeVersion}");
             }
 
             if (normalizedSpec.Dependencies != null)
             {
-                var caseSensitiveDeps = new List<string>();
-                if (config.ProjectMetadata?.Dependencies?.Values != null)
+                var deps = normalizedSpec.Dependencies.Split(',');
+                for (var i = 0; i < deps.Length; ++i)
                 {
-                    foreach (var group in config.ProjectMetadata.Dependencies.Values)
+                    var found = false;
+                    foreach (var group in defaults.Dependencies.Values)
                     {
                         foreach (var dep in group.Values)
                         {
-                            caseSensitiveDeps.Add(dep.Id);
-                        }
-                    }
-                }
+                            if (!deps[i].Equals(dep.Id, StringComparison.OrdinalIgnoreCase))
+                            {
+                                continue;
+                            }
 
-                var deps = normalizedSpec.Dependencies.Split(',');
-                for (int i = 0; i < deps.Length; ++i)
-                {
-                    var found = false;
-                    foreach (var caseSensitiveDep in caseSensitiveDeps)
-                    {
-                        if (caseSensitiveDep.Equals(deps[i], StringComparison.OrdinalIgnoreCase))
-                        {
-                            deps[i] = caseSensitiveDep;
+                            var steeltoeRange = new ReleaseRange(dep.SteeltoeVersionRange);
+                            if (!steeltoeRange.Accepts(normalizedSpec.SteeltoeVersion))
+                            {
+                                return NotFound(
+                                    $"No dependency '{deps[i]}' found for Steeltoe version {normalizedSpec.SteeltoeVersion}.");
+                            }
+
+                            var frameworkRange = new ReleaseRange(dep.DotNetFrameworkRange);
+                            if (!frameworkRange.Accepts(normalizedSpec.DotNetFramework))
+                            {
+                                return NotFound(
+                                    $"No dependency '{deps[i]}' found for .NET framework {normalizedSpec.DotNetFramework}.");
+                            }
+
+                            deps[i] = dep.Id;
                             found = true;
                         }
                     }
@@ -127,18 +123,30 @@ namespace Steeltoe.InitializrApi.Controllers
                 normalizedSpec.Dependencies = string.Join(',', deps);
             }
 
-            Logger.LogDebug("Project specification: {ProjectSpec}", normalizedSpec);
-            var project = _projectGenerator.GenerateProject(normalizedSpec);
-            if (project is null)
+            if (normalizedSpec.Packaging is null)
             {
-                return NotFound($"No project template for spec: {normalizedSpec}");
+                return StatusCode(
+                    StatusCodes.Status500InternalServerError,
+                    "Default packaging not configured.");
             }
 
-            var archiveBytes = archiver.ToBytes(project.FileEntries);
-            return File(
-                archiveBytes,
-                $"application/{normalizedSpec.Packaging}",
-                $"{normalizedSpec.Name}{archiver.GetFileExtension()}");
+            Logger.LogDebug("Project specification: {ProjectSpec}", normalizedSpec);
+            try
+            {
+                var projectPackage = await _projectGenerator.GenerateProjectArchive(normalizedSpec);
+                return File(
+                    projectPackage,
+                    $"application/zip",
+                    $"{normalizedSpec.Name}.zip");
+            }
+            catch (NoProjectForSpecException e)
+            {
+                return NotFound(e.Message);
+            }
+            catch (InvalidSpecException e)
+            {
+                return BadRequest(e.Message);
+            }
         }
     }
 }

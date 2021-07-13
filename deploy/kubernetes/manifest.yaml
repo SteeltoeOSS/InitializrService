@@ -51,6 +51,13 @@ spec:
   - host: start.steeltoe.io
     http:
       paths:
+      - path: /(api)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: initializr-api
+            port:
+              number: 80
       - path: /(api/.*)
         pathType: ImplementationSpecific
         backend:

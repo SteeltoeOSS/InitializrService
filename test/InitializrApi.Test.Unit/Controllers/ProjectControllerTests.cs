@@ -2,17 +2,14 @@
 // The .NET Foundation licenses this file to you under the Apache 2.0 License.
 // See the LICENSE file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.IO.Compression;
 using System.Text;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
-using Steeltoe.InitializrApi.Archivers;
+using Steeltoe.InitializrApi.Config;
 using Steeltoe.InitializrApi.Controllers;
 using Steeltoe.InitializrApi.Models;
 using Steeltoe.InitializrApi.Services;
@@ -27,86 +24,56 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
          * ----------------------------------------------------------------- */
 
         [Fact]
-        public void Zip_Archive_Format_Should_Return_Zip_Archive()
+        public async Task Configuration_Should_Specify_Defaults()
         {
             // Arrange
-            var archiverRegistry = new Mock<IArchiverRegistry>();
-            archiverRegistry.Setup(reg => reg.Lookup(It.Is<string>(s => s.Equals("zip"))))
-                .Returns(new ZipArchiver());
-            var controller = new ProjectControllerBuilder().WithArchiverRegistry(archiverRegistry.Object).Build();
-            var spec = new ProjectSpec { Packaging = "zip" };
-
-            // Act
-            var unknown = controller.GetProjectArchive(spec);
-
-            // Assert
-            var result = Assert.IsType<FileContentResult>(unknown);
-            result.ContentType.Should().Be("application/zip");
-            result.FileDownloadName.Should().EndWith(".zip");
-            var stream = new MemoryStream(result.FileContents);
-            new ZipArchive(stream).Should().BeOfType<ZipArchive>();
-        }
-
-        [Fact]
-        public void Configuration_Should_Specify_Defaults()
-        {
-            // Arrange
-            var config = new InitializrConfig
+            var config = new UiConfig
             {
-                ProjectMetadata = new ProjectMetadata
-                {
-                    Name = new ProjectMetadata.Text { Default = "my project name" },
-                    Description = new ProjectMetadata.Text { Default = "my description" },
-                    Namespace = new ProjectMetadata.Text { Default = "my namespace" },
-                    SteeltoeVersion = new ProjectMetadata.SingleSelectList { Default = "my steeltoe version" },
-                    DotNetFramework = new ProjectMetadata.SingleSelectList { Default = "my dotnet framework" },
-                    DotNetTemplate = new ProjectMetadata.SingleSelectList { Default = "my dotnet template" },
-                    Language = new ProjectMetadata.SingleSelectList { Default = "my language" },
-                    Packaging = new ProjectMetadata.SingleSelectList { Default = "myarchive" },
-                },
+                Name = new UiConfig.Text { Default = "my project name" },
+                Description = new UiConfig.Text { Default = "my description" },
+                Namespace = new UiConfig.Text { Default = "my namespace" },
+                SteeltoeVersion = new UiConfig.SingleSelectList { Default = "3.0.0" },
+                DotNetFramework = new UiConfig.SingleSelectList { Default = "netcoreapp3.1" },
+                Language = new UiConfig.SingleSelectList { Default = "my language" },
+                Packaging = new UiConfig.SingleSelectList { Default = "myarchive" },
             };
             var controller = new ProjectControllerBuilder()
                 .WithInitializrConfiguration(config)
                 .Build();
 
             // Act
-            var unknown = controller.GetProjectArchive(new ProjectSpec());
+            var unknown = await controller.GetProjectArchive(new ProjectSpec());
+            var result = Assert.IsType<FileContentResult>(unknown);
+            var projectPackage = Encoding.ASCII.GetString(result.FileContents);
 
             // Assert
-            var result = Assert.IsType<FileContentResult>(unknown);
-            using var reader = new StreamReader(new MemoryStream(result.FileContents));
-            reader.ReadLine().Should().Be("project name=my project name");
-            reader.ReadLine().Should().Be("description=my description");
-            reader.ReadLine().Should().Be("namespace=my namespace");
-            reader.ReadLine().Should().Be("steeltoe version=my steeltoe version");
-            reader.ReadLine().Should().Be("dotnet framework=my dotnet framework");
-            reader.ReadLine().Should().Be("dotnet template=my dotnet template");
-            reader.ReadLine().Should().Be("language=my language");
-            reader.ReadLine().Should().Be("packaging=myarchive");
-            reader.ReadLine().Should().Be("dependencies=<na>");
-            reader.ReadLine().Should().BeNull();
+            projectPackage.Should().Contain("project name=my project name");
+            projectPackage.Should().Contain("namespace=my namespace");
+            projectPackage.Should().Contain("description=my description");
+            projectPackage.Should().Contain("steeltoe version=3.0.0");
+            projectPackage.Should().Contain("dotnet framework=netcoreapp3.1");
+            projectPackage.Should().Contain("language=my language");
+            projectPackage.Should().Contain("packaging=myarchive");
+            projectPackage.Should().Contain("dependencies=<na>");
         }
 
         [Fact]
-        public void Dependencies_Should_Be_Case_Corrected()
+        public async Task Dependencies_Should_Be_Case_Corrected()
         {
             // Arrange
-            var config = new InitializrConfig
+            var config = new UiConfig
             {
-                ProjectMetadata = new ProjectMetadata
+                Dependencies = new UiConfig.GroupList
                 {
-                    Dependencies = new ProjectMetadata.GroupList
+                    Values = new[]
                     {
-                        Values = new[]
+                        new UiConfig.Group
                         {
-                            new ProjectMetadata.Group
+                            Values = new[]
                             {
-                                Values = new[]
+                                new UiConfig.GroupItem
                                 {
-                                    new ProjectMetadata.GroupItem
-                                    {
-                                        Id = "CamelCaseDep",
-                                    },
+                                    Id = "CamelCaseDep",
                                 },
                             },
                         },
@@ -115,6 +82,8 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
             };
             var spec = new ProjectSpec
             {
+                SteeltoeVersion = "0.0",
+                DotNetFramework = "0.0",
                 Packaging = "myarchive",
                 Dependencies = "camelcasedep",
             };
@@ -123,13 +92,12 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
                 .Build();
 
             // Act
-            var unknown = controller.GetProjectArchive(spec);
+            var unknown = await controller.GetProjectArchive(spec);
+            var result = Assert.IsType<FileContentResult>(unknown);
+            var projectPackage = Encoding.ASCII.GetString(result.FileContents);
 
             // Assert
-            var result = Assert.IsType<FileContentResult>(unknown);
-            using var reader = new StreamReader(new MemoryStream(result.FileContents));
-            var body = reader.ReadToEnd();
-            body.Should().Contain("dependencies=CamelCaseDep");
+            projectPackage.Should().Contain("dependencies=CamelCaseDep");
         }
 
         /* ----------------------------------------------------------------- *
@@ -137,67 +105,176 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
          * ----------------------------------------------------------------- */
 
         [Fact]
-        public void No_Template_Found_Should_Return_404_Page_Not_Found()
+        public async Task No_Template_Found_Should_Return_404_Page_Not_Found()
         {
             // Arrange
             var controller = new ProjectControllerBuilder().Build();
-            var spec = new ProjectSpec { Name = "nosuchtemplate" };
+            var spec = new ProjectSpec
+            {
+                SteeltoeVersion = "0.0",
+                DotNetFramework = "0.0",
+                Name = "nosuchproject",
+            };
 
             // Act
-            var unknown = controller.GetProjectArchive(spec);
+            var unknown = await controller.GetProjectArchive(spec);
+            var result = Assert.IsType<NotFoundObjectResult>(unknown);
 
             // Assert
-            var result = Assert.IsType<NotFoundObjectResult>(unknown);
-            result.Value.ToString().Should()
-                .Be("No project template for spec: [name=nosuchtemplate,packaging=myarchive]");
+            result.Value.ToString().Should().Be("No project for spec.");
         }
 
         [Fact]
-        public void Unknown_Archive_Format_Should_Return_404_Page_Not_Found()
+        public async Task Unknown_Packaging_Should_Return_400_BadRequest()
         {
             // Arrange
             var controller = new ProjectControllerBuilder().Build();
-            var spec = new ProjectSpec { Packaging = "nosuchformat" };
+            var spec = new ProjectSpec
+            {
+                SteeltoeVersion = "0.0",
+                DotNetFramework = "0.0",
+                Packaging = "nosuchpackaging",
+            };
 
             // Act
-            var unknown = controller.GetProjectArchive(spec);
+            var unknown = await controller.GetProjectArchive(spec);
+            var result = Assert.IsType<BadRequestObjectResult>(unknown);
 
             // Assert
-            var result = Assert.IsType<NotFoundObjectResult>(unknown);
-            result.Value.ToString().Should().Be("Packaging 'nosuchformat' not found.");
+            result.Value.ToString().Should().Be("Packaging 'nosuchpackaging' not found.");
         }
 
         [Fact]
-        public void Unknown_Dependency_Should_Return_404_Page_Not_found()
+        public async Task Unknown_Dependency_Should_Return_404_Page_Not_found()
         {
             // Arrange
             var controller = new ProjectControllerBuilder().Build();
-            var spec = new ProjectSpec { Dependencies = "nosuchdep" };
+            var spec = new ProjectSpec
+            {
+                SteeltoeVersion = "0.0",
+                DotNetFramework = "0.0",
+                Dependencies = "nosuchdep",
+            };
 
             // Act
-            var unknown = controller.GetProjectArchive(spec);
+            var unknown = await controller.GetProjectArchive(spec);
+            var result = Assert.IsType<NotFoundObjectResult>(unknown);
 
             // Assert
-            var result = Assert.IsType<NotFoundObjectResult>(unknown);
             result.Value.ToString().Should().Be("Dependency 'nosuchdep' not found.");
         }
 
         [Fact]
-        public void Null_Archive_Format_Should_Return_500_Internal_Server_Error()
+        public async Task Null_Archive_Format_Should_Return_500_Internal_Server_Error()
         {
             // Arrange
-            var spec = new ProjectSpec();
-            var config = new InitializrConfig { ProjectTemplates = new ProjectTemplateConfiguration[0] };
+            var spec = new ProjectSpec
+            {
+                SteeltoeVersion = "0.0",
+                DotNetFramework = "0.0",
+            };
+            var config = new UiConfig();
             var controller = new ProjectControllerBuilder().WithInitializrConfiguration(config).Build();
 
             // Act
-            var unknown = controller.GetProjectArchive(spec);
+            var unknown = await controller.GetProjectArchive(spec);
+            var result = Assert.IsType<ObjectResult>(unknown);
 
             // Assert
-            var result = Assert.IsType<ObjectResult>(unknown);
             result.StatusCode.Should().Be(StatusCodes.Status500InternalServerError);
             result.Value.Should().Be("Default packaging not configured.");
         }
+
+        [Fact]
+        public async Task Unsupported_Steeltoe_Version_Should_Return_404_NotFound()
+        {
+            // Arrange
+            var config = new UiConfig
+            {
+                Name = new UiConfig.Text { Default = "my project name" },
+                Description = new UiConfig.Text { Default = "my description" },
+                Namespace = new UiConfig.Text { Default = "my namespace" },
+                SteeltoeVersion = new UiConfig.SingleSelectList { Default = "0.0" },
+                DotNetFramework = new UiConfig.SingleSelectList { Default = "0.0" },
+                Dependencies = new UiConfig.GroupList
+                {
+                    Values = new[]
+                    {
+                        new UiConfig.Group
+                        {
+                            Values = new[]
+                            {
+                                new UiConfig.GroupItem
+                                {
+                                    Id = "MyDep",
+                                    SteeltoeVersionRange = "1.0"
+                                },
+                            },
+                        },
+                    },
+                },
+            };
+            var controller = new ProjectControllerBuilder()
+                .WithInitializrConfiguration(config)
+                .Build();
+            var spec = new ProjectSpec
+            {
+                Dependencies = "mydep",
+            };
+
+            // Act
+            var unknown = await controller.GetProjectArchive(spec);
+            var result = Assert.IsType<NotFoundObjectResult>(unknown);
+
+            // Assert
+            result.Value.ToString().Should().Be("No dependency 'mydep' found for Steeltoe version 0.0.");
+        }
+
+        [Fact]
+        public async Task Unsupported_DotNet_Framework_Should_Return_404_NotFound()
+        {
+            // Arrange
+            var config = new UiConfig
+            {
+                Name = new UiConfig.Text { Default = "my project name" },
+                Description = new UiConfig.Text { Default = "my description" },
+                Namespace = new UiConfig.Text { Default = "my namespace" },
+                SteeltoeVersion = new UiConfig.SingleSelectList { Default = "0.0" },
+                DotNetFramework = new UiConfig.SingleSelectList { Default = "0.0" },
+                Dependencies = new UiConfig.GroupList
+                {
+                    Values = new[]
+                    {
+                        new UiConfig.Group
+                        {
+                            Values = new[]
+                            {
+                                new UiConfig.GroupItem
+                                {
+                                    Id = "MyDep",
+                                    DotNetFrameworkRange = "1.0"
+                                },
+                            },
+                        },
+                    },
+                },
+            };
+            var controller = new ProjectControllerBuilder()
+                .WithInitializrConfiguration(config)
+                .Build();
+            var spec = new ProjectSpec
+            {
+                Dependencies = "mydep",
+            };
+
+            // Act
+            var unknown = await controller.GetProjectArchive(spec);
+            var result = Assert.IsType<NotFoundObjectResult>(unknown);
+
+            // Assert
+            result.Value.ToString().Should().Be("No dependency 'mydep' found for .NET framework 0.0.");
+        }
+
 
         /* ----------------------------------------------------------------- *
          * test helpers                                                      *
@@ -205,120 +282,75 @@ namespace Steeltoe.InitializrApi.Test.Unit.Controllers
 
         class ProjectControllerBuilder
         {
-            private InitializrConfig _config;
+            private UiConfig _uiConfig;
 
             private IProjectGenerator _generator;
 
-            private IArchiverRegistry _registry;
-
             internal ProjectController Build()
             {
-                if (_config is null)
+                _uiConfig ??= new UiConfig
                 {
-                    _config = new InitializrConfig
+                    Packaging = new UiConfig.SingleSelectList
                     {
-                        ProjectMetadata = new ProjectMetadata
-                        {
-                            Packaging = new ProjectMetadata.SingleSelectList
-                            {
-                                Default = "myarchive",
-                            },
-                        },
-                        ProjectTemplates = new ProjectTemplateConfiguration[0],
-                    };
-                }
+                        Default = "myarchive",
+                    },
+                };
 
-                if (_generator is null)
-                {
-                    _generator = new TestProjectGenerator();
-                }
+                _generator ??= new TestProjectGenerator();
 
-                if (_registry is null)
-                {
-                    var mock = new Mock<IArchiverRegistry>();
-                    mock.Setup(reg => reg.Lookup(It.Is<string>(s => s.Equals("myarchive"))))
-                        .Returns(new TestArchiver());
-                    _registry = mock.Object;
-                }
-
-                var configurationService = new Mock<IInitializrConfigService>();
-                configurationService.Setup(svc => svc.GetInitializrConfig()).Returns(_config);
+                var configurationService = new Mock<IUiConfigService>();
+                configurationService.Setup(svc => svc.UiConfig).Returns(_uiConfig);
                 var logger = new NullLogger<ProjectController>();
-                var projectController =
-                    new ProjectController(configurationService.Object, _generator, _registry, logger)
+                var projectController = new ProjectController(configurationService.Object, _generator, logger)
+                {
+                    ControllerContext =
                     {
-                        ControllerContext =
-                        {
-                            HttpContext = new DefaultHttpContext()
-                        }
-                    };
+                        HttpContext = new DefaultHttpContext()
+                    }
+                };
                 return projectController;
             }
 
-            internal ProjectControllerBuilder WithInitializrConfiguration(InitializrConfig config)
+            internal ProjectControllerBuilder WithInitializrConfiguration(UiConfig uiConfig)
             {
-                _config = config;
-                return this;
-            }
-
-            internal ProjectControllerBuilder WithArchiverRegistry(IArchiverRegistry registry)
-            {
-                _registry = registry;
+                _uiConfig = uiConfig;
                 return this;
             }
         }
 
         private class TestProjectGenerator : IProjectGenerator
         {
-            public Project GenerateProject(ProjectSpec spec)
+            public Task<byte[]> GenerateProjectArchive(ProjectSpec spec)
             {
-                if (spec.Name != null && spec.Name.Equals("nosuchtemplate"))
+                if (spec.Name is "nosuchproject")
                 {
-                    return null;
+                    throw new NoProjectForSpecException($"No project for spec.");
                 }
 
-                var project = new Project();
-                project.FileEntries.Add(new FileEntry { Path = "project name", Text = spec.Name ?? "<na>" });
-                project.FileEntries.Add(new FileEntry { Path = "description", Text = spec.Description ?? "<na>" });
-                project.FileEntries.Add(new FileEntry { Path = "namespace", Text = spec.Namespace ?? "<na>" });
-                project.FileEntries.Add(new FileEntry
-                    { Path = "steeltoe version", Text = spec.SteeltoeVersion ?? "<na>" });
-                project.FileEntries.Add(new FileEntry
-                    { Path = "dotnet framework", Text = spec.DotNetFramework ?? "<na>" });
-                project.FileEntries.Add(
-                    new FileEntry { Path = "dotnet template", Text = spec.DotNetTemplate ?? "<na>" });
-                project.FileEntries.Add(new FileEntry { Path = "language", Text = spec.Language ?? "<na>" });
-                project.FileEntries.Add(new FileEntry
-                    { Path = "packaging", Text = spec.Packaging ?? "<na>" });
-                project.FileEntries.Add(new FileEntry { Path = "dependencies", Text = spec.Dependencies ?? "<na>" });
-                return project;
-            }
-        }
-
-        private class TestArchiver : IArchiver
-        {
-            public byte[] ToBytes(IEnumerable<FileEntry> fileEntries)
-            {
-                var buf = new StringBuilder();
-                foreach (var fileEntry in fileEntries)
+                if (spec.Packaging is "nosuchpackaging")
                 {
-                    buf.Append(fileEntry.Path)
-                        .Append('=')
-                        .Append(fileEntry.Text)
-                        .Append(Environment.NewLine);
+                    throw new InvalidSpecException($"Packaging '{spec.Packaging}' not found.");
                 }
 
-                return Encoding.UTF8.GetBytes(buf.ToString());
-            }
-
-            public string GetPackaging()
-            {
-                return "application/myarchive";
-            }
-
-            public string GetFileExtension()
-            {
-                return ".myext";
+                const char newline = '\n';
+                var buffer = new StringBuilder();
+                buffer.Append("project name=").Append(spec.Name ?? "<na>");
+                buffer.Append(newline);
+                buffer.Append("description=").Append(spec.Description ?? "<na>");
+                buffer.Append(newline);
+                buffer.Append("namespace=").Append(spec.Namespace ?? "<na>");
+                buffer.Append(newline);
+                buffer.Append("steeltoe version=").Append(spec.SteeltoeVersion ?? "<na>");
+                buffer.Append(newline);
+                buffer.Append("dotnet framework=").Append(spec.DotNetFramework ?? "<na>");
+                buffer.Append(newline);
+                buffer.Append("language=").Append(spec.Language ?? "<na>");
+                buffer.Append(newline);
+                buffer.Append("packaging=").Append(spec.Packaging ?? "<na>");
+                buffer.Append(newline);
+                buffer.Append("dependencies=").Append(spec.Dependencies ?? "<na>");
+                buffer.Append(newline);
+                return Task.FromResult(Encoding.ASCII.GetBytes(buffer.ToString()));
             }
         }
     }

@@ -4,7 +4,7 @@ VisualStudioVersion = 16.0.30320.27
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Steeltoe.InitializrApi", "src\InitializrApi\Steeltoe.InitializrApi.csproj", "{7597F74D-528E-448B-BBE8-994092F04CA4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Steeltoe.InitializrApi.Models", "src\InitializrApi.Models\Steeltoe.InitializrApi.Models.csproj", "{ACE6FEE1-9CEA-4A95-9D76-C62A41947C8F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Steeltoe.InitializrApi.Config", "src\InitializrApi.Config\Steeltoe.InitializrApi.Config.csproj", "{ACE6FEE1-9CEA-4A95-9D76-C62A41947C8F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Steeltoe.InitializrApi.Test.Utils", "test\InitializrApi.Test.Utils\Steeltoe.InitializrApi.Test.Utils.csproj", "{EC08DC14-11D5-40D3-8908-BDB0D789F48D}"
 EndProject

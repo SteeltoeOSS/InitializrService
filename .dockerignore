@@ -1,0 +1,6 @@
+Dockerfile
+azure-pipelines.yaml
+*.sln.DotSettings.user
+deploy/
+*/*/bin/
+*/*/obj/

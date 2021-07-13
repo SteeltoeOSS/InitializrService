@@ -3,12 +3,12 @@
 // See the LICENSE file in the project root for more information.
 
 using FluentAssertions;
-using Steeltoe.InitializrApi.Models;
+using Steeltoe.InitializrApi.Config;
 using Xunit;
 
 namespace Steeltoe.InitializrApi.Test.Unit.Models
 {
-    public class ProjectSpecTests
+    public class UiConfigTests
     {
         /* ----------------------------------------------------------------- *
          * positive tests                                                    *
@@ -18,41 +18,43 @@ namespace Steeltoe.InitializrApi.Test.Unit.Models
         public void Properties_Should_Be_Defined()
         {
             // Arrange
-            var spec = new ProjectSpec();
+            var uiConfig = new UiConfig();
 
             // Act
 
             // Assert
-            spec.Name.Should().BeNull();
-            spec.Description.Should().BeNull();
-            spec.Namespace.Should().BeNull();
-            spec.SteeltoeVersion.Should().BeNull();
-            spec.DotNetFramework.Should().BeNull();
-            spec.Language.Should().BeNull();
-            spec.Packaging.Should().BeNull();
+            uiConfig.Name.Should().BeNull();
+            uiConfig.Namespace.Should().BeNull();
+            uiConfig.Description.Should().BeNull();
+            uiConfig.SteeltoeVersion.Should().BeNull();
+            uiConfig.DotNetFramework.Should().BeNull();
+            uiConfig.Language.Should().BeNull();
+            uiConfig.Packaging.Should().BeNull();
+            uiConfig.Dependencies.Should().NotBeNull();
         }
 
         [Fact]
-        public void Application_Should_Be_Default_to_Name()
+        public void Item_Name_Should_Default_To_Id()
         {
             // Arrange
-            var spec = new ProjectSpec();
+            var item = new ConcreteItem { Id = "joe" };
 
             // Act
-            spec.Name = "foo";
 
             // Assert
-            spec.Namespace.Should().Be("foo");
-
-            // Act
-            spec.Namespace = "bar";
-
-            // Assert
-            spec.Namespace.Should().Be("bar");
+            item.Name.Should().Be("joe");
         }
 
         /* ----------------------------------------------------------------- *
          * negative tests                                                    *
          * ----------------------------------------------------------------- */
+
+        /* ----------------------------------------------------------------- *
+         * helpers                                                           *
+         * ----------------------------------------------------------------- */
+
+        class ConcreteItem : UiConfig.Item
+        {
+        }
     }
 }

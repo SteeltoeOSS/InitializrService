@@ -4,7 +4,7 @@
 
 using System;
 using FluentAssertions;
-using Steeltoe.InitializrApi.Models;
+using Steeltoe.InitializrApi.Config;
 using Xunit;
 
 namespace Steeltoe.InitializrApi.Test.Unit.Models
@@ -190,8 +190,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Models
             // Act
 
             // Assert
-            (v1 == v2).Should().Be(true);
-            (v1 != v2).Should().Be(false);
+            v1.Equals(v2).Should().Be(true);
         }
 
         [Fact]
@@ -204,8 +203,7 @@ namespace Steeltoe.InitializrApi.Test.Unit.Models
             // Act
 
             // Assert
-            (v1 != v2).Should().Be(true);
-            (v1 == v2).Should().Be(false);
+            v1.Equals(v2).Should().Be(false);
         }
 
         [Fact]

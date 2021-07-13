@@ -81,37 +81,37 @@ namespace Steeltoe.InitializrApi.Models
 
             if (Namespace != null)
             {
-                buf.Append(delim).Append("app=").Append(Namespace);
+                buf.Append(delim).Append("namespace=").Append(Namespace);
                 delim = ",";
             }
 
             if (Description != null)
             {
-                buf.Append(delim).Append("desc=").Append(Description);
+                buf.Append(delim).Append("description=").Append(Description);
                 delim = ",";
             }
 
             if (SteeltoeVersion != null)
             {
-                buf.Append(delim).Append("steeltoe=").Append(SteeltoeVersion);
+                buf.Append(delim).Append("steeltoeVersion=").Append(SteeltoeVersion);
                 delim = ",";
             }
 
             if (DotNetFramework != null)
             {
-                buf.Append(delim).Append("framework=").Append(DotNetFramework);
+                buf.Append(delim).Append("dotNetFramework=").Append(DotNetFramework);
                 delim = ",";
             }
 
             if (Language != null)
             {
-                buf.Append(delim).Append("lang=").Append(Language);
+                buf.Append(delim).Append("language=").Append(Language);
                 delim = ",";
             }
 
             if (Packaging != null)
             {
-                buf.Append(delim).Append("pkg=").Append(Packaging);
+                buf.Append(delim).Append("packaging=").Append(Packaging);
             }
 
             if (Dependencies != null)

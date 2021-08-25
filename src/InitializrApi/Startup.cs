@@ -80,6 +80,7 @@ namespace Steeltoe.InitializrApi
             services.AddResponseCompression();
             services.AddTransient<IProjectGenerator, NetCoreToolProjectGenerator>();
             services.AddAllActuators();
+            services.AddGoogleAnalyticsTracker(trackerOptions => { trackerOptions.TrackerId = "UA-114912118-2"; });
             services.AddControllers().AddJsonOptions(jsonOptions =>
             {
                 jsonOptions.JsonSerializerOptions.IgnoreNullValues = true;
@@ -102,6 +103,11 @@ namespace Steeltoe.InitializrApi
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+            }
+
+            if (env.IsProduction())
+            {
+                app.UseGoogleAnalyticsTracker();
             }
 
             app.UseResponseCompression();

@@ -14,7 +14,7 @@ variables:
     value: 1
   - group: PackageSigningSecrets
 
-name: $(major).$(minor).$(patch)-$(Rev:r)
+name: $(major).$(minor).$(patch)
 
 stages:
   - stage: assemble

@@ -18,7 +18,7 @@ spec:
         "beta.kubernetes.io/os": linux
       containers:
       - name: #@ data.values.name
-        image: #@ data.values.image_name
+        image: #@ "{}:{}".format(data.values.image_name, data.values.image_tag)
         env:
         - name: ASPNETCORE_ENVIRONMENT
           value: #@ data.values.dotnet_environment

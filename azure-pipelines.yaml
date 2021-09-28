@@ -114,3 +114,23 @@ stages:
             inputs:
               targetPath: manifests
               artifactName: manifests
+  - stage: Deploy
+    displayName: Deploy
+    dependsOn: assemble
+    condition:
+      not(eq(variables['build.reason'], 'PullRequest'))
+    jobs:
+      - job: push
+        displayName: Push
+        pool:
+          vmImage: ubuntu-latest
+        steps:
+          - task: Docker@2
+            displayName: Build and Push
+            inputs:
+              command: buildAndPush
+              containerRegistry: SteeltoeContainerRegistry
+              repository: initializr-api
+              tags: |
+                $(Build.BuildId)
+                latest

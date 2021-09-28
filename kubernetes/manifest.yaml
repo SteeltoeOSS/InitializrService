@@ -34,7 +34,7 @@ metadata:
 spec:
   ports:
   - port: #@ int(data.values.service_port)
-    target_port: #@ int(data.values.container_port)
+    targetPort: #@ int(data.values.container_port)
   selector:
     app: #@ data.values.name
 

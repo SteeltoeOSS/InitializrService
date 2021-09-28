@@ -10,3 +10,5 @@ obj/
 
 # JetBrains Rider state
 /.idea/
+
+/tools/

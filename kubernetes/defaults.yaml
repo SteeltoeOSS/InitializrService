@@ -1,0 +1,12 @@
+#@data/values-schema
+#@schema/type any=True
+---
+name: initializr-api
+image_name: steeltoe.azurecr.io/initializr-api
+image_tag: latest
+container_port: 80
+service_port: 80
+replica_count: 1
+dotnet_environment: Development
+args: ""
+hostname: ""

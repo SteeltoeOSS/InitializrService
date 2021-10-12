@@ -130,7 +130,7 @@ namespace Steeltoe.InitializrApi.Controllers
                     "Default packaging not configured.");
             }
 
-            Logger.LogDebug("Project specification: {ProjectSpec}", normalizedSpec);
+            Logger.LogInformation("Project specification: {ProjectSpec}", normalizedSpec);
             try
             {
                 var projectPackage = await _projectGenerator.GenerateProjectArchive(normalizedSpec);

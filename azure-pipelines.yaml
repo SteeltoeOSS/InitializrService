@@ -51,12 +51,17 @@ stages:
             displayName: dotnet build
             inputs:
               command: build
-              arguments: --no-restore /p:TreatWarningsAsErrors=True
+              arguments: >
+                --no-restore
+                /p:TreatWarningsAsErrors=True
           - task: DotNetCoreCLI@2
             displayName: dotnet test
             inputs:
               command: test
-              arguments: --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+              arguments: >
+                --no-build
+                /p:CollectCoverage=true
+                /p:CoverletOutputFormat=opencover
           - task: DotNetCoreCLI@2
             displayName: dotnet publish
             inputs:

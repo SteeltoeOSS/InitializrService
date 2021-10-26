@@ -7,7 +7,8 @@
 
   <Import Project="Version.props" />
 
-  <Target Name="CleanBaseOutput" AfterTargets="Clean">
+  <Target Name="Pristine" AfterTargets="Clean">
+    <RemoveDir Directories="$(BaseIntermediateOutputPath)" />
     <RemoveDir Directories="$(BaseOutputPath)" />
   </Target>
 

@@ -10,6 +10,7 @@ using System.IO;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Steeltoe.InitializrApi.Generators
 {
@@ -38,6 +39,12 @@ namespace Steeltoe.InitializrApi.Generators
         /// <inheritdoc/>
         public async Task<byte[]> GenerateProjectArchive(ProjectSpec spec)
         {
+            var options = new StringBuilder();
+            options.Append("output=").Append(spec.Namespace)
+                .Append(",description=").Append(spec.Description)
+                .Append(",steeltoe=").Append(spec.SteeltoeVersion)
+                .Append(",framework=").Append(spec.DotNetFramework)
+                .Append(",language=").Append(spec.Language);
             var projectUrl = new StringBuilder();
             projectUrl.Append(_netCoreToolServiceUri)
                 .Append("/new/steeltoe-webapi")
@@ -45,10 +52,7 @@ namespace Steeltoe.InitializrApi.Generators
                 .Append("packaging=").Append(spec.Packaging)
                 .Append('&')
                 .Append("options=")
-                .Append("output=").Append(spec.Namespace)
-                .Append(",description=").Append(spec.Description)
-                .Append(",steeltoe=").Append(spec.SteeltoeVersion)
-                .Append(",framework=").Append(spec.DotNetFramework);
+                .Append(HttpUtility.UrlEncode(options.ToString()));
             if (spec.Dependencies is not null)
             {
                 foreach (var dependency in spec.Dependencies.Split(','))

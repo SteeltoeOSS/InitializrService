@@ -13,7 +13,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             "OS-COMMENT4": "If you have changed target frameworks, make sure to update the program path.",
-            "program": "${workspaceFolder}/src/InitializrApi/bin/Debug/netcoreapp3.1/Steeltoe.InitializrApi.dll",
+            "program": "${workspaceFolder}/src/InitializrApi/bin/Debug/net5.0/Steeltoe.InitializrApi.dll",
             "args": [],
             "cwd": "${workspaceFolder}/src/InitializrApi",
             "stopAtEntry": false,

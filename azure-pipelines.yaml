@@ -139,7 +139,7 @@ stages:
             inputs:
               command: buildAndPush
               containerRegistry: SteeltoeContainerRegistry
-              repository: initializr-api
+              repository: initializr-service
               tags: |
                 $(Build.BuildId)
                 latest

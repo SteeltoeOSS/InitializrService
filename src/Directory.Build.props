@@ -20,7 +20,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version Condition=" '$(BUILD_BUILDNUMBER)' == '' ">$(SteeltoeInitializrApiVersion)</Version>
+    <Version Condition=" '$(BUILD_BUILDNUMBER)' == '' ">$(SteeltoeInitializrServiceVersion)</Version>
     <Version Condition=" '$(BUILD_BUILDNUMBER)' != '' ">$(BUILD_BUILDNUMBER)</Version>
   </PropertyGroup>
 

@@ -1,14 +1,14 @@
-# Steeltoe InitializrApi
+# Steeltoe InitializrService
 
-Steeltoe Initializr API reference implementation
+Steeltoe Initializr Service reference implementation
 
-[![Build Status](https://dev.azure.com/SteeltoeOSS/Steeltoe/_apis/build/status/Initializr/SteeltoeOSS.InitializrApi?branchName=main)](https://dev.azure.com/SteeltoeOSS/Steeltoe/_build/latest?definitionId=31&branchName=main)
+[![Build Status](https://dev.azure.com/SteeltoeOSS/Steeltoe/_apis/build/status/Initializr/SteeltoeOSS.InitializrService?branchName=main)](https://dev.azure.com/SteeltoeOSS/Steeltoe/_build/latest?definitionId=31&branchName=main)
 
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=InitializrApi&metric=alert_status)](https://sonarcloud.io/dashboard?id=InitializrApi)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=InitializrService&metric=alert_status)](https://sonarcloud.io/dashboard?id=InitializrService)
 
 ## Using the Server
 
-_InitializrApi_ provides 4 REST/HTTP endpoints:
+_InitializrService_ provides 4 REST/HTTP endpoints:
 * `api/`
 * `api/about`
 * `api/config`
@@ -42,8 +42,8 @@ The URI templates take a set of parameters to customize the result of a request.
 $ http -p b https://start.steeltoe.io/api/about
 {
     "commit": "381bbd2a1e30d621ed6ad4a07790955447ffe468",
-    "name": "Steeltoe.InitializrApi",
-    "url": "https://github.com/SteeltoeOSS/InitializrApi/",
+    "name": "Steeltoe.InitializrService",
+    "url": "https://github.com/SteeltoeOSS/InitializrService/",
     "vendor": "SteeltoeOSS/VMware",
     "version": "0.8.0"
 }
@@ -51,7 +51,7 @@ $ http -p b https://start.steeltoe.io/api/about
 
 ### `api/config`
 
-`api/config` accepts GET requests and returns _InitializrApi_ configuration.
+`api/config` accepts GET requests and returns _InitializrService_ configuration.
 
 The returned document includes _all_ configuration.   Sub-endpoints are available allowing for more targeted responses.
 
@@ -131,7 +131,7 @@ The former is recommended for production deployments; the latter is intended pri
 The Initializr API uses the [Steeltoe Config Server Provider](https://docs.steeltoe.io/api/v3/configuration/config-server-provider.html) to get configuration from a Spring Cloud Config Server.
 
 The _InitializrAPI_ running at https://start.steeltoe.io/api/ uses a Spring Cloud Config Server backended at https://github.com/SteeltoeOSS/InitializrConfig.
-The following `appsettings.json` sample snippet is part of the _InitializrApi_'s configuration:
+The following `appsettings.json` sample snippet is part of the _InitializrService_'s configuration:
 ```json
   ...,
   "spring": {

@@ -12,4 +12,4 @@ RUN curl https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for
             && chmod +x wait-for-it
 COPY --from=build /srv .
 ENV DOTNET_URLS http://0.0.0.0:80
-ENTRYPOINT ["dotnet", "Steeltoe.InitializrApi.dll"]
+ENTRYPOINT ["dotnet", "Steeltoe.InitializrService.dll"]

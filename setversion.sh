@@ -74,4 +74,5 @@ fi
 
 echo "Setting version to $major.$minor.$patch"
 
-$sed -i 's:<SteeltoeInitializrApiVersion>.*</SteeltoeInitializrApiVersion>:<SteeltoeInitializrApiVersion>'$major.$minor.$patch'</SteeltoeInitializrApiVersion>:' $base_dir/Version.props
+$sed -i
+'s:<SteeltoeInitializrServiceVersion>.*</SteeltoeInitializrServiceVersion>:<SteeltoeInitializrServiceVersion>'$major.$minor.$patch'</SteeltoeInitializrServiceVersion>:' $base_dir/Version.props

@@ -5,7 +5,7 @@ variables:
   - name: major
     value: 0
   - name: minor
-    value: 23
+    value: 24
   - name: patch
     value: 0
   - name: DOTNET_SKIP_FIRST_TIME_EXPERIENCE
@@ -40,7 +40,7 @@ stages:
             inputs:
               SonarCloud: SonarCloud
               organization: steeltoeoss
-              projectKey: InitializrApi
+              projectKey: InitializrService
               extraProperties: |
                 sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)/**/*.opencover.xml
           - task: DotNetCoreCLI@2
@@ -72,7 +72,7 @@ stages:
             displayName: dotnet pack
             inputs:
               command: pack
-              packagesToPack: src/InitializrApi.Config
+              packagesToPack: src/InitializrService.Config
               arguments: --no-build
           - task: Powershell@2
             displayName: Sign NuGets

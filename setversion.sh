@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 set -e
 
 prog=$(basename $0)
@@ -74,5 +73,4 @@ fi
 
 echo "Setting version to $major.$minor.$patch"
 
-$sed -i
-'s:<SteeltoeInitializrServiceVersion>.*</SteeltoeInitializrServiceVersion>:<SteeltoeInitializrServiceVersion>'$major.$minor.$patch'</SteeltoeInitializrServiceVersion>:' $base_dir/Version.props
+$sed -i 's:<SteeltoeInitializrServiceVersion>.*</SteeltoeInitializrServiceVersion>:<SteeltoeInitializrServiceVersion>'$major.$minor.$patch'</SteeltoeInitializrServiceVersion>:' $base_dir/Version.props

@@ -11,3 +11,4 @@ replica_count: 1
 dotnet_environment: Development
 args: ""
 hostname: ""
+tls_secret: initializr-tls

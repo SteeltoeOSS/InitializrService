@@ -88,6 +88,7 @@ stages:
           #   displayName: Publish SonarQube Analysis
           - task: PublishBuildArtifacts@1
             displayName: Publish Build Artifacts
+            artifactName: nugets
       - job: kubernetes
         displayName: Kubernetes
         pool:

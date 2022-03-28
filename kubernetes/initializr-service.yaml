@@ -39,22 +39,3 @@ spec:
     targetPort: #@ int(data.values.container_port)
   selector:
     app: #@ data.values.name
-
-#@ if/end data.values.hostname:
----
-apiVersion: projectcontour.io/v1
-kind: HTTPProxy
-metadata:
-  name: #@ data.values.name
-  namespace: #@ data.values.namespace
-spec:
-  virtualhost:
-    fqdn: #@ data.values.hostname
-    tls:
-      secretName: #@ data.values.tls_secret
-  routes:
-    - conditions:
-      - prefix: /api
-      services:
-        - name: #@ data.values.name
-          port: #@ int(data.values.service_port)

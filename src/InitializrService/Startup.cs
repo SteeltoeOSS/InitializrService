@@ -17,6 +17,7 @@ using Steeltoe.Management.Endpoint;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Text.Json.Serialization;
 
 namespace Steeltoe.InitializrService
 {
@@ -83,7 +84,7 @@ namespace Steeltoe.InitializrService
             services.AddGoogleAnalyticsTracker(trackerOptions => { trackerOptions.TrackerId = "UA-114912118-2"; });
             services.AddControllers().AddJsonOptions(jsonOptions =>
             {
-                jsonOptions.JsonSerializerOptions.IgnoreNullValues = true;
+                jsonOptions.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
                 jsonOptions.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
             });
         }

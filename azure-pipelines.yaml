@@ -53,7 +53,6 @@ stages:
               command: build
               arguments: >
                 --no-restore
-                # /p:TreatWarningsAsErrors=True
           - task: DotNetCoreCLI@2
             displayName: dotnet test
             inputs:

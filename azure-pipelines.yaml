@@ -2,19 +2,11 @@ trigger:
   - main
 
 variables:
-  - name: major
-    value: 0
-  - name: minor
-    value: 24
-  - name: patch
-    value: 0
   - name: DOTNET_SKIP_FIRST_TIME_EXPERIENCE
     value: true
   - name: DOTNET_CLI_TELEMETRY_OPTOUT
     value: 1
   - group: PackageSigningSecrets
-
-name: $(major).$(minor).$(patch)-$(Rev:r)
 
 stages:
   - stage: assemble

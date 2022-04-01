@@ -40,7 +40,8 @@ namespace Steeltoe.InitializrService.Generators
         public async Task<byte[]> GenerateProjectArchive(ProjectSpec spec)
         {
             var options = new StringBuilder();
-            options.Append("output=").Append(spec.Namespace)
+            options.Append("output=").Append(spec.Name)
+                .Append(",name=").Append(spec.Namespace)
                 .Append(",description=").Append(spec.Description)
                 .Append(",steeltoe=").Append(spec.SteeltoeVersion)
                 .Append(",framework=").Append(spec.DotNetFramework)

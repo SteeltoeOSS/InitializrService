@@ -19,11 +19,6 @@
     <NoWarn>SA1101;SA1309;SA1402;SA1649</NoWarn>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <Version Condition=" '$(BUILD_BUILDNUMBER)' == '' ">$(SteeltoeInitializrServiceVersion)</Version>
-    <Version Condition=" '$(BUILD_BUILDNUMBER)' != '' ">$(BUILD_BUILDNUMBER)</Version>
-  </PropertyGroup>
-
   <PropertyGroup Condition="'$(TF_BUILD)' == 'true'">
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
   </PropertyGroup>

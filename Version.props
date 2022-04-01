@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <GoogleAnalyticsTrackerVersion>6.0.7</GoogleAnalyticsTrackerVersion>
-    <SteeltoeInitializrServiceVersion>0.0.0</SteeltoeInitializrServiceVersion>
     <SteeltoeVersion>3.1.0</SteeltoeVersion>
     <YamlDotNetVersion>8.1.2</YamlDotNetVersion>
   </PropertyGroup>

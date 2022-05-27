@@ -69,7 +69,7 @@ namespace Steeltoe.InitializrService
             _netCoreToolServiceUri = options?.NetCoreToolServiceUri;
             if (options?.UiConfigPath is null)
             {
-                services.ConfigureConfigServerClientOptions(Configuration);
+                services.ConfigureConfigServerClientOptions();
                 services.Configure<UiConfig>(Configuration);
                 services.AddTransient<IUiConfigService, UiConfigService>();
             }
@@ -81,6 +81,7 @@ namespace Steeltoe.InitializrService
             services.AddResponseCompression();
             services.AddTransient<IProjectGenerator, NetCoreToolProjectGenerator>();
             services.AddAllActuators();
+            services.ActivateActuatorEndpoints();
             services.AddGoogleAnalyticsTracker(trackerOptions => { trackerOptions.TrackerId = "UA-114912118-2"; });
             services.AddControllers().AddJsonOptions(jsonOptions =>
             {
@@ -117,7 +118,6 @@ namespace Steeltoe.InitializrService
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapAllActuators();
                 endpoints.MapControllers();
             });
         }

@@ -3,8 +3,8 @@
   "profiles": {
     "Development": {
       "commandName": "Project",
-      "launchBrowser": false,
       "applicationUrl": "http://127.0.0.1:1920",
+      "launchUrl": "api",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

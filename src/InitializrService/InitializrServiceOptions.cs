@@ -37,8 +37,13 @@ namespace Steeltoe.InitializrService
         public string UiConfigPath => UiConfig?["Path"];
 
         /// <summary>
-        /// Gets or sets the path to the logo used for doc header.
+        /// Gets or sets the path to the API documentation logo.
         /// </summary>
         public string Logo { get; set; }
+
+        /// <summary>
+        /// Gets or sets the path to the API documentation examples.
+        /// </summary>
+        public string Examples { get; set; }
     }
 }

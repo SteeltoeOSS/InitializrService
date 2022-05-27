@@ -61,21 +61,8 @@ namespace Steeltoe.InitializrService.Controllers
         public IActionResult GetHelp()
         {
             var help = new List<string>();
-            if (_serviceOptions?.Logo is not null)
-            {
-                try
-                {
-                    help.Add(string.Empty);
-                    var logoPath = _serviceOptions.Logo;
-                    System.IO.File.ReadAllLines(logoPath).ToList().ForEach(l => help.Add(l));
-                    help.Add(string.Empty);
-                }
-                catch (Exception e)
-                {
-                    help.Add($"!!! failed to load logo: {e.Message}");
-                    help.Add(string.Empty);
-                }
-            }
+
+            LoadTextResource(_serviceOptions?.Logo, help);
 
             help.Add(" :: Steeltoe Initializr ::  https://start.steeltoe.io");
             help.Add(string.Empty);
@@ -115,21 +102,30 @@ namespace Steeltoe.InitializrService.Controllers
                 });
 
             help.AddRange(ToTable(table));
-            help.Add(string.Empty);
-            help.Add("Examples:");
-            help.Add(string.Empty);
-            help.Add("To create a default project:");
-            help.Add("\t$ http https://start.steeltoe.io/api/project -d");
-            help.Add(string.Empty);
-            help.Add("To create a project targeting Steeltoe 2.5.1 and netcoreapp2.1:");
-            help.Add(
-                "\t$ http https://start.steeltoe.io/api/project steeltoeVersion==2.5.1 dotNetFramework==netcoreapp2.1 -d");
-            help.Add(string.Empty);
-            help.Add("To create a project with management endpoints and a Redis backend:");
-            help.Add("\t$ http https://start.steeltoe.io/api/project dependencies==management-endpoints,connector-redis -d");
+
+            LoadTextResource(_serviceOptions?.Examples, help);
 
             const char newline = '\n';
             return Ok(string.Join(newline, help));
+        }
+
+        private void LoadTextResource(string resource, List<string> lineBuffer)
+        {
+            if (resource is null)
+            {
+                return;
+            }
+
+            try
+            {
+                lineBuffer.Add(string.Empty);
+                System.IO.File.ReadAllLines(resource).ToList().ForEach(l => lineBuffer.Add(l));
+                lineBuffer.Add(string.Empty);
+            }
+            catch (Exception e)
+            {
+                Logger.LogWarning("failed to load text resource: {Resource}, {Exception}", resource, e.Message);
+            }
         }
 
         private static IEnumerable<string> ToTable(IReadOnlyList<List<string>> rows)

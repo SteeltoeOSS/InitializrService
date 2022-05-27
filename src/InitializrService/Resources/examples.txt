@@ -1,0 +1,10 @@
+Examples:
+
+To create a default project:
+	$ http https://start.steeltoe.io/api/project -d
+
+To create a project targeting Steeltoe 3.2.0 and net6.0:
+	$ http https://start.steeltoe.io/api/project steeltoeVersion==3.2.0 dotNetFramework==net6.0 -d
+
+To create a project with management endpoints and a Redis backend:
+	$ http https://start.steeltoe.io/api/project dependencies==management-endpoints,connector-redis -d

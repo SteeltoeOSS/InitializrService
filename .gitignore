@@ -2,13 +2,17 @@
 bin/
 obj/
 
-# User-specific state
+# local tools
+/tools/
+
+# user-specific state
 /*.sln.DotSettings.user
 
 # Visual Studio
 /.vs/
 
+# Visual Studio Code
+/.vscode/
+
 # JetBrains Rider state
 /.idea/
-
-/tools/

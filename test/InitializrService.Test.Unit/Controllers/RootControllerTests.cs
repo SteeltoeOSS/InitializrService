@@ -107,9 +107,7 @@ namespace Steeltoe.InitializrService.Test.Unit.Controllers
             var indexResult = Assert.IsType<OkObjectResult>(result);
             indexResult.Value.Should().BeOfType<string>();
             var help = Assert.IsType<string>(indexResult.Value);
-            help.Should().MatchRegex("!!! failed to load logo:");
             help.Should().MatchRegex(":: Steeltoe Initializr ::  https://start.steeltoe.io");
-            help.Should().MatchRegex("Examples:");
             help.Should().MatchRegex(@"\|\s+Parameter\s+\|\s+Description\s+\|\s+Default Value\s+\|");
             help.Should().MatchRegex(@"\|\s+name\s+\|\s+project name\s+\|\s+MyProject\s+\|");
             help.Should().MatchRegex(@"\|\s+namespace\s+\|\s+namespace\s+\|\s+MyNamespace\s+\|");

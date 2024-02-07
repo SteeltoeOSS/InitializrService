@@ -16,3 +16,6 @@ obj/
 
 # JetBrains Rider state
 /.idea/
+
+# code coverage
+coverage*.*

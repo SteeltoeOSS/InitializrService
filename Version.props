@@ -1,7 +1,7 @@
 <Project>
 
   <PropertyGroup>
-    <GoogleAnalyticsTrackerVersion>6.0.7</GoogleAnalyticsTrackerVersion>
+    <GoogleAnalyticsTrackerVersion>7.0.1</GoogleAnalyticsTrackerVersion>
     <SteeltoeVersion>3.2.*</SteeltoeVersion>
     <YamlDotNetVersion>8.1.2</YamlDotNetVersion>
   </PropertyGroup>

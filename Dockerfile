@@ -1,11 +1,11 @@
-FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0-alpine AS build
 WORKDIR /source
 
 COPY . .
 RUN dotnet restore
 RUN dotnet publish -c release -o /srv --no-restore
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine
+FROM mcr.microsoft.com/dotnet/sdk:8.0-alpine
 WORKDIR /srv
 RUN apk add bash
 RUN curl https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh > wait-for-it \

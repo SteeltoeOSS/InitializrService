@@ -15,7 +15,7 @@ using System.Web;
 namespace Steeltoe.InitializrService.Generators
 {
     /// <summary>
-    /// a A project generator that uses a NetCoreToolService.
+    /// A project generator that uses a NetCoreToolService.
     /// </summary>
     public class NetCoreToolProjectGenerator : InitializrServiceBase, IProjectGenerator
     {

@@ -4,7 +4,6 @@
 
 using Steeltoe.InitializrService.Models;
 using System;
-using System.Runtime.Serialization;
 using System.Threading.Tasks;
 
 namespace Steeltoe.InitializrService.Services
@@ -31,12 +30,6 @@ namespace Steeltoe.InitializrService.Services
             : base(message)
         {
         }
-
-        /// <inheritdoc cref="Exception"/>
-        protected NoProjectForSpecException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-        }
     }
 
     /// <inheritdoc />
@@ -46,12 +39,6 @@ namespace Steeltoe.InitializrService.Services
         /// <inheritdoc cref="Exception"/>
         public InvalidSpecException(string message)
             : base(message)
-        {
-        }
-
-        /// <inheritdoc cref="Exception"/>
-        protected InvalidSpecException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
         {
         }
     }

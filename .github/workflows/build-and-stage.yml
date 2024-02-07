@@ -58,7 +58,7 @@ jobs:
         REPO_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
 
     - name: dotnet publish
-      run: dotnet publish src/InitializrService/Steeltoe.InitializrService.csproj -o publish --no-build
+      run: dotnet publish src/InitializrService/Steeltoe.InitializrService.csproj -o publish
 
     - name: Upload artifact for deployment job
       if: ${{ github.event_name != 'pull_request' }}

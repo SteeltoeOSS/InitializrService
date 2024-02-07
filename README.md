@@ -2,13 +2,10 @@
 
 Steeltoe Initializr Service reference implementation
 
-[![Build Status](https://dev.azure.com/SteeltoeOSS/Steeltoe/_apis/build/status/Initializr/SteeltoeOSS.InitializrService?branchName=main)](https://dev.azure.com/SteeltoeOSS/Steeltoe/_build/latest?definitionId=31&branchName=main)
-
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=InitializrService&metric=alert_status)](https://sonarcloud.io/dashboard?id=InitializrService)
-
 ## Using the Server
 
 _InitializrService_ provides 4 REST/HTTP endpoints:
+
 * `api/`
 * `api/about`
 * `api/config`
@@ -58,6 +55,7 @@ The returned document includes _all_ configuration.   Sub-endpoints are availabl
 `api/config/projectMetadata` can be used by smart clients, such as [_InitializrWeb_](https://github.com/SteeltoeOSS/InitializrWeb), to assist in creating user interfaces.
 
 The following endpoints can be used by CLI users to determine what project configuration options are available:
+
 * `api/config/archiveTypes`
 * `api/config/dependencies`
 * `api/config/dotNetFrameworks`
@@ -125,13 +123,13 @@ $ http https://start.steeltoe.io/api/project dotNetFramework=netcoreapp3.1 depen
 The Initializr API configuration is a JSON document provided by a [Spring Cloud Config Server](https://cloud.spring.io/spring-cloud-config/multi/multi__spring_cloud_config_server.html) or a local file.
 The former is recommended for production deployments; the latter is intended primarily for local development.
 
-
 ### Using Spring Cloud Config Server
 
 The Initializr API uses the [Steeltoe Config Server Provider](https://docs.steeltoe.io/api/v3/configuration/config-server-provider.html) to get configuration from a Spring Cloud Config Server.
 
-The _InitializrAPI_ running at https://start.steeltoe.io/api/ uses a Spring Cloud Config Server backended at https://github.com/SteeltoeOSS/InitializrConfig.
+The _InitializrAPI_ running at <https://start.steeltoe.io/api/> uses a Spring Cloud Config Server backended at <https://github.com/SteeltoeOSS/InitializrConfig>.
 The following `appsettings.json` sample snippet is part of the _InitializrService_'s configuration:
+
 ```json
   ...,
   "spring": {
@@ -155,6 +153,7 @@ See the Steeltoe Config Server Provider documentation for other configuration op
 _**Note**_: configuring a local file overrides any Spring Cloud Config Server configuration
 
 The following `appsettings.json` sample snippet configures the use of a local configuration file:
+
 ```json
   ...,
   "Initializr": {

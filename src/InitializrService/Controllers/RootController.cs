@@ -109,25 +109,6 @@ namespace Steeltoe.InitializrService.Controllers
             return Ok(string.Join(newline, help));
         }
 
-        private void LoadTextResource(string resource, List<string> lineBuffer)
-        {
-            if (resource is null)
-            {
-                return;
-            }
-
-            try
-            {
-                lineBuffer.Add(string.Empty);
-                System.IO.File.ReadAllLines(resource).ToList().ForEach(l => lineBuffer.Add(l));
-                lineBuffer.Add(string.Empty);
-            }
-            catch (Exception e)
-            {
-                Logger.LogWarning("failed to load text resource: {Resource}, {Exception}", resource, e.Message);
-            }
-        }
-
         private static IEnumerable<string> ToTable(IReadOnlyList<List<string>> rows)
         {
             var columnMaxWidth = new int[rows[0].Count];
@@ -168,6 +149,25 @@ namespace Steeltoe.InitializrService.Controllers
 
             table.Add(borderRule);
             return table;
+        }
+
+        private void LoadTextResource(string resource, List<string> lineBuffer)
+        {
+            if (resource is null)
+            {
+                return;
+            }
+
+            try
+            {
+                lineBuffer.Add(string.Empty);
+                System.IO.File.ReadAllLines(resource).ToList().ForEach(l => lineBuffer.Add(l));
+                lineBuffer.Add(string.Empty);
+            }
+            catch (Exception e)
+            {
+                Logger.LogWarning("failed to load text resource: {Resource}, {Exception}", resource, e.Message);
+            }
         }
     }
 }

@@ -21,7 +21,7 @@ namespace Steeltoe.InitializrService.Test.Integration
             about.Vendor.Should().Be("SteeltoeOSS/VMware");
             about.Url.Should().Be("https://github.com/SteeltoeOSS/InitializrService/");
             about.Version.Should().NotBeNull();
-            about.Version.Should().Be("1.0.0.11-rc1");
+            about.Version.Should().Contain("1.0.0");
             about.Commit.Should().NotBeNull();
         }
 

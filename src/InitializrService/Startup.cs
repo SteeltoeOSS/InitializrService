@@ -82,7 +82,7 @@ namespace Steeltoe.InitializrService
             services.AddTransient<IProjectGenerator, NetCoreToolProjectGenerator>();
             services.AddAllActuators();
             services.ActivateActuatorEndpoints();
-            services.AddGoogleAnalyticsTracker(trackerOptions => { trackerOptions.TrackerId = "UA-114912118-2"; });
+            services.AddGoogleAnalyticsTracker(trackerOptions => { trackerOptions.TrackerId = Configuration.GetValue<string>("GoogleAnalytics:TrackerId"); });
             services.AddControllers().AddJsonOptions(jsonOptions =>
             {
                 jsonOptions.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;

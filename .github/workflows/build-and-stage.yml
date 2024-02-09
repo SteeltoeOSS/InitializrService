@@ -69,7 +69,7 @@ jobs:
 
   deploy:
     name: Deploy
-    environment: production
+    environment: Staging
     needs:
     - build
     runs-on: ubuntu-latest

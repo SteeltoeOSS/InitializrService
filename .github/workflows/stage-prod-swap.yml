@@ -8,7 +8,7 @@ jobs:
     name: Promote to production
     runs-on: ubuntu-latest
     environment:
-      name: 'Production'
+      name: Production
       url: 'https://${{ vars.AZURE_WEBAPP_NAME }}.azurewebsites.net/'
 
     steps:

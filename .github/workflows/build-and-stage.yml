@@ -97,7 +97,7 @@ jobs:
       with:
         app-name: ${{ vars.AZURE_WEBAPP_NAME }}
         package: '.'
-        slot-name: ${{ vars.STAGING_SLOT_NAME }}
+        slot-name: ${{ env.SLOT_NAME }}
 
       # Need to pair with a custom NetCoreToolService address?
       # az webapp config appsettings set --resource-group steeltoe --name initializr-service --slot pr-11 --settings InitializrService__NetCoreToolService__Uri=https://netcoretoolservice-pr-11.azurewebsites.net/api

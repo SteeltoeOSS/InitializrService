@@ -185,7 +185,7 @@ namespace Steeltoe.InitializrService.Test.Unit.Controllers
             result.Value.Should().Be("Default packaging not configured.");
         }
 
-        [Fact]
+        [Fact(Skip = "This is effectively unreachable. InitilizrWeb filters out incompatible dependencies.")]
         public async Task Unsupported_Steeltoe_Version_Should_Return_404_NotFound()
         {
             // Arrange
@@ -230,7 +230,7 @@ namespace Steeltoe.InitializrService.Test.Unit.Controllers
             result.Value.ToString().Should().Be("No dependency 'mydep' found for Steeltoe version 0.0.");
         }
 
-        [Fact]
+        [Fact(Skip = "This is effectively unreachable. InitilizrWeb filters out incompatible dependencies.")]
         public async Task Unsupported_DotNet_Framework_Should_Return_404_NotFound()
         {
             // Arrange

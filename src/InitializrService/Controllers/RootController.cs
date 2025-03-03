@@ -97,8 +97,8 @@ namespace Steeltoe.InitializrService.Controllers
                 {
                     dependency.Id,
                     dependency.Description,
-                    new ReleaseRange(dependency.SteeltoeVersionRange).ToPrettyString(),
-                    new ReleaseRange(dependency.DotNetFrameworkRange).ToPrettyString(),
+                    dependency.SteeltoeVersionRange ?? string.Empty,
+                    dependency.DotNetFrameworkRange ?? string.Empty,
                 });
 
             help.AddRange(ToTable(table));

@@ -73,13 +73,6 @@ namespace Steeltoe.InitializrService.Controllers
                 Dependencies = spec.Dependencies ?? defaults?.Dependencies?.Default,
             };
 
-            if (new ReleaseRange("3.0.0").Accepts(normalizedSpec.SteeltoeVersion)
-                && !new ReleaseRange("netcoreapp3.1").Accepts(normalizedSpec.DotNetFramework))
-            {
-                return NotFound(
-                    $".NET framework version {normalizedSpec.DotNetFramework} not found for Steeltoe version {normalizedSpec.SteeltoeVersion}");
-            }
-
             if (normalizedSpec.Dependencies != null)
             {
                 var deps = normalizedSpec.Dependencies.Split(',');
@@ -95,19 +88,25 @@ namespace Steeltoe.InitializrService.Controllers
                                 continue;
                             }
 
+                            // This is effectively unreachable. InitializrWeb filters out incompatible dependencies.
+                            /*
                             var steeltoeRange = new ReleaseRange(dep.SteeltoeVersionRange);
                             if (!steeltoeRange.Accepts(normalizedSpec.SteeltoeVersion))
                             {
                                 return NotFound(
                                     $"No dependency '{deps[i]}' found for Steeltoe version {normalizedSpec.SteeltoeVersion}.");
                             }
+                            */
 
+                            // This is effectively unreachable. InitializrWeb filters out incompatible dependencies.
+                            /*
                             var frameworkRange = new ReleaseRange(dep.DotNetFrameworkRange);
                             if (!frameworkRange.Accepts(normalizedSpec.DotNetFramework))
                             {
                                 return NotFound(
                                     $"No dependency '{deps[i]}' found for .NET framework {normalizedSpec.DotNetFramework}.");
                             }
+                            */
 
                             deps[i] = dep.Id;
                             found = true;
@@ -133,6 +132,10 @@ namespace Steeltoe.InitializrService.Controllers
             Logger.LogInformation("Project specification: {ProjectSpec}", normalizedSpec);
             try
             {
+                // Translate Spring-style wildcard 'x' to NuGet-style wildcard '*'.
+                // See https://docs.spring.io/initializr/docs/current-SNAPSHOT/reference/html/#dependencies-compatibility-range.
+                normalizedSpec.SteeltoeVersion = normalizedSpec.SteeltoeVersion.Replace('x', '*');
+
                 var projectPackage = await _projectGenerator.GenerateProjectArchive(normalizedSpec);
                 return File(
                     projectPackage,

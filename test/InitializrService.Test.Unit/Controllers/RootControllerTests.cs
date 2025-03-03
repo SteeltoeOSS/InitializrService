@@ -119,7 +119,7 @@ namespace Steeltoe.InitializrService.Test.Unit.Controllers
             help.Should().MatchRegex(@"\|\s+Id\s+\|\s+Description\s+\|\s+Steeltoe Version\s+\|\s+.NET Framework\s+\|");
             help.Should().MatchRegex(@"\|\s+dep1\s+\|\s+DependencyOne\s+\|\s+\|");
             help.Should().MatchRegex(@"\|\s+dep2\s+\|\s+DependencyTwo\s+\|\s+\|");
-            help.Should().MatchRegex(@"\|\s+anotherdep\s+\|\s+AnotherDependency\s+\|\s+>=1.0 and <1.9\s+\|\s+>=2.0\s+\|");
+            help.Should().MatchRegex(@"\|\s+anotherdep\s+\|\s+AnotherDependency\s+\|\s+\[1\.0,1\.9\)\s+\|\s+2.0\s+\|");
         }
 
         /* ----------------------------------------------------------------- *

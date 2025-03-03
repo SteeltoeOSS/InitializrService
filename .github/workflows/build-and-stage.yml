@@ -23,6 +23,7 @@ jobs:
       DOTNET_CLI_TELEMETRY_OPTOUT: 1
       DOTNET_NOLOGO: true
       DOTNET_VERSION: '8.0'
+      ASPNETCORE_ENVIRONMENT: Staging
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -99,9 +100,6 @@ jobs:
         package: '.'
         slot-name: ${{ vars.STAGING_SLOT_NAME }}
 
-      # Need to pair with a custom NetCoreToolService address?
-      # az webapp config appsettings set --resource-group steeltoe --name initializr-service --slot pr-11 --settings InitializrService__NetCoreToolService__Uri=https://netcoretoolservice-pr-11.azurewebsites.net/api
-
     - name: If PR, comment with the preview link
       if: ${{ github.event_name == 'pull_request' }}
       uses: mshick/add-pr-comment@v2
@@ -111,6 +109,13 @@ jobs:
 
           - Your changes have been deployed to the preview site. The preview site will update as you add more commits to this branch.
           - The preview link is shareable, but will be deleted when the pull request is merged or closed.
+
+          ### Need to pair with a custom NetCoreToolService address?
+
+          A team member can use this az CLI command, replacing <this-PR-number> and <other-pr-number> for valid numbers:
+          ```bash
+          az webapp config appsettings set --resource-group steeltoe --name initializr-service --slot pr-<this-PR-number> --settings InitializrService__NetCoreToolService__Uri=https://netcoretoolservice-pr-<other-pr-number>.azurewebsites.net/api
+          ```
 
           > *This is an automated message.*
         repo-token: ${{ secrets.GITHUB_TOKEN }}

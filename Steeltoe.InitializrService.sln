@@ -30,6 +30,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{51C72D02-A6C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{3B483F2E-42EE-4DE5-84B6-92F0D09D94FD}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{689D1DAB-3FD4-49C3-8A46-5914ABCE77E5}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\build-and-stage.yml = .github\workflows\build-and-stage.yml
+		.github\workflows\pr-cleanup.yml = .github\workflows\pr-cleanup.yml
+		.github\workflows\stage-prod-swap.yml = .github\workflows\stage-prod-swap.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -110,6 +119,7 @@ Global
 		{EC08DC14-11D5-40D3-8908-BDB0D789F48D} = {3B483F2E-42EE-4DE5-84B6-92F0D09D94FD}
 		{EA849C8F-7118-45DB-BBF2-D36CE1FD43B4} = {3B483F2E-42EE-4DE5-84B6-92F0D09D94FD}
 		{24A2AB13-F4C4-4C88-B67D-D280610240B8} = {3B483F2E-42EE-4DE5-84B6-92F0D09D94FD}
+		{689D1DAB-3FD4-49C3-8A46-5914ABCE77E5} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F773FB5B-7619-4DA7-AA07-919DA1A5181C}

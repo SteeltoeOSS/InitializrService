@@ -4,6 +4,8 @@ Steeltoe Initializr Service reference implementation
 
 ## Using the Server
 
+
+
 _InitializrService_ provides 4 REST/HTTP endpoints:
 
 * `api/`

@@ -4,9 +4,9 @@
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
-using Steeltoe.Extensions.Configuration.ConfigServer;
-using Steeltoe.Extensions.Logging;
+using Steeltoe.Configuration.ConfigServer;
 using Steeltoe.InitializrService.Models;
+using Steeltoe.Logging.DynamicConsole;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
@@ -22,21 +22,17 @@ namespace Steeltoe.InitializrService
         {
             var versionAttr =
                 typeof(Program).Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
-            var fields = versionAttr?.InformationalVersion.Split('+');
-            if (fields is null)
-            {
-                fields = new[] { "unknown" };
-            }
+            var fields = versionAttr?.InformationalVersion.Split('+') ?? ["unknown"];
 
             if (fields.Length == 1)
             {
-                fields = new[] { fields[0], "unknown" };
+                fields = [fields[0], "unknown"];
             }
 
             About = new About
             {
                 Name = typeof(Program).Namespace ?? "unknown",
-                Vendor = "SteeltoeOSS/VMware",
+                Vendor = "SteeltoeOSS/Broadcom",
                 Url = "https://github.com/SteeltoeOSS/InitializrService/",
                 Version = fields[0],
                 Commit = fields[1],

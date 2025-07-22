@@ -51,7 +51,7 @@ namespace Steeltoe.InitializrService.Config
         /// <summary>
         /// Gets or sets the project dependencies.
         /// </summary>
-        public GroupList Dependencies { get; set; } = new ();
+        public GroupList Dependencies { get; set; } = new();
 
         /// <summary>
         /// HTML form text data.

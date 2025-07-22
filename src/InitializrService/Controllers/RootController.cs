@@ -5,7 +5,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Steeltoe.InitializrService.Config;
 using Steeltoe.InitializrService.Services;
 using System;
 using System.Collections.Generic;
@@ -73,23 +72,23 @@ namespace Steeltoe.InitializrService.Controllers
             help.Add("The URI templates take a set of parameters to customize the result of a request.");
             var table = new List<List<string>>
             {
-                new () { "Parameter", "Description", "Default Value" },
-                new () { "name", "project name", uiConfig.Name.Default },
-                new () { "namespace", "namespace", uiConfig.Namespace.Default },
-                new () { "description", "project description", uiConfig.Description.Default },
-                new () { "steeltoeVersion", "Steeltoe version", uiConfig.SteeltoeVersion.Default },
-                new () { "dotNetFramework", ".NET framework", uiConfig.DotNetFramework.Default },
-                new () { "language", "programming language", uiConfig.Language.Default },
-                new () { "packaging", "project packaging", uiConfig.Packaging.Default },
+                new() { "Parameter", "Description", "Default Value" },
+                new() { "name", "project name", uiConfig.Name.Default },
+                new() { "namespace", "namespace", uiConfig.Namespace.Default },
+                new() { "description", "project description", uiConfig.Description.Default },
+                new() { "steeltoeVersion", "Steeltoe version", uiConfig.SteeltoeVersion.Default },
+                new() { "dotNetFramework", ".NET framework", uiConfig.DotNetFramework.Default },
+                new() { "language", "programming language", uiConfig.Language.Default },
+                new() { "packaging", "project packaging", uiConfig.Packaging.Default },
             };
             help.AddRange(ToTable(table));
             help.Add(string.Empty);
             help.Add("The following section has a list of supported identifiers for the comma-separated");
             help.Add("list of \"dependencies\".");
-            table = new List<List<string>>
-            {
-                new () { "Id", "Description", "Steeltoe Version", ".NET Framework" },
-            };
+            table =
+            [
+                ["Id", "Description", "Steeltoe Version", ".NET Framework"]
+            ];
             table.AddRange(
                 from @group in uiConfig.Dependencies.Values
                 from dependency in @group.Values
@@ -109,7 +108,7 @@ namespace Steeltoe.InitializrService.Controllers
             return Ok(string.Join(newline, help));
         }
 
-        private static IEnumerable<string> ToTable(IReadOnlyList<List<string>> rows)
+        private static List<string> ToTable(List<List<string>> rows)
         {
             var columnMaxWidth = new int[rows[0].Count];
             for (var column = 0; column < columnMaxWidth.Length; ++column)

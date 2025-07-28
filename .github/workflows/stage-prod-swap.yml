@@ -24,7 +24,7 @@ jobs:
         az webapp restart --resource-group steeltoe --name initializr-service --slot Staging
         echo "Waiting 60 seconds until beginning to curl to see if the site is back up"
         sleep 60
-        until $(curl --output /dev/null --silent --head --fail https://initializr-service-staging.azurewebsites.net/actuator/info); do
+        until $(curl --output /dev/null --silent --fail https://initializr-service-staging.azurewebsites.net/actuator/info); do
           printf '.'
           sleep 5
         done

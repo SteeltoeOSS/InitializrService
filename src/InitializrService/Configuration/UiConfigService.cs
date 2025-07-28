@@ -4,7 +4,7 @@
 
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Steeltoe.Extensions.Configuration.ConfigServer;
+using Steeltoe.Configuration.ConfigServer;
 using Steeltoe.InitializrService.Config;
 using Steeltoe.InitializrService.Services;
 
@@ -27,7 +27,7 @@ namespace Steeltoe.InitializrService.Configuration
         /// <param name="logger">Injected logger.</param>
         public UiConfigService(
             IOptionsSnapshot<UiConfig> configuration,
-            IOptions<ConfigServerClientSettingsOptions> settings,
+            IOptions<ConfigServerClientOptions> settings,
             ILogger<UiConfigService> logger)
             : base(logger)
         {
@@ -35,7 +35,7 @@ namespace Steeltoe.InitializrService.Configuration
             Logger.LogDebug(
                 "Config Server: uri={ConfigServer},env={Environment},label={Label}",
                 settings.Value.Uri,
-                settings.Value.Env,
+                settings.Value.Environment,
                 settings.Value.Label);
         }
 

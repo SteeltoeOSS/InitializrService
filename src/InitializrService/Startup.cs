@@ -8,12 +8,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Steeltoe.Extensions.Configuration.ConfigServer;
+using Steeltoe.Configuration.ConfigServer;
 using Steeltoe.InitializrService.Config;
 using Steeltoe.InitializrService.Configuration;
 using Steeltoe.InitializrService.Generators;
 using Steeltoe.InitializrService.Services;
-using Steeltoe.Management.Endpoint;
+using Steeltoe.Management.Endpoint.Actuators.All;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -81,7 +81,6 @@ namespace Steeltoe.InitializrService
             services.AddResponseCompression();
             services.AddTransient<IProjectGenerator, NetCoreToolProjectGenerator>();
             services.AddAllActuators();
-            services.ActivateActuatorEndpoints();
             services.AddGoogleAnalyticsTracker(trackerOptions => { trackerOptions.TrackerId = Configuration.GetValue<string>("GoogleAnalytics:TrackerId"); });
             services.AddControllers().AddJsonOptions(jsonOptions =>
             {

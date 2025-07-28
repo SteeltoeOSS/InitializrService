@@ -5,7 +5,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Steeltoe.InitializrService.Config;
 using Steeltoe.InitializrService.Models;
 using Steeltoe.InitializrService.Services;
 using System;

@@ -41,7 +41,7 @@ $ http -p b https://start.steeltoe.io/api/about
     "commit": "381bbd2a1e30d621ed6ad4a07790955447ffe468",
     "name": "Steeltoe.InitializrService",
     "url": "https://github.com/SteeltoeOSS/InitializrService/",
-    "vendor": "SteeltoeOSS/VMware",
+    "vendor": "SteeltoeOSS/Broadcom",
     "version": "0.8.0"
 }
 ```

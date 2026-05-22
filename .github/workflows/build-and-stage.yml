@@ -30,7 +30,7 @@ jobs:
       with:
         fetch-depth: 0 # avoid shallow clone so nbgv can do its work.
 
-    - name: Set up .NET Core
+    - name: Setup .NET
       uses: actions/setup-dotnet@v5
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
@@ -51,7 +51,7 @@ jobs:
     - name: dotnet test
       run: dotnet test --logger trx --results-directory ${{ github.workspace }}/TestOutput --no-build
 
-    - name: dotnet test
+    - name: generate test report
       uses: NasAmin/trx-parser@v0.8.1
       with:
         TRX_PATH: "${{ github.workspace }}/TestOutput"

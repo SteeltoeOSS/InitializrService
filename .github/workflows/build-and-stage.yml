@@ -26,17 +26,17 @@ jobs:
       ASPNETCORE_ENVIRONMENT: Staging
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         fetch-depth: 0 # avoid shallow clone so nbgv can do its work.
 
-    - name: Set up .NET Core
-      uses: actions/setup-dotnet@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v5
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
 
     - name: Set up dependency caching for faster builds
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       with:
         path: ~/.nuget/packages
         key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
@@ -49,19 +49,19 @@ jobs:
       run: dotnet build --no-restore /p:TreatWarningsAsErrors=True
 
     - name: dotnet test
-      run: dotnet test --logger trx --results-directory "${{ runner.temp }}" --no-build
+      run: dotnet test --logger trx --results-directory ${{ github.workspace }}/TestOutput --no-build
 
-    - name: dotnet test
-      uses: NasAmin/trx-parser@v0.6.0
+    - name: generate test report
+      uses: NasAmin/trx-parser@v0.8.1
       with:
-        TRX_PATH: "${{ runner.temp }}"
+        TRX_PATH: "${{ github.workspace }}/TestOutput"
         REPO_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
 
     - name: dotnet publish
       run: dotnet publish src/InitializrService/Steeltoe.InitializrService.csproj -o publish
 
     - name: Upload artifact for deployment job
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: published-app
         path: publish
@@ -78,12 +78,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Download artifact from build job
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v8
       with:
         name: published-app
 
     - name: Login to Azure
-      uses: azure/login@v2
+      uses: azure/login@v3
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
@@ -102,7 +102,7 @@ jobs:
 
     - name: If PR, comment with the preview link
       if: ${{ github.event_name == 'pull_request' }}
-      uses: mshick/add-pr-comment@v2
+      uses: mshick/add-pr-comment@v3
       with:
         message: |
           ## Preview link: https://${{ vars.AZURE_WEBAPP_NAME }}-${{ env.SLOT_NAME }}.azurewebsites.net

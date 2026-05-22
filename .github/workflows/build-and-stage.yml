@@ -49,12 +49,12 @@ jobs:
       run: dotnet build --no-restore /p:TreatWarningsAsErrors=True
 
     - name: dotnet test
-      run: dotnet test --logger trx --results-directory "${{ runner.temp }}" --no-build
+      run: dotnet test --logger trx --results-directory ${{ github.workspace }}/TestOutput --no-build
 
     - name: dotnet test
       uses: NasAmin/trx-parser@v0.8.1
       with:
-        TRX_PATH: "${{ runner.temp }}"
+        TRX_PATH: "${{ github.workspace }}/TestOutput"
         REPO_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
 
     - name: dotnet publish

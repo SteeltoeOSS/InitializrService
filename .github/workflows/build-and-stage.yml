@@ -113,7 +113,7 @@ jobs:
 
           ### Need to pair with a custom NetCoreToolService address?
 
-          A team member can use this az CLI command, replacing <this-PR-number> and <other-pr-number> for valid numbers:
+          A team member can use this az CLI command, replacing `<this-PR-number>` and `<other-pr-number>` with valid numbers:
           ```bash
           az webapp config appsettings set --resource-group steeltoe --name initializr-service --slot pr-<this-PR-number> --settings InitializrService__NetCoreToolService__Uri=https://netcoretoolservice-pr-<other-pr-number>.azurewebsites.net/api
           ```

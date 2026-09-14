@@ -107,7 +107,7 @@ jobs:
       uses: mshick/add-pr-comment@v3
       with:
         message: |
-          ## Preview link: https://${{ vars.AZURE_WEBAPP_NAME }}-${{ env.SLOT_NAME }}.azurewebsites.net
+          ## Preview link: https://${{ vars.AZURE_WEBAPP_NAME }}-${{ env.SLOT_NAME }}.azurewebsites.net/api/about
 
           - Your changes have been deployed to the preview site. The preview site will update as you add more commits to this branch.
           - The preview link is shareable, but will be deleted when the pull request is merged or closed.

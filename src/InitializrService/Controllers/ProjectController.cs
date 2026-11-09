@@ -2,13 +2,9 @@
 // The .NET Foundation licenses this file to you under the Apache 2.0 License.
 // See the LICENSE file in the project root for more information.
 
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Steeltoe.InitializrService.Models;
 using Steeltoe.InitializrService.Services;
-using System;
-using System.Threading.Tasks;
 
 namespace Steeltoe.InitializrService.Controllers
 {
@@ -55,12 +51,13 @@ namespace Steeltoe.InitializrService.Controllers
         /// Implements <c>GET</c>.
         /// Generated project is bundled in a ZIP archive.
         /// </summary>
+        /// <param name="spec">Project options supplied from the query string.</param>
         /// <returns>A task containing the <c>GET</c> result which, if is <see cref="FileContentResult"/>, contains a project bundle archive stream.</returns>
         [AcceptVerbs("GET")]
         public async Task<ActionResult> GetProjectArchive([FromQuery] ProjectSpec spec)
         {
             var defaults = _uiConfigService.UiConfig;
-            var normalizedSpec = new ProjectSpec()
+            var normalizedSpec = new ProjectSpec
             {
                 Name = spec.Name ?? defaults?.Name?.Default,
                 Namespace = spec.Namespace ?? defaults?.Namespace?.Default,
@@ -138,7 +135,7 @@ namespace Steeltoe.InitializrService.Controllers
                 var projectPackage = await _projectGenerator.GenerateProjectArchive(normalizedSpec);
                 return File(
                     projectPackage,
-                    $"application/zip",
+                    "application/zip",
                     $"{normalizedSpec.Name}.zip");
             }
             catch (NoProjectForSpecException e)

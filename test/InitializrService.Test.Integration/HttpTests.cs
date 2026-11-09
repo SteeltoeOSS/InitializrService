@@ -1,7 +1,5 @@
 using System.Net;
-using System.Net.Http;
 using System.Net.Http.Json;
-using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Steeltoe.InitializrService.Config;
@@ -9,7 +7,7 @@ using Xunit;
 
 namespace Steeltoe.InitializrService.Test.Integration
 {
-    public class HttpTests : IClassFixture<WebApplicationFactory<Startup>>
+    public class HttpTests(WebApplicationFactory<Startup> fixture) : IClassFixture<WebApplicationFactory<Startup>>
     {
         /* ----------------------------------------------------------------- *
          * positive tests                                                    *
@@ -19,11 +17,11 @@ namespace Steeltoe.InitializrService.Test.Integration
         public async Task Get_UiConfig_Should_Return_UiConfig()
         {
             // Act
-            var response = await HttpClient.GetAsync(UiConfigEndpoint);
+            var response = await HttpClient.GetAsync(UiConfigEndpoint, TestContext.Current.CancellationToken);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var config = await response.Content.ReadFromJsonAsync<UiConfig>();
+            var config = await response.Content.ReadFromJsonAsync<UiConfig>(cancellationToken: TestContext.Current.CancellationToken);
             config.Should().NotBeNull();
         }
 
@@ -31,23 +29,23 @@ namespace Steeltoe.InitializrService.Test.Integration
         public async Task Get_UiConfig_Steeltoe_Versions_Should_Return_Steeltoe_Versions()
         {
             // Act
-            var response = await HttpClient.GetAsync(UiConfigEndpoint + "/steeltoeVersions");
+            var response = await HttpClient.GetAsync(UiConfigEndpoint + "/steeltoeVersions", TestContext.Current.CancellationToken);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var steeltoes = await response.Content.ReadFromJsonAsync<UiConfig.SelectItem[]>();
-            steeltoes.Length.Should().BeGreaterThan(0);
+            var steeltoeItems = await response.Content.ReadFromJsonAsync<UiConfig.SelectItem[]>(cancellationToken: TestContext.Current.CancellationToken);
+            steeltoeItems.Length.Should().BeGreaterThan(0);
         }
 
         [Fact]
         public async Task Get_Config_DotNet_Frameworks_Should_Return_DotNet_Frameworks()
         {
             // Act
-            var response = await HttpClient.GetAsync(UiConfigEndpoint + "/dotNetFrameworks");
+            var response = await HttpClient.GetAsync(UiConfigEndpoint + "/dotNetFrameworks", TestContext.Current.CancellationToken);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var frameworks = await response.Content.ReadFromJsonAsync<UiConfig.SelectItem[]>();
+            var frameworks = await response.Content.ReadFromJsonAsync<UiConfig.SelectItem[]>(cancellationToken: TestContext.Current.CancellationToken);
             frameworks.Length.Should().BeGreaterThan(0);
         }
 
@@ -55,11 +53,11 @@ namespace Steeltoe.InitializrService.Test.Integration
         public async Task Get_Config_Languages_Should_Return_Languages()
         {
             // Act
-            var response = await HttpClient.GetAsync(UiConfigEndpoint + "/languages");
+            var response = await HttpClient.GetAsync(UiConfigEndpoint + "/languages", TestContext.Current.CancellationToken);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var languages = await response.Content.ReadFromJsonAsync<UiConfig.SelectItem[]>();
+            var languages = await response.Content.ReadFromJsonAsync<UiConfig.SelectItem[]>(cancellationToken: TestContext.Current.CancellationToken);
             languages.Length.Should().BeGreaterThan(0);
         }
 
@@ -67,11 +65,11 @@ namespace Steeltoe.InitializrService.Test.Integration
         public async Task Get_Config_Archive_Types_Should_Return_Archive_Types()
         {
             // Act
-            var response = await HttpClient.GetAsync(UiConfigEndpoint + "/archiveTypes");
+            var response = await HttpClient.GetAsync(UiConfigEndpoint + "/archiveTypes", TestContext.Current.CancellationToken);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var archivers = await response.Content.ReadFromJsonAsync<UiConfig.SelectItem[]>();
+            var archivers = await response.Content.ReadFromJsonAsync<UiConfig.SelectItem[]>(cancellationToken: TestContext.Current.CancellationToken);
             archivers.Length.Should().BeGreaterThan(0);
         }
 
@@ -79,11 +77,11 @@ namespace Steeltoe.InitializrService.Test.Integration
         public async Task Get_Config_Dependencies_Should_Return_Dependencies()
         {
             // Act
-            var response = await HttpClient.GetAsync(UiConfigEndpoint + "/dependencies");
+            var response = await HttpClient.GetAsync(UiConfigEndpoint + "/dependencies", TestContext.Current.CancellationToken);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var deps = await response.Content.ReadFromJsonAsync<UiConfig.SelectItem[]>();
+            var deps = await response.Content.ReadFromJsonAsync<UiConfig.SelectItem[]>(cancellationToken: TestContext.Current.CancellationToken);
             deps.Length.Should().BeGreaterThan(0);
         }
 
@@ -95,7 +93,7 @@ namespace Steeltoe.InitializrService.Test.Integration
         public async Task Get_Unknown_Path_Should_Return_404_Not_Found()
         {
             // Act
-            var response = await HttpClient.GetAsync("no such path");
+            var response = await HttpClient.GetAsync("no such path", TestContext.Current.CancellationToken);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.NotFound);
@@ -108,7 +106,7 @@ namespace Steeltoe.InitializrService.Test.Integration
         public async Task Post_Should_Return_405_Method_Not_Allowed(string path)
         {
             // Act
-            var response = await HttpClient.PostAsync(path, new StringContent(""));
+            var response = await HttpClient.PostAsync(path, new StringContent(""), TestContext.Current.CancellationToken);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.MethodNotAllowed);
@@ -121,7 +119,7 @@ namespace Steeltoe.InitializrService.Test.Integration
         public async Task Put_Should_Return_405_Method_Not_Allowed(string path)
         {
             // Act
-            var response = await HttpClient.PutAsync(path, new StringContent(""));
+            var response = await HttpClient.PutAsync(path, new StringContent(""), TestContext.Current.CancellationToken);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.MethodNotAllowed);
@@ -134,7 +132,7 @@ namespace Steeltoe.InitializrService.Test.Integration
         public async Task Patch_Should_Return_405_Method_Not_Allowed(string path)
         {
             // Act
-            var response = await HttpClient.PatchAsync(path, new StringContent(""));
+            var response = await HttpClient.PatchAsync(path, new StringContent(""), TestContext.Current.CancellationToken);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.MethodNotAllowed);
@@ -147,7 +145,7 @@ namespace Steeltoe.InitializrService.Test.Integration
         public async Task Delete_Should_Return_405_Method_Not_Allowed(string path)
         {
             // Act
-            var response = await HttpClient.DeleteAsync(path);
+            var response = await HttpClient.DeleteAsync(path, TestContext.Current.CancellationToken);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.MethodNotAllowed);
@@ -167,15 +165,10 @@ namespace Steeltoe.InitializrService.Test.Integration
          * fields                                                            *
          * ----------------------------------------------------------------- */
 
-        private HttpClient HttpClient { get; }
+        private HttpClient HttpClient { get; } = fixture.CreateClient();
 
         /* ----------------------------------------------------------------- *
          * constructors
          * ----------------------------------------------------------------- */
-
-        public HttpTests(WebApplicationFactory<Startup> fixture)
-        {
-            HttpClient = fixture.CreateClient();
-        }
     }
 }

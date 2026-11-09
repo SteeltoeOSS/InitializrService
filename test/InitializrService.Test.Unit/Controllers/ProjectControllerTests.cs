@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information.
 
 using System.Text;
-using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -43,7 +42,7 @@ namespace Steeltoe.InitializrService.Test.Unit.Controllers
 
             // Act
             var unknown = await controller.GetProjectArchive(new ProjectSpec());
-            var result = Assert.IsType<FileContentResult>(unknown);
+            var result = unknown.Should().BeOfType<FileContentResult>().Subject;
             var projectPackage = Encoding.ASCII.GetString(result.FileContents);
 
             // Assert
@@ -65,19 +64,19 @@ namespace Steeltoe.InitializrService.Test.Unit.Controllers
             {
                 Dependencies = new UiConfig.GroupList
                 {
-                    Values = new[]
-                    {
+                    Values =
+                    [
                         new UiConfig.Group
                         {
-                            Values = new[]
-                            {
+                            Values =
+                            [
                                 new UiConfig.GroupItem
                                 {
                                     Id = "CamelCaseDep",
-                                },
-                            },
-                        },
-                    },
+                                }
+                            ],
+                        }
+                    ],
                 },
             };
             var spec = new ProjectSpec
@@ -93,7 +92,7 @@ namespace Steeltoe.InitializrService.Test.Unit.Controllers
 
             // Act
             var unknown = await controller.GetProjectArchive(spec);
-            var result = Assert.IsType<FileContentResult>(unknown);
+            var result = unknown.Should().BeOfType<FileContentResult>().Subject;
             var projectPackage = Encoding.ASCII.GetString(result.FileContents);
 
             // Assert
@@ -118,7 +117,7 @@ namespace Steeltoe.InitializrService.Test.Unit.Controllers
 
             // Act
             var unknown = await controller.GetProjectArchive(spec);
-            var result = Assert.IsType<NotFoundObjectResult>(unknown);
+            var result = unknown.Should().BeOfType<NotFoundObjectResult>().Subject;
 
             // Assert
             result.Value.ToString().Should().Be("No project for spec.");
@@ -138,7 +137,7 @@ namespace Steeltoe.InitializrService.Test.Unit.Controllers
 
             // Act
             var unknown = await controller.GetProjectArchive(spec);
-            var result = Assert.IsType<BadRequestObjectResult>(unknown);
+            var result = unknown.Should().BeOfType<BadRequestObjectResult>().Subject;
 
             // Assert
             result.Value.ToString().Should().Be("Packaging 'nosuchpackaging' not found.");
@@ -158,7 +157,7 @@ namespace Steeltoe.InitializrService.Test.Unit.Controllers
 
             // Act
             var unknown = await controller.GetProjectArchive(spec);
-            var result = Assert.IsType<NotFoundObjectResult>(unknown);
+            var result = unknown.Should().BeOfType<NotFoundObjectResult>().Subject;
 
             // Assert
             result.Value.ToString().Should().Be("Dependency 'nosuchdep' not found.");
@@ -178,14 +177,14 @@ namespace Steeltoe.InitializrService.Test.Unit.Controllers
 
             // Act
             var unknown = await controller.GetProjectArchive(spec);
-            var result = Assert.IsType<ObjectResult>(unknown);
+            var result = unknown.Should().BeOfType<ObjectResult>().Subject;
 
             // Assert
             result.StatusCode.Should().Be(StatusCodes.Status500InternalServerError);
             result.Value.Should().Be("Default packaging not configured.");
         }
 
-        [Fact(Skip = "This is effectively unreachable. InitilizrWeb filters out incompatible dependencies.")]
+        [Fact(Skip = "This is effectively unreachable. InitializrWeb filters out incompatible dependencies.")]
         public async Task Unsupported_Steeltoe_Version_Should_Return_404_NotFound()
         {
             // Arrange
@@ -198,20 +197,20 @@ namespace Steeltoe.InitializrService.Test.Unit.Controllers
                 DotNetFramework = new UiConfig.SingleSelectList { Default = "0.0" },
                 Dependencies = new UiConfig.GroupList
                 {
-                    Values = new[]
-                    {
+                    Values =
+                    [
                         new UiConfig.Group
                         {
-                            Values = new[]
-                            {
+                            Values =
+                            [
                                 new UiConfig.GroupItem
                                 {
                                     Id = "MyDep",
                                     SteeltoeVersionRange = "1.0"
-                                },
-                            },
-                        },
-                    },
+                                }
+                            ],
+                        }
+                    ],
                 },
             };
             var controller = new ProjectControllerBuilder()
@@ -224,13 +223,13 @@ namespace Steeltoe.InitializrService.Test.Unit.Controllers
 
             // Act
             var unknown = await controller.GetProjectArchive(spec);
-            var result = Assert.IsType<NotFoundObjectResult>(unknown);
+            var result = unknown.Should().BeOfType<NotFoundObjectResult>().Subject;
 
             // Assert
             result.Value.ToString().Should().Be("No dependency 'mydep' found for Steeltoe version 0.0.");
         }
 
-        [Fact(Skip = "This is effectively unreachable. InitilizrWeb filters out incompatible dependencies.")]
+        [Fact(Skip = "This is effectively unreachable. InitializrWeb filters out incompatible dependencies.")]
         public async Task Unsupported_DotNet_Framework_Should_Return_404_NotFound()
         {
             // Arrange
@@ -243,20 +242,20 @@ namespace Steeltoe.InitializrService.Test.Unit.Controllers
                 DotNetFramework = new UiConfig.SingleSelectList { Default = "0.0" },
                 Dependencies = new UiConfig.GroupList
                 {
-                    Values = new[]
-                    {
+                    Values =
+                    [
                         new UiConfig.Group
                         {
-                            Values = new[]
-                            {
+                            Values =
+                            [
                                 new UiConfig.GroupItem
                                 {
                                     Id = "MyDep",
                                     DotNetFrameworkRange = "1.0"
-                                },
-                            },
-                        },
-                    },
+                                }
+                            ],
+                        }
+                    ],
                 },
             };
             var controller = new ProjectControllerBuilder()
@@ -269,7 +268,7 @@ namespace Steeltoe.InitializrService.Test.Unit.Controllers
 
             // Act
             var unknown = await controller.GetProjectArchive(spec);
-            var result = Assert.IsType<NotFoundObjectResult>(unknown);
+            var result = unknown.Should().BeOfType<NotFoundObjectResult>().Subject;
 
             // Assert
             result.Value.ToString().Should().Be("No dependency 'mydep' found for .NET framework 0.0.");
@@ -324,7 +323,7 @@ namespace Steeltoe.InitializrService.Test.Unit.Controllers
             {
                 if (spec.Name is "nosuchproject")
                 {
-                    throw new NoProjectForSpecException($"No project for spec.");
+                    throw new NoProjectForSpecException("No project for spec.");
                 }
 
                 if (spec.Packaging is "nosuchpackaging")

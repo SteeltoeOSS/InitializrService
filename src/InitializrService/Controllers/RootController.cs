@@ -2,14 +2,10 @@
 // The .NET Foundation licenses this file to you under the Apache 2.0 License.
 // See the LICENSE file in the project root for more information.
 
+using System.Text;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Steeltoe.InitializrService.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Steeltoe.InitializrService.Controllers
 {
@@ -160,7 +156,7 @@ namespace Steeltoe.InitializrService.Controllers
             try
             {
                 lineBuffer.Add(string.Empty);
-                System.IO.File.ReadAllLines(resource).ToList().ForEach(l => lineBuffer.Add(l));
+                System.IO.File.ReadAllLines(resource).ToList().ForEach(lineBuffer.Add);
                 lineBuffer.Add(string.Empty);
             }
             catch (Exception e)

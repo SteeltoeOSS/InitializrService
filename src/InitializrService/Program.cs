@@ -2,13 +2,11 @@
 // The .NET Foundation licenses this file to you under the Apache 2.0 License.
 // See the LICENSE file in the project root for more information.
 
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
+using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using Steeltoe.Configuration.ConfigServer;
 using Steeltoe.InitializrService.Models;
 using Steeltoe.Logging.DynamicConsole;
-using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
 
 namespace Steeltoe.InitializrService
 {
@@ -52,15 +50,16 @@ namespace Steeltoe.InitializrService
         public static About About { get; set; }
 
         /// <summary>
-        /// Program entrypoint.
+        /// Program entry point.
         /// </summary>
+        /// <param name="args">Command-line arguments provided to the application at startup.</param>
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
         }
 
         /// <summary>
-        /// Create a generic host (see <a href="https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/generic-host?view=aspnetcore-3.1"></a>.
+        /// Create a generic host (see <see href="https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/generic-host?view=aspnetcore-3.1"/>).
         /// </summary>
         /// <param name="args">Command line args.</param>
         /// <returns>A generic host.</returns>

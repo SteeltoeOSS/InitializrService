@@ -53,8 +53,6 @@ namespace Steeltoe.InitializrService.Test.Unit.Models
          * helpers                                                           *
          * ----------------------------------------------------------------- */
 
-        class ConcreteItem : UiConfig.Item
-        {
-        }
+        class ConcreteItem : UiConfig.Item;
     }
 }

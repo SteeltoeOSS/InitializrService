@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the Apache 2.0 License.
 // See the LICENSE file in the project root for more information.
 
-using System;
 using FluentAssertions;
 using Steeltoe.InitializrService.Config;
 using Xunit;
@@ -254,18 +253,9 @@ namespace Steeltoe.InitializrService.Test.Unit.Models
             // Arrange
 
             // Act
-            Action a1 = () =>
-            {
-                var _ = new ReleaseRange("1.0,2.0");
-            };
-            Action a2 = () =>
-            {
-                var _ = new ReleaseRange("[1.0,2.0");
-            };
-            Action a3 = () =>
-            {
-                var _ = new ReleaseRange("myversion");
-            };
+            Action a1 = () => _ = new ReleaseRange("1.0,2.0");
+            Action a2 = () => _ = new ReleaseRange("[1.0,2.0");
+            Action a3 = () => _ = new ReleaseRange("myversion");
 
             // Assert
             a1.Should().Throw<ArgumentException>()
@@ -282,10 +272,7 @@ namespace Steeltoe.InitializrService.Test.Unit.Models
             // Arrange
 
             // Act
-            Action a = () =>
-            {
-                var _ = new ReleaseRange("[1.0,2.0,3.0]");
-            };
+            Action a = () => _ = new ReleaseRange("[1.0,2.0,3.0]");
 
             // Assert
             a.Should().Throw<ArgumentException>()
@@ -298,14 +285,8 @@ namespace Steeltoe.InitializrService.Test.Unit.Models
             // Arrange
 
             // Act
-            Action a1 = () =>
-            {
-                var _ = new ReleaseRange.ReleaseVersion(null);
-            };
-            Action a2 = () =>
-            {
-                var _ = new ReleaseRange.ReleaseVersion("");
-            };
+            Action a1 = () => _ = new ReleaseRange.ReleaseVersion(null);
+            Action a2 = () => _ = new ReleaseRange.ReleaseVersion("");
 
             // Assert
             a1.Should().Throw<ArgumentException>().WithMessage("Release version cannot be empty or null");
@@ -318,10 +299,7 @@ namespace Steeltoe.InitializrService.Test.Unit.Models
             // Arrange
 
             // Act
-            Action a1 = () =>
-            {
-                var _ = new ReleaseRange.ReleaseVersion("1..2");
-            };
+            Action a1 = () => { _ = new ReleaseRange.ReleaseVersion("1..2"); };
 
             // Assert
             a1.Should().Throw<ArgumentException>().WithMessage("Version not in correct format: '1..2'");

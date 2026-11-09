@@ -27,9 +27,8 @@ namespace Steeltoe.InitializrService.Test.Unit.Controllers
             var result = controller.GetAbout();
 
             // Assert
-            var indexResult = Assert.IsType<OkObjectResult>(result);
-            indexResult.Value.Should().BeOfType<About>();
-            var about = Assert.IsType<About>(indexResult.Value);
+            var indexResult = result.Should().BeOfType<OkObjectResult>().Subject;
+            var about = indexResult.Value.Should().BeOfType<About>().Subject;
             about.Name.Should().Be("Steeltoe.InitializrService");
             about.Vendor.Should().Be("SteeltoeOSS/Broadcom");
             about.Url.Should().Be("https://github.com/SteeltoeOSS/InitializrService/");

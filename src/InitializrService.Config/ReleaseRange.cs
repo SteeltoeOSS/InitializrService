@@ -2,11 +2,9 @@
 // The .NET Foundation licenses this file to you under the Apache 2.0 License.
 // See the LICENSE file in the project root for more information.
 
-using Steeltoe.InitializrService.Config.Utilities;
-using System;
-using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
+using Steeltoe.InitializrService.Config.Utilities;
 
 namespace Steeltoe.InitializrService.Config
 {
@@ -196,6 +194,7 @@ namespace Steeltoe.InitializrService.Config
             /// <summary>
             /// Initializes a new instance of the <see cref="ReleaseVersion"/> class.
             /// </summary>
+            /// <param name="version">Version text to parse, including optional non-numeric prefix and optional <c>-rcNNN</c> suffix.</param>
             public ReleaseVersion(string version)
             {
                 if (string.IsNullOrEmpty(version))
@@ -217,11 +216,11 @@ namespace Steeltoe.InitializrService.Config
                         version = version.Substring(prefixEnd);
                     }
 
-                    const string rcDelimeter = "-rc";
-                    var rcIdx = version.IndexOf(rcDelimeter, StringComparison.InvariantCultureIgnoreCase);
+                    const string rcDelimiter = "-rc";
+                    var rcIdx = version.IndexOf(rcDelimiter, StringComparison.InvariantCultureIgnoreCase);
                     if (rcIdx >= 0)
                     {
-                        _releaseCandidate = int.Parse(version.Substring(rcIdx + rcDelimeter.Length));
+                        _releaseCandidate = int.Parse(version.Substring(rcIdx + rcDelimiter.Length));
                         version = version.Substring(0, rcIdx);
                     }
                     else

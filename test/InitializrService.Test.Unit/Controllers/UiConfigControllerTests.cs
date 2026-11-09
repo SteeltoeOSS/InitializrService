@@ -32,7 +32,7 @@ namespace Steeltoe.InitializrService.Test.Unit.Controllers
             var result = controller.GetUiConfig();
 
             // Assert
-            var indexResult = Assert.IsType<OkObjectResult>(result);
+            var indexResult = result.Should().BeOfType<OkObjectResult>().Subject;
             indexResult.Value.Should().BeSameAs(uiConfig);
         }
 

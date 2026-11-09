@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\InitializrService\Steeltoe.InitializrService.csproj" />
-    <ProjectReference Include="..\InitializrService.Test.Utils\Steeltoe.InitializrService.Test.Utils.csproj" />
   </ItemGroup>
 
 </Project>

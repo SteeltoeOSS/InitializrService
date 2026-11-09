@@ -10,9 +10,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="..\DeterministicBuild.targets">
-      <Link>DeterministicBuild.targets</Link>
-    </Content>
     <Content Include="..\Directory.Build.props">
       <Link>Directory.Build.props</Link>
     </Content>

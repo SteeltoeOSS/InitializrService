@@ -1,0 +1,29 @@
+<Solution>
+  <Folder Name="/.github/" />
+  <Folder Name="/.github/workflows/">
+    <File Path=".github/workflows/build-and-stage.yml" />
+    <File Path=".github/workflows/pr-cleanup.yml" />
+    <File Path=".github/workflows/stage-prod-swap.yml" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path=".gitignore" />
+    <File Path="Directory.Build.props" />
+    <File Path="docker-compose.yaml" />
+    <File Path="Dockerfile" />
+    <File Path="LICENSE" />
+    <File Path="README.md" />
+    <File Path="Steeltoe.InitializrService.slnx.DotSettings" />
+    <File Path="stylecop.json" />
+    <File Path="Version.props" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/InitializrService.Config/Steeltoe.InitializrService.Config.csproj" />
+    <Project Path="src/InitializrService/Steeltoe.InitializrService.csproj" DefaultStartup="true" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="test/InitializrService.Test.Integration/Steeltoe.InitializrService.Test.Integration.csproj" />
+    <Project Path="test/InitializrService.Test.Unit/Steeltoe.InitializrService.Test.Unit.csproj" />
+    <Project Path="test/InitializrService.Test.Utils/Steeltoe.InitializrService.Test.Utils.csproj" />
+  </Folder>
+</Solution>

@@ -2,11 +2,11 @@
 // The .NET Foundation licenses this file to you under the Apache 2.0 License.
 // See the LICENSE file in the project root for more information.
 
-using Steeltoe.InitializrService.Config.Utilities;
 using System;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
+using Steeltoe.InitializrService.Config.Utilities;
 
 namespace Steeltoe.InitializrService.Config
 {
@@ -196,6 +196,7 @@ namespace Steeltoe.InitializrService.Config
             /// <summary>
             /// Initializes a new instance of the <see cref="ReleaseVersion"/> class.
             /// </summary>
+            /// <param name="version">Version text to parse, including optional non-numeric prefix and optional <c>-rcNNN</c> suffix.</param>
             public ReleaseVersion(string version)
             {
                 if (string.IsNullOrEmpty(version))

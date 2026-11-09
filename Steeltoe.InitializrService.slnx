@@ -9,7 +9,6 @@
     <File Path=".editorconfig" />
     <File Path=".gitignore" />
     <File Path="Directory.Build.props" />
-    <File Path="docker-compose.yaml" />
     <File Path="Dockerfile" />
     <File Path="LICENSE" />
     <File Path="README.md" />

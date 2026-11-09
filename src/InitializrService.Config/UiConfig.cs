@@ -146,7 +146,7 @@ namespace Steeltoe.InitializrService.Config
             public string DotNetFrameworkRange { get; set; }
 
             /// <summary>
-            /// Gets or sets the whether this item is active.
+            /// Gets or sets whether this item is active.
             /// </summary>
             public string Active { get; set; }
         }

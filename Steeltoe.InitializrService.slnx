@@ -24,6 +24,5 @@
   <Folder Name="/test/">
     <Project Path="test/InitializrService.Test.Integration/Steeltoe.InitializrService.Test.Integration.csproj" />
     <Project Path="test/InitializrService.Test.Unit/Steeltoe.InitializrService.Test.Unit.csproj" />
-    <Project Path="test/InitializrService.Test.Utils/Steeltoe.InitializrService.Test.Utils.csproj" />
   </Folder>
 </Solution>

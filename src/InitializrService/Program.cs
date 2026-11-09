@@ -4,8 +4,6 @@
 
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
 using Steeltoe.Configuration.ConfigServer;
 using Steeltoe.InitializrService.Models;
 using Steeltoe.Logging.DynamicConsole;

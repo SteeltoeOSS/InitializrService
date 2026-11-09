@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information.
 
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Steeltoe.InitializrService.Services;
 
 namespace Steeltoe.InitializrService.Controllers

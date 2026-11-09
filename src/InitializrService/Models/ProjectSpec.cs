@@ -14,7 +14,6 @@ namespace Steeltoe.InitializrService.Models
         /* ----------------------------------------------------------------- *
          * fields                                                             *
          * ----------------------------------------------------------------- */
-        private string _namespace;
 
         /* ----------------------------------------------------------------- *
          * properties                                                        *
@@ -30,8 +29,8 @@ namespace Steeltoe.InitializrService.Models
         /// </summary>
         public string Namespace
         {
-            get => _namespace ?? Name;
-            set => _namespace = value;
+            get => field ?? Name;
+            set;
         }
 
         /// <summary>
@@ -71,52 +70,52 @@ namespace Steeltoe.InitializrService.Models
         public override string ToString()
         {
             var buf = new StringBuilder();
-            var delim = string.Empty;
+            var delimiter = string.Empty;
             buf.Append('[');
             if (Name != null)
             {
-                buf.Append(delim).Append("name=").Append(Name);
-                delim = ",";
+                buf.Append(delimiter).Append("name=").Append(Name);
+                delimiter = ",";
             }
 
             if (Namespace != null)
             {
-                buf.Append(delim).Append("namespace=").Append(Namespace);
-                delim = ",";
+                buf.Append(delimiter).Append("namespace=").Append(Namespace);
+                delimiter = ",";
             }
 
             if (Description != null)
             {
-                buf.Append(delim).Append("description=").Append(Description);
-                delim = ",";
+                buf.Append(delimiter).Append("description=").Append(Description);
+                delimiter = ",";
             }
 
             if (SteeltoeVersion != null)
             {
-                buf.Append(delim).Append("steeltoeVersion=").Append(SteeltoeVersion);
-                delim = ",";
+                buf.Append(delimiter).Append("steeltoeVersion=").Append(SteeltoeVersion);
+                delimiter = ",";
             }
 
             if (DotNetFramework != null)
             {
-                buf.Append(delim).Append("dotNetFramework=").Append(DotNetFramework);
-                delim = ",";
+                buf.Append(delimiter).Append("dotNetFramework=").Append(DotNetFramework);
+                delimiter = ",";
             }
 
             if (Language != null)
             {
-                buf.Append(delim).Append("language=").Append(Language);
-                delim = ",";
+                buf.Append(delimiter).Append("language=").Append(Language);
+                delimiter = ",";
             }
 
             if (Packaging != null)
             {
-                buf.Append(delim).Append("packaging=").Append(Packaging);
+                buf.Append(delimiter).Append("packaging=").Append(Packaging);
             }
 
             if (Dependencies != null)
             {
-                buf.Append(delim).Append("dependencies=").Append(Dependencies);
+                buf.Append(delimiter).Append("dependencies=").Append(Dependencies);
             }
 
             buf.Append(']');

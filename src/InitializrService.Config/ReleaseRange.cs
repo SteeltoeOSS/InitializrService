@@ -218,11 +218,11 @@ namespace Steeltoe.InitializrService.Config
                         version = version.Substring(prefixEnd);
                     }
 
-                    const string rcDelimeter = "-rc";
-                    var rcIdx = version.IndexOf(rcDelimeter, StringComparison.InvariantCultureIgnoreCase);
+                    const string rcDelimiter = "-rc";
+                    var rcIdx = version.IndexOf(rcDelimiter, StringComparison.InvariantCultureIgnoreCase);
                     if (rcIdx >= 0)
                     {
-                        _releaseCandidate = int.Parse(version.Substring(rcIdx + rcDelimeter.Length));
+                        _releaseCandidate = int.Parse(version.Substring(rcIdx + rcDelimiter.Length));
                         version = version.Substring(0, rcIdx);
                     }
                     else

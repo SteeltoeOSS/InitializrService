@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Steeltoe.InitializrService.Test.Integration
 {
-    public class HttpTests : IClassFixture<WebApplicationFactory<Startup>>
+    public class HttpTests(WebApplicationFactory<Startup> fixture) : IClassFixture<WebApplicationFactory<Startup>>
     {
         /* ----------------------------------------------------------------- *
          * positive tests                                                    *
@@ -35,8 +35,8 @@ namespace Steeltoe.InitializrService.Test.Integration
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var steeltoes = await response.Content.ReadFromJsonAsync<UiConfig.SelectItem[]>(cancellationToken: TestContext.Current.CancellationToken);
-            steeltoes.Length.Should().BeGreaterThan(0);
+            var steeltoeItems = await response.Content.ReadFromJsonAsync<UiConfig.SelectItem[]>(cancellationToken: TestContext.Current.CancellationToken);
+            steeltoeItems.Length.Should().BeGreaterThan(0);
         }
 
         [Fact]
@@ -167,15 +167,10 @@ namespace Steeltoe.InitializrService.Test.Integration
          * fields                                                            *
          * ----------------------------------------------------------------- */
 
-        private HttpClient HttpClient { get; }
+        private HttpClient HttpClient { get; } = fixture.CreateClient();
 
         /* ----------------------------------------------------------------- *
          * constructors
          * ----------------------------------------------------------------- */
-
-        public HttpTests(WebApplicationFactory<Startup> fixture)
-        {
-            HttpClient = fixture.CreateClient();
-        }
     }
 }

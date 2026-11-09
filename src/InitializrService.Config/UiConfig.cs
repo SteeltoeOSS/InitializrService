@@ -74,8 +74,6 @@ namespace Steeltoe.InitializrService.Config
         /// </summary>
         public abstract class Item
         {
-            private string _name;
-
             /// <summary>
             /// Gets or sets the item ID.
             /// </summary>
@@ -86,8 +84,8 @@ namespace Steeltoe.InitializrService.Config
             /// </summary>
             public string Name
             {
-                get => _name ?? Id;
-                set => _name = value;
+                get => field ?? Id;
+                set;
             }
         }
 
@@ -105,9 +103,7 @@ namespace Steeltoe.InitializrService.Config
         /// <summary>
         /// Abstraction of an item in a single select list.
         /// </summary>
-        public class SelectItem : Item
-        {
-        }
+        public class SelectItem : Item;
 
         /// <summary>
         /// Abstraction of a list of items that has 1 and only 1 selected item.
@@ -180,7 +176,7 @@ namespace Steeltoe.InitializrService.Config
             /// <summary>
             /// Gets or sets the groups.
             /// </summary>
-            public Group[] Values { get; set; } = System.Array.Empty<Group>();
+            public Group[] Values { get; set; } = [];
         }
     }
 }

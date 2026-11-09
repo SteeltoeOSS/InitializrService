@@ -61,7 +61,7 @@ namespace Steeltoe.InitializrService
         }
 
         /// <summary>
-        /// Create a generic host (see <a href="https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/generic-host?view=aspnetcore-3.1"></a>.
+        /// Create a generic host (see <see href="https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/generic-host?view=aspnetcore-3.1"/>).
         /// </summary>
         /// <param name="args">Command line args.</param>
         /// <returns>A generic host.</returns>

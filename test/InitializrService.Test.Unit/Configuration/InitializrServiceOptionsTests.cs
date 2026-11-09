@@ -33,10 +33,7 @@ namespace Steeltoe.InitializrService.Test.Unit.Configuration
             var logger = new NullLogger<UiConfigFile>();
 
             // Act
-            Action act = () =>
-            {
-                var _ = new UiConfigFile(options.Object, logger);
-            };
+            Action act = () => _ = new UiConfigFile(options.Object, logger);
 
             // Assert
             act.Should().Throw<ArgumentException>()
@@ -53,10 +50,7 @@ namespace Steeltoe.InitializrService.Test.Unit.Configuration
             var logger = new NullLogger<UiConfigFile>();
 
             // Act
-            Action act = () =>
-            {
-                var _ = new UiConfigFile(options.Object, logger);
-            };
+            Action act = () => _ = new UiConfigFile(options.Object, logger);
 
             // Assert
             act.Should().Throw<ArgumentException>()
@@ -73,10 +67,7 @@ namespace Steeltoe.InitializrService.Test.Unit.Configuration
             var logger = new NullLogger<UiConfigFile>();
 
             // Act
-            Action act = () =>
-            {
-                var _ = new UiConfigFile(options.Object, logger);
-            };
+            Action act = () => _ = new UiConfigFile(options.Object, logger);
 
             // Assert
             act.Should().Throw<System.Text.Json.JsonException>();

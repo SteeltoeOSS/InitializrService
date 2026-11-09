@@ -61,7 +61,7 @@ namespace Steeltoe.InitializrService.Controllers
         public async Task<ActionResult> GetProjectArchive([FromQuery] ProjectSpec spec)
         {
             var defaults = _uiConfigService.UiConfig;
-            var normalizedSpec = new ProjectSpec()
+            var normalizedSpec = new ProjectSpec
             {
                 Name = spec.Name ?? defaults?.Name?.Default,
                 Namespace = spec.Namespace ?? defaults?.Namespace?.Default,
@@ -139,7 +139,7 @@ namespace Steeltoe.InitializrService.Controllers
                 var projectPackage = await _projectGenerator.GenerateProjectArchive(normalizedSpec);
                 return File(
                     projectPackage,
-                    $"application/zip",
+                    "application/zip",
                     $"{normalizedSpec.Name}.zip");
             }
             catch (NoProjectForSpecException e)

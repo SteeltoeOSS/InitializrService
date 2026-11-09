@@ -65,19 +65,19 @@ namespace Steeltoe.InitializrService.Test.Unit.Controllers
             {
                 Dependencies = new UiConfig.GroupList
                 {
-                    Values = new[]
-                    {
+                    Values =
+                    [
                         new UiConfig.Group
                         {
-                            Values = new[]
-                            {
+                            Values =
+                            [
                                 new UiConfig.GroupItem
                                 {
                                     Id = "CamelCaseDep",
-                                },
-                            },
-                        },
-                    },
+                                }
+                            ],
+                        }
+                    ],
                 },
             };
             var spec = new ProjectSpec
@@ -185,7 +185,7 @@ namespace Steeltoe.InitializrService.Test.Unit.Controllers
             result.Value.Should().Be("Default packaging not configured.");
         }
 
-        [Fact(Skip = "This is effectively unreachable. InitilizrWeb filters out incompatible dependencies.")]
+        [Fact(Skip = "This is effectively unreachable. InitializrWeb filters out incompatible dependencies.")]
         public async Task Unsupported_Steeltoe_Version_Should_Return_404_NotFound()
         {
             // Arrange
@@ -198,20 +198,20 @@ namespace Steeltoe.InitializrService.Test.Unit.Controllers
                 DotNetFramework = new UiConfig.SingleSelectList { Default = "0.0" },
                 Dependencies = new UiConfig.GroupList
                 {
-                    Values = new[]
-                    {
+                    Values =
+                    [
                         new UiConfig.Group
                         {
-                            Values = new[]
-                            {
+                            Values =
+                            [
                                 new UiConfig.GroupItem
                                 {
                                     Id = "MyDep",
                                     SteeltoeVersionRange = "1.0"
-                                },
-                            },
-                        },
-                    },
+                                }
+                            ],
+                        }
+                    ],
                 },
             };
             var controller = new ProjectControllerBuilder()
@@ -230,7 +230,7 @@ namespace Steeltoe.InitializrService.Test.Unit.Controllers
             result.Value.ToString().Should().Be("No dependency 'mydep' found for Steeltoe version 0.0.");
         }
 
-        [Fact(Skip = "This is effectively unreachable. InitilizrWeb filters out incompatible dependencies.")]
+        [Fact(Skip = "This is effectively unreachable. InitializrWeb filters out incompatible dependencies.")]
         public async Task Unsupported_DotNet_Framework_Should_Return_404_NotFound()
         {
             // Arrange
@@ -243,20 +243,20 @@ namespace Steeltoe.InitializrService.Test.Unit.Controllers
                 DotNetFramework = new UiConfig.SingleSelectList { Default = "0.0" },
                 Dependencies = new UiConfig.GroupList
                 {
-                    Values = new[]
-                    {
+                    Values =
+                    [
                         new UiConfig.Group
                         {
-                            Values = new[]
-                            {
+                            Values =
+                            [
                                 new UiConfig.GroupItem
                                 {
                                     Id = "MyDep",
                                     DotNetFrameworkRange = "1.0"
-                                },
-                            },
-                        },
-                    },
+                                }
+                            ],
+                        }
+                    ],
                 },
             };
             var controller = new ProjectControllerBuilder()
@@ -324,7 +324,7 @@ namespace Steeltoe.InitializrService.Test.Unit.Controllers
             {
                 if (spec.Name is "nosuchproject")
                 {
-                    throw new NoProjectForSpecException($"No project for spec.");
+                    throw new NoProjectForSpecException("No project for spec.");
                 }
 
                 if (spec.Packaging is "nosuchpackaging")

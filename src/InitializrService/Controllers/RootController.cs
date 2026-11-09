@@ -160,7 +160,7 @@ namespace Steeltoe.InitializrService.Controllers
             try
             {
                 lineBuffer.Add(string.Empty);
-                System.IO.File.ReadAllLines(resource).ToList().ForEach(l => lineBuffer.Add(l));
+                System.IO.File.ReadAllLines(resource).ToList().ForEach(lineBuffer.Add);
                 lineBuffer.Add(string.Empty);
             }
             catch (Exception e)

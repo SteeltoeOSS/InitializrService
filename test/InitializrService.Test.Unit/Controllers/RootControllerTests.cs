@@ -59,30 +59,30 @@ namespace Steeltoe.InitializrService.Test.Unit.Controllers
                 },
                 Dependencies = new UiConfig.GroupList
                 {
-                    Values = new[]
-                    {
-                        new UiConfig.Group()
+                    Values =
+                    [
+                        new UiConfig.Group
                         {
                             Name = "AGroup",
-                            Values = new[]
-                            {
-                                new UiConfig.GroupItem()
+                            Values =
+                            [
+                                new UiConfig.GroupItem
                                 {
                                     Id = "dep1",
                                     Description = "DependencyOne"
                                 },
-                                new UiConfig.GroupItem()
+                                new UiConfig.GroupItem
                                 {
                                     Id = "dep2",
                                     Description = "DependencyTwo"
                                 }
-                            }
+                            ]
                         },
-                        new UiConfig.Group()
+                        new UiConfig.Group
                         {
                             Name = "AnotherGroup",
-                            Values = new[]
-                            {
+                            Values =
+                            [
                                 new UiConfig.GroupItem
                                 {
                                     Id = "anotherdep",
@@ -90,9 +90,9 @@ namespace Steeltoe.InitializrService.Test.Unit.Controllers
                                     SteeltoeVersionRange = "[1.0,1.9)",
                                     DotNetFrameworkRange = "2.0",
                                 }
-                            }
+                            ]
                         }
-                    }
+                    ]
                 }
             };
             var configService = new Mock<IUiConfigService>();

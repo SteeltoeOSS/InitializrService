@@ -43,7 +43,7 @@ namespace Steeltoe.InitializrService.Test.Unit.Controllers
 
             // Act
             var unknown = await controller.GetProjectArchive(new ProjectSpec());
-            var result = Assert.IsType<FileContentResult>(unknown);
+            var result = unknown.Should().BeOfType<FileContentResult>().Subject;
             var projectPackage = Encoding.ASCII.GetString(result.FileContents);
 
             // Assert
@@ -93,7 +93,7 @@ namespace Steeltoe.InitializrService.Test.Unit.Controllers
 
             // Act
             var unknown = await controller.GetProjectArchive(spec);
-            var result = Assert.IsType<FileContentResult>(unknown);
+            var result = unknown.Should().BeOfType<FileContentResult>().Subject;
             var projectPackage = Encoding.ASCII.GetString(result.FileContents);
 
             // Assert
@@ -118,7 +118,7 @@ namespace Steeltoe.InitializrService.Test.Unit.Controllers
 
             // Act
             var unknown = await controller.GetProjectArchive(spec);
-            var result = Assert.IsType<NotFoundObjectResult>(unknown);
+            var result = unknown.Should().BeOfType<NotFoundObjectResult>().Subject;
 
             // Assert
             result.Value.ToString().Should().Be("No project for spec.");
@@ -138,7 +138,7 @@ namespace Steeltoe.InitializrService.Test.Unit.Controllers
 
             // Act
             var unknown = await controller.GetProjectArchive(spec);
-            var result = Assert.IsType<BadRequestObjectResult>(unknown);
+            var result = unknown.Should().BeOfType<BadRequestObjectResult>().Subject;
 
             // Assert
             result.Value.ToString().Should().Be("Packaging 'nosuchpackaging' not found.");
@@ -158,7 +158,7 @@ namespace Steeltoe.InitializrService.Test.Unit.Controllers
 
             // Act
             var unknown = await controller.GetProjectArchive(spec);
-            var result = Assert.IsType<NotFoundObjectResult>(unknown);
+            var result = unknown.Should().BeOfType<NotFoundObjectResult>().Subject;
 
             // Assert
             result.Value.ToString().Should().Be("Dependency 'nosuchdep' not found.");
@@ -178,7 +178,7 @@ namespace Steeltoe.InitializrService.Test.Unit.Controllers
 
             // Act
             var unknown = await controller.GetProjectArchive(spec);
-            var result = Assert.IsType<ObjectResult>(unknown);
+            var result = unknown.Should().BeOfType<ObjectResult>().Subject;
 
             // Assert
             result.StatusCode.Should().Be(StatusCodes.Status500InternalServerError);
@@ -224,7 +224,7 @@ namespace Steeltoe.InitializrService.Test.Unit.Controllers
 
             // Act
             var unknown = await controller.GetProjectArchive(spec);
-            var result = Assert.IsType<NotFoundObjectResult>(unknown);
+            var result = unknown.Should().BeOfType<NotFoundObjectResult>().Subject;
 
             // Assert
             result.Value.ToString().Should().Be("No dependency 'mydep' found for Steeltoe version 0.0.");
@@ -269,7 +269,7 @@ namespace Steeltoe.InitializrService.Test.Unit.Controllers
 
             // Act
             var unknown = await controller.GetProjectArchive(spec);
-            var result = Assert.IsType<NotFoundObjectResult>(unknown);
+            var result = unknown.Should().BeOfType<NotFoundObjectResult>().Subject;
 
             // Assert
             result.Value.ToString().Should().Be("No dependency 'mydep' found for .NET framework 0.0.");

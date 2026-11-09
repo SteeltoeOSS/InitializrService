@@ -4,6 +4,7 @@
 
 using System;
 using System.Net.Http;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Steeltoe.InitializrService.Config;
 using Steeltoe.InitializrService.Utilities;
@@ -18,12 +19,12 @@ namespace Steeltoe.InitializrService.Test.Integration
          * ----------------------------------------------------------------- */
 
         [Fact]
-        public async void ProjectSpec_Should_Load_UI_Test_File()
+        public async Task ProjectSpec_Should_Load_UI_Test_File()
         {
             var testFile =
                 new Uri("https://raw.githubusercontent.com/SteeltoeOSS/InitializrWeb/dev/start-client/dev/api.mock.json");
             using var client = new HttpClient();
-            var bits = await client.GetStringAsync(testFile);
+            var bits = await client.GetStringAsync(testFile, TestContext.Current.CancellationToken);
             var uiConfig = Serializer.DeserializeJson<UiConfig>(bits);
             uiConfig.SteeltoeVersion.Default.Should().Be("3.0.2");
             uiConfig.DotNetFramework.Default.Should().Be("netcoreapp3.1");

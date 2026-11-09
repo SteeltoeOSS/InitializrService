@@ -23,41 +23,27 @@ jobs:
     env:
       DOTNET_CLI_TELEMETRY_OPTOUT: 1
       DOTNET_NOLOGO: true
-      DOTNET_VERSION: '8.0'
       ASPNETCORE_ENVIRONMENT: Staging
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v7
-      with:
-        persist-credentials: false
-        fetch-depth: 0 # avoid shallow clone so nbgv can do its work.
-
     - name: Setup .NET
       uses: actions/setup-dotnet@v6
       with:
-        dotnet-version: ${{ env.DOTNET_VERSION }}
+        dotnet-version: 10.0.*
 
-    - name: Set up dependency caching for faster builds
-      uses: actions/cache@v6
+    - name: Git checkout
+      uses: actions/checkout@v7
       with:
-        path: ~/.nuget/packages
-        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
-        restore-keys: ${{ runner.os }}-nuget-
+        persist-credentials: false
 
-    - name: dotnet restore
-      run: dotnet restore
+    - name: Restore packages
+      run: dotnet restore --verbosity minimal
 
-    - name: dotnet build
-      run: dotnet build --no-restore /p:TreatWarningsAsErrors=True
+    - name: Build solution
+      run: dotnet build --no-restore --configuration Release /p:TreatWarningsAsErrors=True
 
-    - name: dotnet test
-      run: dotnet test --logger trx --results-directory ${{ github.workspace }}/TestOutput --no-build
-
-    - name: generate test report
-      uses: NasAmin/trx-parser@v0.8.1
-      with:
-        TRX_PATH: "${{ github.workspace }}/TestOutput"
-        REPO_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+    - name: Test
+      run: dotnet test --no-build --configuration Release --logger trx --results-directory ${{ github.workspace }}/TestOutput
 
     - name: dotnet publish
       run: dotnet publish src/InitializrService/Steeltoe.InitializrService.csproj -o publish

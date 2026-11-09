@@ -23,15 +23,19 @@
   },
   "dotNetFramework": {
     "type": "single-select",
-    "default": "net8.0",
+    "default": "net10.0",
     "values": [
-      {
-        "id": "net6.0",
-        "name": ".NET 6.0"
-      },
       {
         "id": "net8.0",
         "name": ".NET 8.0"
+      },
+      {
+        "id": "net9.0",
+        "name": ".NET 9.0"
+      },
+      {
+        "id": "net10.0",
+        "name": ".NET 10.0"
       }
     ]
   },

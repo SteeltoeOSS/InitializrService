@@ -1,15 +1,12 @@
 FROM mcr.microsoft.com/dotnet/sdk:10.0-alpine AS build
 WORKDIR /source
-
 COPY . .
-RUN dotnet restore
-RUN dotnet publish -c release -o /srv --no-restore
+RUN dotnet restore /p:Configuration=Release /p:NuGetAudit=false
+RUN dotnet build --no-restore --configuration Release
+RUN dotnet publish --no-build --output /srv
 
 FROM mcr.microsoft.com/dotnet/sdk:10.0-alpine
 WORKDIR /srv
-RUN apk add bash
-RUN curl https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh > wait-for-it \
-            && chmod +x wait-for-it
 COPY --from=build /srv .
-ENV DOTNET_URLS http://0.0.0.0:80
+ENV HTTP_PORTS=8080
 ENTRYPOINT ["dotnet", "Steeltoe.InitializrService.dll"]
